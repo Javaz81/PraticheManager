@@ -18,13 +18,11 @@
 
         <p:layout fullPage="true">
 
-            <p:layoutUnit position="north" size="100">
-                TITOLONE
+            <p:layoutUnit position="north" size="auto" class="ui-g-12 ui-md-12 ui-lg-12" style="text-align: center" header="SUPERASSISTENZA - Gestore delle Pratiche">
             </p:layoutUnit>
-            <p:layoutUnit position="west" size="auto">
+            <p:layoutUnit position="west" class="ui-g-12 ui-md-6 ui-lg-4" header="#{bundle.MainSearchPanelTitle}">
                 <h:form id="form">
-
-                    <p:panel header="#{bundle.MainSearchPanelTitle}">
+                    <p:panel header="d">
                         <h:panelGrid>
                             <h:outputLabel value="Title : *" for="txt_title"></h:outputLabel>
                             <p:inputText id="txt_title"/>
@@ -37,7 +35,7 @@
                     </p:panel>
                 </h:form>
             </p:layoutUnit>
-            <p:layoutUnit position="center">
+            <p:layoutUnit position="center" header="#{bundle.MainGestionePraticheTitle}">
 
             </p:layoutUnit>
             <p:layoutUnit position="south" size="50">
