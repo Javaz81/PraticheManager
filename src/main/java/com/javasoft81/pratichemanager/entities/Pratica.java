@@ -56,7 +56,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Pratica.findByKilometraggio", query = "SELECT p FROM Pratica p WHERE p.kilometraggio = :kilometraggio")
     , @NamedQuery(name = "Pratica.findByClienteTemporaneo", query = "SELECT p FROM Pratica p WHERE p.clienteTemporaneo = :clienteTemporaneo")
     , @NamedQuery(name = "Pratica.findByVeicoloTemporaneo", query = "SELECT p FROM Pratica p WHERE p.veicoloTemporaneo = :veicoloTemporaneo")
-    , @NamedQuery(name = "Pratica.findByDife", query = "SELECT p FROM Pratica p WHERE p.dife = :dife")})
+    , @NamedQuery(name = "Pratica.findByDife", query = "SELECT p FROM Pratica p WHERE p.dife = :dife")
+    , @NamedQuery(name = "Pratica.findByInterventoData", query = "SELECT p FROM Pratica p WHERE p.interventoData = :interventoData")})
 public class Pratica implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -119,6 +120,9 @@ public class Pratica implements Serializable {
     private String veicoloTemporaneo;
     @Column(name = "dife")
     private Boolean dife;
+    @Column(name = "intervento_data")
+    @Temporal(TemporalType.DATE)
+    private Date interventoData;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pratica")
     private Collection<Lavoripratichestandard> lavoripratichestandardCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pratica1")
@@ -307,6 +311,14 @@ public class Pratica implements Serializable {
 
     public void setDife(Boolean dife) {
         this.dife = dife;
+    }
+
+    public Date getInterventoData() {
+        return interventoData;
+    }
+
+    public void setInterventoData(Date interventoData) {
+        this.interventoData = interventoData;
     }
 
     @XmlTransient
