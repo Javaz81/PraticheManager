@@ -18,27 +18,31 @@
 
         <p:layout fullPage="true">
 
-            <p:layoutUnit position="north" size="auto" class="ui-g-12 ui-md-12 ui-lg-12" style="text-align: center" header="SUPERASSISTENZA - Gestore delle Pratiche">
+            <p:layoutUnit position="north"  header="SUPERASSISTENZA - Gestore delle Pratiche">
+                
+                 <h:form id="themeform">
+                     <p:outputLabel for="themebasic" value="Tema: " />
+                <p:themeSwitcher  id="themebasic" style="width:165px">
+                    <f:selectItem itemLabel="Choose Theme" itemValue="" />
+                    <f:selectItems value="#{themeSwitcherView.themes}" var="theme" itemLabel="#{theme.displayName}" itemValue="#{theme.name}"/>
+                </p:themeSwitcher>
+                 </h:form>
             </p:layoutUnit>
-            <p:layoutUnit position="west" class="ui-g-12 ui-md-6 ui-lg-4" header="#{bundle.MainSearchPanelTitle}">
+            <p:layoutUnit position="west"  header="#{bundle.MainSearchPanelTitle}">
                 <h:form id="form">
-                    <p:panel header="d">
-                        <h:panelGrid>
-                            <h:outputLabel value="Title : *" for="txt_title"></h:outputLabel>
-                            <p:inputText id="txt_title"/>
+                    <h:panelGrid id="searchGrid">
+                        <h:outputLabel value="Cerca in veicolo Piattaforma:" for="txt_title"></h:outputLabel>
+                        <p:inputText id="txt_title" required = "true" value="#{searchValidationView.searchTerm}" label="Cerca..."/>
 
-                            <h:outputLabel value="Author : *" for="txt_author"></h:outputLabel>
-                            <p:inputText id="txt_author" />
-
-                            <p:commandButton id="btn_reset" value="Reset" type="reset"/>                            
-                        </h:panelGrid>
-                    </p:panel>
+                        <p:commandButton id="btn_search" ajax="false" update="searchGrid" icon= "ui-icon-search" value="Cerca" type="submit" validateClient="true"/>                         
+                    </h:panelGrid>                    
                 </h:form>
             </p:layoutUnit>
-            <p:layoutUnit position="center" header="#{bundle.MainGestionePraticheTitle}">
-
+            <p:layoutUnit position="center"  header="#{bundle.MainGestionePraticheTitle}">
+                Seleziona un veicolo/piattaforma nel pannello di ricerca per 
+                caricare qui tutti i suoi 
             </p:layoutUnit>
-            <p:layoutUnit position="south" size="50">
+            <p:layoutUnit position="south" >
 
             </p:layoutUnit>
         </p:layout>
