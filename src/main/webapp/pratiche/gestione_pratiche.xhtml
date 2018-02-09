@@ -18,15 +18,23 @@
 
         <p:layout fullPage="true">
 
-            <p:layoutUnit position="north"  header="SUPERASSISTENZA - Gestore delle Pratiche">
-                
-                 <h:form id="themeform">
-                     <p:outputLabel for="themebasic" value="Tema: " />
-                <p:themeSwitcher  id="themebasic" style="width:165px">
-                    <f:selectItem itemLabel="Choose Theme" itemValue="" />
-                    <f:selectItems value="#{themeSwitcherView.themes}" var="theme" itemLabel="#{theme.displayName}" itemValue="#{theme.name}"/>
-                </p:themeSwitcher>
-                 </h:form>
+            <p:layoutUnit position="north" size="auto" header="SUPERASSISTENZA - Gestore delle Pratiche">                
+                <h:form>
+                    <p:panelGrid columns="2" style="padding-left: 2em;vertical-align: auto">
+                        <p:outputLabel for="themebasic" value="Tema: " />
+                        <p:themeSwitcher  effectSpeed="normal" effect="fade" 
+                                          value="#{themeSwitcherView.theme}"
+                                          id="themebasic" style="width:auto"
+                                          >
+                            <f:selectItem itemLabel="Choose Theme" itemValue="" />
+                            <f:selectItems value="#{themeSwitcherView.themes}"
+                                           var="theme" itemLabel="#{theme.displayName}" 
+                                           itemValue="#{theme.name}"                                   
+                                           />
+                            <p:ajax listener="#{themeSwitcherView.saveTheme}"/>
+                        </p:themeSwitcher>
+                    </p:panelGrid>
+                </h:form>
             </p:layoutUnit>
             <p:layoutUnit position="west"  header="#{bundle.MainSearchPanelTitle}">
                 <h:form id="form">

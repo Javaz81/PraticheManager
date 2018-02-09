@@ -6,6 +6,7 @@
 package com.javasoft81.pratichemanager.jsf.beans.extra.themes;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
@@ -50,6 +51,13 @@ public class Theme implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+     if(obj==null)
+         return this==obj;
+     return this.name.equalsIgnoreCase(obj.toString());
     }
 
     @Override

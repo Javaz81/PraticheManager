@@ -16,12 +16,13 @@ import javax.faces.bean.ManagedBean;
  *
  * @author iavazzo.andrea
  */
-@ManagedBean(name="themeService", eager = true)
+@ManagedBean(name = "themeService", eager = true)
 @ApplicationScoped
-public class ThemeService implements Serializable{
+public class ThemeService implements Serializable {
 
     private List<Theme> themes;
- 
+    private Theme applicationTheme;
+
     @PostConstruct
     public void init() {
         themes = new ArrayList<Theme>();
@@ -64,9 +65,21 @@ public class ThemeService implements Serializable{
         themes.add(new Theme(36, "UI-Lightness", "ui-lightness"));
         themes.add(new Theme(37, "Vader", "vader"));
     }
- 
+
     public List<Theme> getThemes() {
         return themes;
     }
-    
+
+    public Theme getApplicationTheme() {
+        return applicationTheme;
+    }
+
+    public void setThemes(List<Theme> themes) {
+        this.themes = themes;
+    }
+
+    void setApplicationTheme(Theme theme) {
+        this.applicationTheme = theme;
+    }
+
 }
