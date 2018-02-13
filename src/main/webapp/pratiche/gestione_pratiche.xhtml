@@ -36,14 +36,18 @@
                     </p:panelGrid>
                 </h:form>
             </p:layoutUnit>
-            <p:layoutUnit position="west"  header="#{bundle.MainSearchPanelTitle}">
-                <h:form id="form">
-                    <h:panelGrid id="searchGrid">
-                        <h:outputLabel value="Cerca in veicolo Piattaforma:" for="txt_title"></h:outputLabel>
-                        <p:inputText id="txt_title" required = "true" value="#{searchValidationView.searchTerm}" label="Cerca..."/>
-
-                        <p:commandButton id="btn_search" ajax="false" update="searchGrid" icon= "ui-icon-search" value="Cerca" type="submit" validateClient="true"/>                         
-                    </h:panelGrid>                    
+            <p:layoutUnit position="west" size="auto"  header="#{bundle.MainSearchPanelTitle}">
+                <h:form>
+                    <p:menu>
+                        <p:submenu label="Document">
+                            <p:menuitem value="New" url="#" icon="fa fa-plus" />
+                            <p:menuitem value="Refresh" url="#" icon="fa fa-refresh"/>
+                        </p:submenu>
+                        <p:submenu label="Navigations">
+                            <p:menuitem value="Home" url="http://www.primefaces.org" icon="fa fa-home"/>
+                            <p:menuitem value="User" url="#" icon="fa fa-user"/>
+                        </p:submenu>
+                    </p:menu>
                 </h:form>
             </p:layoutUnit>
             <p:layoutUnit position="center"  header="#{bundle.MainGestionePraticheTitle}">
