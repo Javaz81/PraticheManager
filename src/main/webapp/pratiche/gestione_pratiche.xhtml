@@ -5,11 +5,12 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>
+        <title>            
             <h:outputText value="#{bundle.Title}"></h:outputText>
         </title>
         <!--        <h:outputStylesheet library="css" name="jsfcrud.css"/>
                     <h:outputScript library="js" name="jsfcrud.js"/>-->
+        <h:outputStylesheet library="css" name="custom.css"/>
     </h:head>
 
     <h:body>
@@ -17,10 +18,9 @@
         <p:growl id="growl" life="3000" />
 
         <p:layout fullPage="true">
-
-            <p:layoutUnit position="north" size="auto" header="SUPERASSISTENZA - Gestore delle Pratiche">                
-                <h:form>
-                    <p:panelGrid columns="2" style="padding-left: 2em;vertical-align: auto">
+            <p:layoutUnit id="main_layout" position="center"  header="#{bundle.MainGestionePraticheTitle}">               
+                <h:form>                   
+                    <p:panelGrid columns="3" style="padding-left: 1em;vertical-align: auto;">
                         <p:outputLabel for="themebasic" value="Tema: " />
                         <p:themeSwitcher  effectSpeed="normal" effect="fade" 
                                           value="#{themeSwitcherView.theme}"
@@ -33,26 +33,38 @@
                                            />
                             <p:ajax listener="#{themeSwitcherView.saveTheme}"/>
                         </p:themeSwitcher>
-                    </p:panelGrid>
-                </h:form>
-            </p:layoutUnit>
-            <p:layoutUnit position="west" size="auto"  header="#{bundle.MainSearchPanelTitle}">
-                <h:form>
-                    <p:menu>
-                        <p:submenu label="Document">
-                            <p:menuitem value="New" url="#" icon="fa fa-plus" />
-                            <p:menuitem value="Refresh" url="#" icon="fa fa-refresh"/>
+                        <p style="font-size: 0.80em;"> <b>PER INIZIARE:</b> Parti dal menu <i>Auto-articolati -> Cerca...</i> qui sotto nel menu 
+                            per cercare l'auto-articolato e caricare le sue pratiche.</p>
+                    </p:panelGrid>                    
+                    <p:menubar>
+                        <p:submenu label="Auto-Articolati" icon="ui-icon-home">
+                            <p:menuitem id="aa_search" value="Cerca..." icon="ui-icon-search"/>                           
+                            <p:menuitem id="aa_manage" value="Gestisci..." icon="ui-icon-wrench"/>
+                        </p:submenu>                        
+                        <p:submenu label="Pratica" icon="ui-icon-document">
+                            <p:submenu label="Azioni" icon="fa fa-navicon">
+                                <p:menuitem id="ap_new" value="Crea Nuova" icon="fa fa-plus"/>
+                                <p:menuitem value="Salva" icon="fa fa-save" />
+                                <p:menuitem value="Cancella" icon="fa fa-close" />                                
+                            </p:submenu>
+                            <p:separator title="Esporta PRatica"/>
+                            <p:menuitem icon="fa fa-file-excel-o" value="File Excel..."/>
+                            
                         </p:submenu>
-                        <p:submenu label="Navigations">
-                            <p:menuitem value="Home" url="http://www.primefaces.org" icon="fa fa-home"/>
-                            <p:menuitem value="User" url="#" icon="fa fa-user"/>
-                        </p:submenu>
-                    </p:menu>
+                        <f:facet name="options">
+                            <p:commandButton value="Stampa Modulo" type="button" icon="ui-icon-print">
+                                <p:printer target="pratica_panel" />
+                            </p:commandButton>
+                        </f:facet>
+                    </p:menubar>
+                    <p:tooltip id="t1" for="aa_search" value="Cerca auto e carica/crea le relative pratiche" position="top"/>
+                    <p:tooltip id="t2" for="aa_manage" value="Gestisce gli autoarticolati" position="top"/>
                 </h:form>
-            </p:layoutUnit>
-            <p:layoutUnit position="center"  header="#{bundle.MainGestionePraticheTitle}">
-                Seleziona un veicolo/piattaforma nel pannello di ricerca per 
-                caricare qui tutti i suoi 
+
+                <p:panel id="pratica_panel" header="PRATICHE per ">
+                    
+                </p:panel>
+
             </p:layoutUnit>
             <p:layoutUnit position="south" >
 
