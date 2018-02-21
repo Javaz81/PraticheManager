@@ -48,7 +48,7 @@ public class VeicoliSearchView implements Serializable {
         options.put("resizable", false);
         options.put("draggable", false);
         options.put("modal", true);
-        RequestContext.getCurrentInstance().openDialog("selectVeicoli", options, null);
+        RequestContext.getCurrentInstance().openDialog("searchVeicoli", options, null);
     }
      
      public void onVeicoliChosen() {        
