@@ -4,6 +4,15 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
 <application>
+    <action-listener>
+        org.primefaces.application.DialogActionListener
+    </action-listener>
+    <navigation-handler>
+        org.primefaces.application.DialogNavigationHandler
+    </navigation-handler>
+    <view-handler>
+        org.primefaces.application.DialogViewHandler
+    </view-handler>    
         <resource-bundle>
             <base-name>/Bundle</base-name>
             <var>bundle</var>
@@ -13,6 +22,12 @@
         <description>Used to validate search form in main search panel</description>
         <managed-bean-name>searchValidationView</managed-bean-name>
         <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.SearchValidationView</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>Bean per la gestione della visualizzazione del search degli autoarticolati e per l'apertura delle relative pratiche</description>
+        <managed-bean-name>veicoliSearchView</managed-bean-name>
+        <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.VeicoliSearchView</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
 </faces-config>
