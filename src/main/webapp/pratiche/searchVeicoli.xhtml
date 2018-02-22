@@ -16,9 +16,12 @@ and open the template in the editor.
             }
         </style>
     </h:head>
-    <h:body>
+    <h:body style="margin:auto">
         <h:form>
-            <p:dataTable var="veicolo" value="#{veicoliSearchView.veicoli}">
+            <p:dataTable id="searchVeicoliDT" var="veicolo" value="#{veicoliSearchView.veicoli}" paginator="true" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                         rowsPerPageTemplate="5,10,20"                         
+                          >
                 <p:column headerText="Marca">
                     <h:outputText value="#{veicolo.marca}" />
                 </p:column>

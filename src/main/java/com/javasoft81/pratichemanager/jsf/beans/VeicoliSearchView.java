@@ -28,6 +28,7 @@ public class VeicoliSearchView implements Serializable {
     
     private List<Veicolo> veicoli;
     
+    private Veicolo selected;
     /**
      * Creates a new instance of VeicoliSearchView
      */
@@ -37,6 +38,7 @@ public class VeicoliSearchView implements Serializable {
     @PostConstruct
     public void init() {
         veicoli = service.findAll();
+        selected=null;
     }
     
     public List<Veicolo> getVeicoli() {
@@ -46,23 +48,20 @@ public class VeicoliSearchView implements Serializable {
     public void chooseVeicoli() {
         Map<String,Object> options = new HashMap<>();
         options.put("resizable", false);
-        options.put("draggable", false);
+        options.put("draggable", true);
         options.put("modal", true);
+        options.put("contentHeight", 320);
         RequestContext.getCurrentInstance().openDialog("searchVeicoli", options, null);
     }
      
-     public void onVeicoliChosen() {        
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO.toString(), "Autoarticolato selezionato");         
-        FacesContext.getCurrentInstance().addMessage(null, message);
-    }
-     
-    public void onVeicoliChosen_old(SelectEvent event) {
+    public void onVeicoliChosen(SelectEvent event) {
         Veicolo car = (Veicolo) event.getObject();
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Autoarticolato selezionato", "Id:" + car.toString());         
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Autoarticolato selezionato", "Id:" + car.getMarca());         
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
     
     public void selectCarFromDialog(Veicolo veicolo) {
+        selected = veicolo;
         RequestContext.getCurrentInstance().closeDialog(veicolo);
     }
 }

@@ -11,7 +11,7 @@
         <h:outputStylesheet library="css" name="custom.css"/>
     </h:head>
 
-    <p:growl id="growl" life="3000" />
+    <p:growl id="growl" life="3000" showSummary="true" showDetail="true"/>
     <p:layout fullPage="true">
         <p:layoutUnit id="north" position="north">
             <h:form>
@@ -54,8 +54,8 @@
                         <p:commandButton value="Stampa Modulo" type="button" icon="ui-icon-print">
                             <p:printer target="pratica_panel" />
                         </p:commandButton>
-                        <p:commandButton value="Select Car" icon="ui-icon-extlink" actionListener="#{veicoliSearchView.chooseVeicoli}">
-                            <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onVeicoliChosen()}" update="growl" />
+                        <p:commandButton value="Select Car"  icon="ui-icon-extlink" actionListener="#{veicoliSearchView.chooseVeicoli}">
+                            <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onVeicoliChosen}"  update="growl" />
                         </p:commandButton>
                     </f:facet>
                 </p:menubar>
