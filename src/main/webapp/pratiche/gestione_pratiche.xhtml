@@ -9,6 +9,7 @@
     <h:head>
         <h:outputText value="#{bundle.Title}"></h:outputText>
         <h:outputStylesheet library="css" name="custom.css"/>
+        <h:outputScript library="js" name="gestione_pratiche.js"/>
     </h:head>
 
     <p:growl id="growl" life="3000" showSummary="true" showDetail="true"/>
@@ -37,7 +38,7 @@
             <h:form id="mainMenuForm">                          
                 <p:menubar>
                     <p:submenu label="Auto-Articolati" icon="ui-icon-home">
-                        <p:menuitem id="aa_search" onclick="cercaVeicolo()" value="Cerca..." icon="ui-icon-search"/>                            
+                        <p:menuitem id="aa_search"  value="Cerca..." icon="ui-icon-search" onclick="searchVeicoli()"/>
                         <p:menuitem id="aa_manage" value="Gestisci..." icon="ui-icon-wrench"/>
                     </p:submenu>                        
                     <p:submenu label="Pratica" icon="ui-icon-document">
@@ -48,17 +49,18 @@
                         </p:submenu>
                         <p:separator title="Esporta Pratica"/>
                         <p:menuitem icon="fa fa-file-excel-o" value="File Excel..."/>
-
-                    </p:submenu>
+                    </p:submenu>                   
                     <f:facet name="options">
                         <p:commandButton value="Stampa Modulo" type="button" icon="ui-icon-print">
                             <p:printer target="pratica_panel" />
                         </p:commandButton>
-                        <p:commandButton value="Select Car"  icon="ui-icon-extlink" actionListener="#{veicoliSearchView.chooseVeicoli}">
+                        <!-- ACTION BUTTONS -->
+                        <p:commandButton  id="selectVeicoli" style="display: none" styleClass="commandButton" actionListener="#{veicoliSearchView.chooseVeicoli}">
                             <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onVeicoliChosen}"  update="growl" />
-                        </p:commandButton>
+                        </p:commandButton>  
                     </f:facet>
                 </p:menubar>
+               
                 <p:tooltip id="t1" for="aa_search" value="Cerca auto e carica/crea le relative pratiche" position="top"/>
                 <p:tooltip id="t2" for="aa_manage" value="Gestisce gli autoarticolati" position="top"/>
             </h:form>

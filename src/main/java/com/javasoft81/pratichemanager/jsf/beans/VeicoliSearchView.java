@@ -50,7 +50,6 @@ public class VeicoliSearchView implements Serializable {
         options.put("resizable", false);
         options.put("draggable", true);
         options.put("modal", true);
-        options.put("contentHeight", 320);
         RequestContext.getCurrentInstance().openDialog("searchVeicoli", options, null);
     }
      
