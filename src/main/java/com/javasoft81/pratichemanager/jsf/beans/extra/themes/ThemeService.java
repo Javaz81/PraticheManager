@@ -38,7 +38,6 @@ public class ThemeService implements Serializable {
         themes.add(new Theme(9, "Cupertino", "cupertino"));
         themes.add(new Theme(10, "Cruze", "cruze"));
         themes.add(new Theme(11, "Dark-Hive", "dark-hive"));
-        themes.add(new Theme(12, "Delta", "delta"));
         themes.add(new Theme(13, "Dot-Luv", "dot-luv"));
         themes.add(new Theme(14, "Eggplant", "eggplant"));
         themes.add(new Theme(15, "Excite-Bike", "excite-bike"));

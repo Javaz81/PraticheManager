@@ -51,24 +51,29 @@
                         <p:menuitem icon="fa fa-file-excel-o" value="File Excel..."/>
                     </p:submenu>                   
                     <f:facet name="options">
-                        <p:commandButton value="Stampa Modulo" type="button" icon="ui-icon-print">
-                            <p:printer target="pratica_panel" />
+                        <p:commandButton id="print_module" value="Stampa Modulo" type="button" icon="ui-icon-print">
+                            <p:printer target="tabview_pratiche" />
                         </p:commandButton>
                         <!-- ACTION BUTTONS -->
-                        <p:commandButton  id="selectVeicoli" style="display: none" styleClass="commandButton" actionListener="#{veicoliSearchView.chooseVeicoli}">
-                            <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onVeicoliChosen}"  update="growl" />
+                        <p:commandButton  id="selectVeicoli" style="display: none"
+                                          styleClass="commandButton" 
+                                          actionListener="#{veicoliSearchView.chooseVeicoli}" >
+                            <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onVeicoliChosen}"
+                                    update="growl pratiche_panel tabview_pratiche" />                            
                         </p:commandButton>  
                     </f:facet>
                 </p:menubar>
-               
+
                 <p:tooltip id="t1" for="aa_search" value="Cerca auto e carica/crea le relative pratiche" position="top"/>
                 <p:tooltip id="t2" for="aa_manage" value="Gestisce gli autoarticolati" position="top"/>
             </h:form>
-
-            <p:panel id="pratica_panel" header="PRATICHE per ">
-
-            </p:panel>
-
+            <p:panel id="pratiche_panel" 
+                     header="#{not empty veicoliSearchView.selected ?
+                               veicoliSearchView.selected.marca :
+                               'Nessuna piattaforma/autoarticolato selezionato'}"
+                     >
+                <ui:include src="pratiche_list.xhtml"/>
+            </p:panel>     
         </p:layoutUnit>
     </p:layout>
 </html>

@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -29,6 +30,11 @@ public class VeicoliSearchView implements Serializable {
     private List<Veicolo> veicoli;
     
     private Veicolo selected;
+    
+    /**
+     * Test string
+     */
+    private String ts;
     /**
      * Creates a new instance of VeicoliSearchView
      */
@@ -39,10 +45,25 @@ public class VeicoliSearchView implements Serializable {
     public void init() {
         veicoli = service.findAll();
         selected=null;
+        ts="Ciao";
     }
     
     public List<Veicolo> getVeicoli() {
         return veicoli;
+    }
+
+    public Veicolo getSelected() {
+        return selected;
+    }
+
+    public String getTs() {
+        ts=Integer.toString(new Random().nextInt(32));
+        return ts;
+    }
+
+    public void setTs(String ts) {
+        this.ts = ts;
+        System.err.println(ts);
     }
    
     public void chooseVeicoli() {
@@ -55,12 +76,22 @@ public class VeicoliSearchView implements Serializable {
      
     public void onVeicoliChosen(SelectEvent event) {
         Veicolo car = (Veicolo) event.getObject();
+        this.selected = car;
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Autoarticolato selezionato", "Id:" + car.getMarca());         
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
+
+    public void setSelected(Veicolo selected) {
+        this.selected = selected;
+    }
     
     public void selectCarFromDialog(Veicolo veicolo) {
-        selected = veicolo;
+        this.selected = veicolo;
+        //closing dialog trigger the <p:ajax> event dialogReturn and its 
+        //listener 'onVeicoliChosen'
         RequestContext.getCurrentInstance().closeDialog(veicolo);
+    }
+    public void gane(){
+        System.out.println("dakjsdlkjaldkjk");
     }
 }
