@@ -28,6 +28,6 @@
         <description>Bean per la gestione della visualizzazione del search degli autoarticolati e per l'apertura delle relative pratiche</description>
         <managed-bean-name>veicoliSearchView</managed-bean-name>
         <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.VeicoliSearchView</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
+        <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 </faces-config>

@@ -5,13 +5,14 @@
  */
 package com.javasoft81.pratichemanager.jsf.beans;
 
+import com.javasoft81.pratichemanager.jsf.beans.utils.PraticheVeicoloList;
 import com.javasoft81.pratichemanager.entities.Veicolo;
+import com.javasoft81.pratichemanager.entities.beans.PraticaFacade;
 import com.javasoft81.pratichemanager.entities.beans.VeicoloFacade;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -24,17 +25,19 @@ import org.primefaces.event.SelectEvent;
  * @author andrea
  */
 public class VeicoliSearchView implements Serializable {
+    
     @EJB
-    private VeicoloFacade service;
+    private VeicoloFacade veicoliService;
+    
+    @EJB
+    private PraticaFacade praticheService;
+    
+    private PraticheVeicoloList currentPratiche;
     
     private List<Veicolo> veicoli;
     
     private Veicolo selected;
     
-    /**
-     * Test string
-     */
-    private String ts;
     /**
      * Creates a new instance of VeicoliSearchView
      */
@@ -43,9 +46,10 @@ public class VeicoliSearchView implements Serializable {
     
     @PostConstruct
     public void init() {
-        veicoli = service.findAll();
+        veicoli = veicoliService.findAll();
         selected=null;
-        ts="Ciao";
+        currentPratiche=new PraticheVeicoloList();
+        currentPratiche.setService(praticheService);
     }
     
     public List<Veicolo> getVeicoli() {
@@ -56,16 +60,16 @@ public class VeicoliSearchView implements Serializable {
         return selected;
     }
 
-    public String getTs() {
-        ts=Integer.toString(new Random().nextInt(32));
-        return ts;
+    public PraticheVeicoloList getPraticheBean() {
+        return currentPratiche;
     }
 
-    public void setTs(String ts) {
-        this.ts = ts;
-        System.err.println(ts);
+    public void setPraticheBean(PraticheVeicoloList praticheBean) {
+        this.currentPratiche = praticheBean;
     }
-   
+
+    
+    
     public void chooseVeicoli() {
         Map<String,Object> options = new HashMap<>();
         options.put("resizable", false);
@@ -76,7 +80,6 @@ public class VeicoliSearchView implements Serializable {
      
     public void onVeicoliChosen(SelectEvent event) {
         Veicolo car = (Veicolo) event.getObject();
-        this.selected = car;
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Autoarticolato selezionato", "Id:" + car.getMarca());         
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
@@ -87,11 +90,9 @@ public class VeicoliSearchView implements Serializable {
     
     public void selectCarFromDialog(Veicolo veicolo) {
         this.selected = veicolo;
+        this.currentPratiche.loadPratiche(veicolo);
         //closing dialog trigger the <p:ajax> event dialogReturn and its 
-        //listener 'onVeicoliChosen'
+        //listener 'onVeicoliChosen'        
         RequestContext.getCurrentInstance().closeDialog(veicolo);
-    }
-    public void gane(){
-        System.out.println("dakjsdlkjaldkjk");
     }
 }

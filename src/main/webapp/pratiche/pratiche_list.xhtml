@@ -1,22 +1,22 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-
-    <p:tabView id="tabview_pratiche" rendered="#{not empty veicoliSearchView.selected}">
-        <p:tab id="tab_0" title="#{veicoliSearchView.selected.modello}">
-            <p:outputLabel value="LABEL e #{veicoliSearchView.selected.modello}"/>
-                <h:form>
-                    <p:commandButton value="#{empty veicoliSearchView}"
-                                     icon="ui-icon-plus"
-                                     actionListener="#{veicoliSearchView.gane}"
-                                     
-                                     />                  
-                </h:form> 
+      xmlns:p="http://primefaces.org/ui">
+    
+    <p:tabView id="tabview_pratiche" rendered="#{not empty veicoliSearchView.selected}" 
+               var="item" value="#{veicoliSearchView.praticheBean.list}" scrollable="true">
+        <p:tab id="tab_#{item.idPratica}" title="#{veicoliSearchView.praticheBean.getDate(item)}">
+            <p:accordionPanel>
+                <p:tab title="Generale">
+                    
+                </p:tab>
+                <p:tab title="Lavori">
+                    
+                </p:tab>
+                <p:tab title="Materiale">
+                    
+                </p:tab>
+            </p:accordionPanel>
         </p:tab>
     </p:tabView>
-
 </html>
