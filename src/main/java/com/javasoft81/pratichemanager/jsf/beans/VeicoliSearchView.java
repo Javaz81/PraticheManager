@@ -5,6 +5,7 @@
  */
 package com.javasoft81.pratichemanager.jsf.beans;
 
+import com.javasoft81.pratichemanager.entities.Pratica;
 import com.javasoft81.pratichemanager.jsf.beans.utils.PraticheVeicoloList;
 import com.javasoft81.pratichemanager.entities.Veicolo;
 import com.javasoft81.pratichemanager.entities.beans.PraticaFacade;
@@ -19,6 +20,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.TabChangeEvent;
 
 /**
  *
@@ -67,8 +69,15 @@ public class VeicoliSearchView implements Serializable {
     public void setPraticheBean(PraticheVeicoloList praticheBean) {
         this.currentPratiche = praticheBean;
     }
-
-    
+/*
+    public void onTabChange(TabChangeEvent event) {
+        //FacesMessage msg = new FacesMessage("Tab Changed", "Active Tab: " + event.getTab().getTitle());
+        this.currentPratiche.setSelected(event.getData();
+    }         
+    */
+    public void onTabChange(Pratica p){
+        this.currentPratiche.setSelected(p);
+    }
     
     public void chooseVeicoli() {
         Map<String,Object> options = new HashMap<>();

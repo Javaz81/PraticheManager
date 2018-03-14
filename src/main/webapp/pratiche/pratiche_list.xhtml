@@ -3,19 +3,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    
+    <p:outputLabel rendered="#{veicoliSearchView.praticheBean.list.size()==0}" value="Nessuna pratica presente"/>
     <p:tabView id="tabview_pratiche" rendered="#{not empty veicoliSearchView.selected}" 
                var="item" value="#{veicoliSearchView.praticheBean.list}" scrollable="true">
-        <p:tab id="tab_#{item.idPratica}" title="#{veicoliSearchView.praticheBean.getDate(item)}">
-            <p:accordionPanel>
+        <p:ajax event="tabChange" listener="#{veicoliSearchView.onTabChange(item)}" update="@(.tab_pratiche_panel)"/>
+        <p:tab id="tab_#{item.idPratica}" 
+               title="#{veicoliSearchView.praticheBean.getDate(item)}">
+            <p:accordionPanel styleClass="tab_pratiche_panel">
                 <p:tab title="Generale">
                     <ui:include src="/pratiche/tabs/generale.xhtml"/>
                 </p:tab>
                 <p:tab title="Lavori">
-                    
+
                 </p:tab>
                 <p:tab title="Materiale">
-                    
+
                 </p:tab>
             </p:accordionPanel>
         </p:tab>

@@ -54,6 +54,7 @@ public class PraticheVeicoloList implements Serializable {
         this.currentCarPratiche =  this.service.countPraticheByVeicolo(this.currentCar);
         //Carica le ultime 100 pratiche
         this.list = (List<Pratica>) this.service.findPraticaByVeicolo(this.currentCar, MAX_PRATICHE_ESTRAIBILI);
+        this.selected = this.list.isEmpty()?null:this.list.get(0);
     }
 
     public List<Pratica> getList() {
