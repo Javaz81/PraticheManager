@@ -7,8 +7,8 @@
 
     <h:body>
         <div class="ui-g">
-            <div class="ui-g-12 ui-md-6 ui-lg-3">
-                <p:panelGrid id="general_grid_veicolo">       
+            <div class="ui-g-6 ui-md-6 ui-lg-6" >
+                <p:panelGrid id="general_grid_veicolo" style="margin-bottom: 1em;">       
                     <f:facet name="header">
                         <p:row>
                             <p:column colspan="2">
@@ -77,10 +77,7 @@
                             #{veicoliSearchView.selected.targa}
                         </p:column>
                     </p:row>
-
                 </p:panelGrid>
-            </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3">
                 <p:panelGrid id="general_grid_cliente">       
                     <f:facet name="header">
                         <p:row>
@@ -128,12 +125,13 @@
                     </p:row>      
                 </p:panelGrid>
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3">
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
+                <!-- dati pratica -->
                 <p:panelGrid id="general_grid_dati">
                     <f:facet name="header">
                         <p:row>
-                            <p:column colspan="2">                              
-                                Dati Pratica 
+                            <p:column colspan="4">                              
+                                Dati della pratica 
                             </p:column>
                         </p:row>
                     </f:facet>
@@ -146,10 +144,153 @@
                                 <p:inputText value="#{veicoliSearchView.praticheBean.selected.arrivo}"/>
                             </h:form>
                         </p:column>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            DATA ARRIVO
+                        </p:column>
+                        <p:column colspan="1">
+                            <h:form>
+                                <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{veicoliSearchView.praticheBean.selected.dataArrivo}" />
+                            </h:form>
+                        </p:column>
                     </p:row>
-                </p:panelGrid>  
+                    <p:row>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            N.FATTURA
+                        </p:column>
+                        <p:column colspan="1">
+                            <h:form>
+                                <p:inputText   value="#{veicoliSearchView.praticheBean.selected.numeroFattura}"/>
+                            </h:form>
+                        </p:column>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            DATA FATTURA
+                        </p:column>
+                        <p:column colspan="1">
+                            <h:form>
+                                <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{veicoliSearchView.praticheBean.selected.dataFattura}"/>
+                            </h:form>
+                        </p:column>
+                    </p:row>
+                    <p:row>                            
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            COLLAUDO USL
+                        </p:column>
+                        <p:column colspan="1"  style="text-align: center" >
+                            <h:form>
+                                <p:selectBooleanCheckbox value="#{veicoliSearchView.praticheBean.selected.collaudoUsl}"/>
+                            </h:form>
+                        </p:column>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            DATA COL. USL
+                        </p:column>
+                        <p:column colspan="1">
+                            <h:form>
+                                <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{veicoliSearchView.praticheBean.selected.collaudoUslData}"/>
+                            </h:form>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            REGISTRO CONTROLLO
+                        </p:column>
+                        <p:column colspan="1" style="text-align: center">
+                            <h:form>
+                                <p:selectBooleanCheckbox value="#{veicoliSearchView.praticheBean.selected.registroDiControllo}"/>
+                            </h:form>
+                        </p:column>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            DATA REG.CONTROLLO
+                        </p:column>
+                        <p:column colspan="1">
+                            <h:form>
+                                <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{veicoliSearchView.praticheBean.selected.registroDiControlloData}"/>
+                            </h:form>
+                        </p:column>
+                    </p:row> 
+                    <p:row>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            REVISIONE MCTC
+                        </p:column>
+                        <p:column colspan="1" style="text-align: center">
+                            <h:form>
+                                <p:selectBooleanCheckbox value="#{veicoliSearchView.praticheBean.selected.revisioneMctc}"/>
+                            </h:form>
+                        </p:column>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            DATA REV. MCTC
+                        </p:column>
+                        <p:column colspan="1">
+                            <h:form>
+                                <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{veicoliSearchView.praticheBean.selected.revisioneMctcData}"/>
+                            </h:form>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            PREVENTIVO LAVORI
+                        </p:column>
+                        <p:column colspan="1" style="text-align: center">
+                            <h:form>
+                                <p:selectBooleanCheckbox value="#{veicoliSearchView.praticheBean.selected.preventivoLavori}"/>
+                            </h:form>
+                        </p:column>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            DATA PREV. LAVORI
+                        </p:column>
+                        <p:column colspan="1" >
+                            <h:form>
+                                <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{veicoliSearchView.praticheBean.selected.preventivoLavoriData}"/>
+                            </h:form>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            KM
+                        </p:column>
+                        <p:column colspan="1">
+                            <h:form>                               
+                                <p:spinner value="#{veicoliSearchView.praticheBean.selected.kilometraggio}" />
+                            </h:form>
+                        </p:column>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            ORE
+                        </p:column>
+                        <p:column colspan="1" >
+                            <h:form>
+                                <p:spinner value="#{veicoliSearchView.praticheBean.selected.ore}"/>
+                            </h:form>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            DIFE ?
+                        </p:column>
+                        <p:column colspan="1" style="text-align: center">
+                            <h:form>
+                                <p:selectBooleanCheckbox value="#{veicoliSearchView.praticheBean.selected.dife}"/>
+                            </h:form>
+                        </p:column>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            DATA INTERVENTO
+                        </p:column>
+                        <p:column colspan="1" >
+                            <h:form>
+                                <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{veicoliSearchView.praticheBean.selected.interventoData}"/>
+                            </h:form>
+                        </p:column>
+                    </p:row>
+                     <p:row>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            LAVORI SEGNALATI ALL'INGRESSO:
+                        </p:column>
+                        <p:column colspan="3" style="text-align: justify !important;">
+                            <h:form >
+                                <p:inputTextarea  rows="5" cols='82'  autoResize="false"/>
+                            </h:form>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"></div>
         </div>
     </h:body>
 </html>
