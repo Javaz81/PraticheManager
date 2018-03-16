@@ -6,125 +6,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html">
 
     <h:body>
-        <div class="ui-g">
-            <div class="ui-g-6 ui-md-6 ui-lg-6" >
-                <p:panelGrid id="general_grid_veicolo" style="margin-bottom: 1em;">       
-                    <f:facet name="header">
-                        <p:row>
-                            <p:column colspan="2">
-                                <h:form>
-                                    Dati Piattaforma/Auto-articolato 
-                                    <p:commandButton id="buttonVeicolo" icon="fa fa-edit"  />
-                                    <p:tooltip id="toolTip" for="buttonVeicolo" position="top" 
-                                               value="Modifica dati del veicolo" />
-                                </h:form>
-                            </p:column>
-                        </p:row>
-                    </f:facet>
-                    <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            MARCA
-                        </p:column>
-                        <p:column colspan="1">
-                            #{veicoliSearchView.selected.marca}
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            MODELLO
-                        </p:column>
-                        <p:column colspan="1">
-                            #{veicoliSearchView.selected.modello}
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            ANNO
-                        </p:column>
-                        <p:column colspan="1">
-                            #{veicoliSearchView.selected.anno}
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            PORTATA MAX.
-                        </p:column>
-                        <p:column colspan="1">
-                            #{veicoliSearchView.selected.portataMax}
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            MATRICOLA / N.FABBRICA
-                        </p:column>
-                        <p:column colspan="1">
-                            #{veicoliSearchView.selected.matricola}
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            TIPO
-                        </p:column>
-                        <p:column colspan="1">
-                            #{veicoliSearchView.selected.tipo}
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            TARGA
-                        </p:column>
-                        <p:column colspan="1">
-                            #{veicoliSearchView.selected.targa}
-                        </p:column>
-                    </p:row>
-                </p:panelGrid>
-                <p:panelGrid id="general_grid_cliente">       
-                    <f:facet name="header">
-                        <p:row>
-                            <p:column colspan="2">
-                                <h:form>
-                                    Dati Cliente 
-                                    <p:commandButton id="buttonCliente" icon="fa fa-edit"  />
-                                    <p:tooltip id="toolTip" for="buttonCliente" position="top" 
-                                               value="Modifica dati del cliente" />
-                                </h:form>
-                            </p:column>
-                        </p:row>
-                    </f:facet>
-                    <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            NOME/RAGIONE SOCIALE
-                        </p:column>
-                        <p:column colspan="1">
-                            #{veicoliSearchView.praticheBean.selected.clienteidCliente.nome}
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            COGNOME
-                        </p:column>
-                        <p:column colspan="1">
-                            #{veicoliSearchView.praticheBean.selected.clienteidCliente.cognome}
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            INDIRIZZO/LOCALITA'
-                        </p:column>
-                        <p:column colspan="1">
-                            #{veicoliSearchView.praticheBean.selected.clienteidCliente.localita}
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            RIFERIMENTO/TEL/CELLULARE
-                        </p:column>
-                        <p:column colspan="1">
-                            #{veicoliSearchView.praticheBean.selected.clienteidCliente.cellulare}
-                        </p:column>
-                    </p:row>      
-                </p:panelGrid>
-            </div>
+        <div class="ui-g">     
             <div class="ui-g-12 ui-md-6 ui-lg-6">
                 <!-- dati pratica -->
                 <p:panelGrid id="general_grid_dati">
@@ -150,6 +32,24 @@
                         <p:column colspan="1">
                             <h:form>
                                 <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{veicoliSearchView.praticheBean.selected.dataArrivo}" />
+                            </h:form>
+                        </p:column>
+                    </p:row>
+                    <p:row>                            
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            N.USCITA
+                        </p:column>
+                        <p:column colspan="1">
+                            <h:form>
+                                <p:inputText value="#{veicoliSearchView.praticheBean.selected.uscita}"/>
+                            </h:form>
+                        </p:column>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            DATA USCITA
+                        </p:column>
+                        <p:column colspan="1">
+                            <h:form>
+                                <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{veicoliSearchView.praticheBean.selected.dataUscita}" />
                             </h:form>
                         </p:column>
                     </p:row>
@@ -279,13 +179,26 @@
                             </h:form>
                         </p:column>
                     </p:row>
-                     <p:row>
+                    <p:row>
                         <p:column colspan="1"  style="font-weight: bold;">
                             LAVORI SEGNALATI ALL'INGRESSO:
                         </p:column>
                         <p:column colspan="3" style="text-align: justify !important;">
                             <h:form >
-                                <p:inputTextarea  rows="5" cols='82'  autoResize="false"/>
+                                <p:inputTextarea value="#{veicoliSearchView.praticheBean.selected.lavoriSegnalati}" rows="5" cols='82'  autoResize="false"/>
+                            </h:form>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            STATO MACCHINA ALL'ARRIVO
+                        </p:column>
+                        <p:column colspan="3" style="text-align: justify !important;">
+                            <h:form >
+                                <p:selectOneMenu value="#{veicoliSearchView.praticheBean.selected.statoVeicoloArrivo}" effect="fold" editable="true">
+                                    <f:selectItem itemLabel="Select One" itemValue="" />
+                                    <f:selectItems value="#{veicoliSearchView.praticheBean.statiArrivo}" />
+                                </p:selectOneMenu>
                             </h:form>
                         </p:column>
                     </p:row>

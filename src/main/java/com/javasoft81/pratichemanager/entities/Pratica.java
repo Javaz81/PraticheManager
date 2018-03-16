@@ -6,8 +6,10 @@
 package com.javasoft81.pratichemanager.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -61,7 +63,24 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Pratica.findByVeicolo", query = "SELECT p FROM Pratica p WHERE p.veicolo = :veicolo ORDER BY p.arrivo DESC")
     , @NamedQuery(name = "Pratica.countByVeicolo", query = "SELECT count(p) FROM Pratica p WHERE p.veicolo = :veicolo")})
 public class Pratica implements Serializable {
-
+    public static final List<String> STATO_ARRIVO_VEICOLO=new ArrayList<String>();
+    static{
+        STATO_ARRIVO_VEICOLO.add("FUNZIONANTE MA NON OTTIMALE");
+        STATO_ARRIVO_VEICOLO.add("BATTERIA SCARICA");
+        STATO_ARRIVO_VEICOLO.add("DANNEGGIATA");
+        STATO_ARRIVO_VEICOLO.add("UTILIZZO ERRATO");
+        STATO_ARRIVO_VEICOLO.add("PERDITE OLIO TELAIO");
+        STATO_ARRIVO_VEICOLO.add("PERDITE OLIO COLONNA");
+        STATO_ARRIVO_VEICOLO.add("PERDITE OLIO BRACCIO");
+        STATO_ARRIVO_VEICOLO.add("IN EMERGENZA");
+        STATO_ARRIVO_VEICOLO.add("IN BLOCCO PARZIALE");
+        STATO_ARRIVO_VEICOLO.add("IN BLOCCO TOTALE");
+        STATO_ARRIVO_VEICOLO.add("FUORI LIMITI DI UTILIZZO");
+        STATO_ARRIVO_VEICOLO.add("INCASTRATA IN BLOCCO");
+        STATO_ARRIVO_VEICOLO.add("BLOCCO PER SOVRACCARICO");
+        STATO_ARRIVO_VEICOLO.add("BLOCCO PER MANOVRA ERRATA");
+        STATO_ARRIVO_VEICOLO.add("ALTRO");
+    }
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -87,6 +106,9 @@ public class Pratica implements Serializable {
     @Size(max = 45)
     @Column(name = "numero_fattura")
     private String numeroFattura;
+    @Size(max = 45)
+    @Column(name = "stato_veicolo_arrivo")
+    private String statoVeicoloArrivo;
     @Column(name = "data_fattura")
     @Temporal(TemporalType.DATE)
     private Date dataFattura;
@@ -209,6 +231,14 @@ public class Pratica implements Serializable {
 
     public void setDataFattura(Date dataFattura) {
         this.dataFattura = dataFattura;
+    }
+
+    public String getStatoVeicoloArrivo() {
+        return statoVeicoloArrivo;
+    }
+
+    public void setStatoVeicoloArrivo(String statoVeicoloArrivo) {
+        this.statoVeicoloArrivo = statoVeicoloArrivo;
     }
 
     public Boolean getPreventivoLavori() {

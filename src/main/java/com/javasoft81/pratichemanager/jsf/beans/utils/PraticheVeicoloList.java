@@ -47,7 +47,9 @@ public class PraticheVeicoloList implements Serializable {
         SimpleDateFormat sdf =new SimpleDateFormat("dd-MMM-yyyy"); 
         return sdf.format(p.getDataArrivo());        
     }
-    
+    public List<String> getStatiArrivo(){
+        return Pratica.STATO_ARRIVO_VEICOLO;
+    }
     public void loadPratiche(Veicolo veicolo){
         this.currentCar = veicolo;
         //Numero di pratiche totali associate

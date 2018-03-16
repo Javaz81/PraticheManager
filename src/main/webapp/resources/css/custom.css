@@ -10,3 +10,7 @@ and open the template in the editor.
 html{
     font-size: 0.67em !important;
 }
+.col-value{
+    font-size: 0.9em !important;
+    font-style: oblique !important;    
+}
