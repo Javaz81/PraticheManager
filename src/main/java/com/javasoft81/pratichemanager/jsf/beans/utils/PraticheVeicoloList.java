@@ -58,7 +58,13 @@ public class PraticheVeicoloList implements Serializable {
         this.list = (List<Pratica>) this.service.findPraticaByVeicolo(this.currentCar, MAX_PRATICHE_ESTRAIBILI);
         this.selected = this.list.isEmpty()?null:this.list.get(0);
     }
-
+    
+    public Pratica aggiornaPratica(Pratica p){
+        return this.service.refreshPratica(p);
+    }
+    public void saveSelectedPratica(){
+        this.service.edit(selected);
+    }
     public List<Pratica> getList() {
         return list;
     }

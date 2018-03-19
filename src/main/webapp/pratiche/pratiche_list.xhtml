@@ -166,17 +166,24 @@
         <p:ajax event="tabChange" listener="#{veicoliSearchView.onTabChange(item)}" update="@(.tab_pratiche_panel)"/>
         <p:tab id="tab_#{item.idPratica}" 
                title="#{veicoliSearchView.praticheBean.getDate(item)}">
-            <p:accordionPanel styleClass="tab_pratiche_panel">
-                <p:tab title="Generale">
-                    <ui:include src="/pratiche/tabs/generale.xhtml"/>
-                </p:tab>
-                <p:tab title="Lavori">
+            <h:form>
+                <p:menubar>
+                    <p:menuitem value="Salva Pratica"
+                                actionListener="#{veicoliSearchView.savePratica()}" 
+                                icon="ui-icon-disk" />
+                </p:menubar>
+                <p:accordionPanel styleClass="tab_pratiche_panel">
+                    <p:tab title="Generale">
+                        <ui:include src="/pratiche/tabs/generale.xhtml"/>
+                    </p:tab>
+                    <p:tab title="Lavori">
 
-                </p:tab>
-                <p:tab title="Materiale">
+                    </p:tab>
+                    <p:tab title="Materiale">
 
-                </p:tab>
-            </p:accordionPanel>
+                    </p:tab>
+                </p:accordionPanel>
+            </h:form>
         </p:tab>
     </p:tabView>
 </html>

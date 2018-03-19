@@ -20,7 +20,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.event.TabChangeEvent;
 
 /**
  *
@@ -76,9 +75,13 @@ public class VeicoliSearchView implements Serializable {
     }         
     */
     public void onTabChange(Pratica p){
+        Pratica rp = this.currentPratiche.aggiornaPratica(p);
+        p=rp;
         this.currentPratiche.setSelected(p);
     }
-    
+    public void savePratica(){
+        this.currentPratiche.saveSelectedPratica();
+    }
     public void chooseVeicoli() {
         Map<String,Object> options = new HashMap<>();
         options.put("resizable", false);

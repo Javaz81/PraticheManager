@@ -40,9 +40,18 @@ public class PraticaFacade extends AbstractFacade<Pratica> {
      * recente fino alla più lontana "limit"-esima. 
      */
     public List<Pratica> findPraticaByVeicolo(Veicolo currentCar, int limit) {
-        return (List<Pratica>)this.em.createNamedQuery("Pratica.findByVeicolo")
+        return (List<Pratica>)getEntityManager().createNamedQuery("Pratica.findByVeicolo")
                 .setParameter("veicolo", currentCar)                
                 .setMaxResults(limit).getResultList();                
+    }
+    /**
+     * Rinfresca i valori della pratica con quelli correnti
+     * @param p La pratica da rinfrescare
+     */
+    public Pratica refreshPratica(Pratica p){
+        Pratica p1 = getEntityManager().find(Pratica.class, p.getIdPratica());
+        getEntityManager().refresh(p1); 
+        return p1;
     }
     /**
      * Calcola il numero di pratiche associate a quel veicolo.

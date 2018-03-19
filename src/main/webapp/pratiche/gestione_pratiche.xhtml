@@ -40,16 +40,7 @@
                     <p:submenu label="Auto-Articolati" icon="ui-icon-home">
                         <p:menuitem id="aa_search"  value="Cerca..." icon="ui-icon-search" onclick="searchVeicoli()"/>
                         <p:menuitem id="aa_manage" value="Gestisci..." icon="ui-icon-wrench"/>
-                    </p:submenu>                        
-                    <p:submenu label="Pratica" icon="ui-icon-document">
-                        <p:submenu label="Azioni" icon="fa fa-navicon">
-                            <p:menuitem id="ap_new" value="Crea Nuova" icon="fa fa-plus"/>
-                            <p:menuitem value="Salva" icon="fa fa-save" />
-                            <p:menuitem value="Cancella" icon="fa fa-close" />                                
-                        </p:submenu>
-                        <p:separator title="Esporta Pratica"/>
-                        <p:menuitem icon="fa fa-file-excel-o" value="File Excel..."/>
-                    </p:submenu>                   
+                    </p:submenu>                                       
                     <f:facet name="options">
                         <p:commandButton id="print_module" value="Stampa Modulo" type="button" icon="ui-icon-print">
                             <p:printer target="tabview_pratiche" />
