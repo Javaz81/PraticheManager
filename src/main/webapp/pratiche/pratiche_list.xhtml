@@ -7,11 +7,11 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <p:panelGrid layout="grid" columns="1" 
                  style="text-align: center !important; margin: 2em; font-weight: bold; font-size: 1.3em;">
-        <p:outputLabel rendered="#{veicoliSearchView.praticheBean.list.size()==0}">
+        <p:outputLabel rendered="#{veicoliSearchView.pratiche.size()==0}">
             Nessuna pratica presente  
         </p:outputLabel>
     </p:panelGrid>
-    <p:outputPanel rendered="#{not empty veicoliSearchView.selected}">
+    <p:outputPanel rendered="#{not empty veicoliSearchView.selectedCar}">
         <div class="ui-g">
             <div class="ui-g-12 ui-md-4 ui-lg-4">
                 <p:panelGrid id="general_grid_veicolo">       
@@ -32,13 +32,13 @@
                             MARCA
                         </p:column>
                         <p:column class="col-value" colspan="1">
-                            #{veicoliSearchView.selected.marca}
+                            #{veicoliSearchView.selectedCar.marca}
                         </p:column>
                         <p:column colspan="1"  style="font-weight: bold;">
                             MODELLO
                         </p:column>
                         <p:column class="col-value" colspan="1">
-                            #{veicoliSearchView.selected.modello}
+                            #{veicoliSearchView.selectedCar.modello}
                         </p:column>
                     </p:row>
                     <p:row>
@@ -46,13 +46,13 @@
                             ANNO
                         </p:column>
                         <p:column class="col-value" colspan="1">
-                            #{veicoliSearchView.selected.anno}
+                            #{veicoliSearchView.selectedCar.anno}
                         </p:column>
                         <p:column colspan="1"  style="font-weight: bold;">
                             PORTATA MAX.
                         </p:column>
                         <p:column class="col-value" colspan="1">
-                            #{veicoliSearchView.selected.portataMax}
+                            #{veicoliSearchView.selectedCar.portataMax}
                         </p:column>
                     </p:row>
                     <p:row>
@@ -60,13 +60,13 @@
                             MATRICOLA / N.FABBRICA
                         </p:column>
                         <p:column class="col-value" colspan="1">
-                            #{veicoliSearchView.selected.matricola}
+                            #{veicoliSearchView.selectedCar.matricola}
                         </p:column>
                         <p:column colspan="1"  style="font-weight: bold;">
                             TIPO
                         </p:column>
                         <p:column class="col-value" colspan="1">
-                            #{veicoliSearchView.selected.tipo}
+                            #{veicoliSearchView.selectedCar.tipo}
                         </p:column>
                     </p:row>
                     <p:row>
@@ -74,7 +74,7 @@
                             TARGA
                         </p:column>
                         <p:column class="col-value" colspan="1">
-                            #{veicoliSearchView.selected.targa}
+                            #{veicoliSearchView.selectedCar.targa}
                         </p:column>
                     </p:row>
                 </p:panelGrid>
@@ -85,7 +85,7 @@
                         <p:row>
                             <p:column colspan="2">
                                 <h:form>
-                                    Dati Cliente 
+                                    Dati Cliente Attuale
                                     <p:commandButton id="buttonCliente" icon="fa fa-edit"  />
                                     <p:tooltip id="toolTip" for="buttonCliente" position="top" 
                                                value="Modifica dati del cliente" />
@@ -97,8 +97,8 @@
                         <p:column colspan="1"  style="font-weight: bold;">
                             NOME/RAGIONE SOCIALE
                         </p:column>
-                        <p:column colspan="1">
-                            #{veicoliSearchView.praticheBean.selected.clienteidCliente.nome}
+                        <p:column colspan="1">                            
+                            #{veicoliSearchView.selectedPratica.clienteidCliente.nome}
                         </p:column>
                     </p:row>
                     <p:row>
@@ -106,7 +106,7 @@
                             COGNOME
                         </p:column>
                         <p:column colspan="1">
-                            #{veicoliSearchView.praticheBean.selected.clienteidCliente.cognome}
+                            #{veicoliSearchView.selectedPratica.clienteidCliente.cognome}
                         </p:column>
                     </p:row>
                     <p:row>
@@ -114,7 +114,7 @@
                             INDIRIZZO/LOCALITA'
                         </p:column>
                         <p:column colspan="1">
-                            #{veicoliSearchView.praticheBean.selected.clienteidCliente.localita}
+                            #{veicoliSearchView.selectedPratica.clienteidCliente.localita}
                         </p:column>
                     </p:row>
                     <p:row>
@@ -122,7 +122,7 @@
                             RIFERIMENTO/TEL/CELLULARE
                         </p:column>
                         <p:column colspan="1">
-                            #{veicoliSearchView.praticheBean.selected.clienteidCliente.cellulare}
+                            #{veicoliSearchView.selectedPratica.clienteidCliente.cellulare}
                         </p:column>
                     </p:row>      
                 </p:panelGrid>
@@ -146,7 +146,7 @@
                             DATI CLIENTE
                         </p:column>
                         <p:column colspan="1">
-                            #{veicoliSearchView.praticheBean.selected.clienteTemporaneo}
+                            #{veicoliSearchView.selectedPratica.clienteTemporaneo}
                         </p:column>
                     </p:row>
                     <p:row>
@@ -154,36 +154,75 @@
                             DATI PIATTAFORMA / AUTOARTICOLATO
                         </p:column>
                         <p:column colspan="1">
-                            #{veicoliSearchView.praticheBean.selected.veicoloTemporaneo}
+                            #{veicoliSearchView.selectedPratica.veicoloTemporaneo}
                         </p:column>
                     </p:row>                                       
                 </p:panelGrid>
             </div>
         </div>
-    </p:outputPanel>    
-    <p:tabView id="tabview_pratiche" rendered="#{not empty veicoliSearchView.selected}" 
-               var="item" value="#{veicoliSearchView.praticheBean.list}" scrollable="true">
-        <p:ajax event="tabChange" listener="#{veicoliSearchView.onTabChange(item)}" update="@(.tab_pratiche_panel)"/>
-        <p:tab id="tab_#{item.idPratica}" 
-               title="#{veicoliSearchView.praticheBean.getDate(item)}">
+    </p:outputPanel>
+    <h:form>
+        <p:selectBooleanCheckbox value="#{veicoliSearchView.selectedPratica.collaudoUsl}"/>
+        <p:menubar>
+            <p:menuitem value="Salva Pratica"
+                        actionListener="#{veicoliSearchView.savePratica(veicoliSearchView.selectedPratica)}" 
+                        icon="ui-icon-disk" />
+        </p:menubar>
+    </h:form>
+    <p:tabView id="tabview_pratiche3" rendered="#{not empty veicoliSearchView.selectedCar}" scrollable="true">
+        <p:tab title="dsaasd">
             <h:form>
+                <p:selectBooleanCheckbox value="#{veicoliSearchView.selectedPratica.collaudoUsl}"/>
                 <p:menubar>
                     <p:menuitem value="Salva Pratica"
-                                actionListener="#{veicoliSearchView.savePratica()}" 
+                                actionListener="#{veicoliSearchView.savePratica(veicoliSearchView.selectedPratica)}" 
                                 icon="ui-icon-disk" />
                 </p:menubar>
-                <p:accordionPanel styleClass="tab_pratiche_panel">
-                    <p:tab title="Generale">
-                        <ui:include src="/pratiche/tabs/generale.xhtml"/>
-                    </p:tab>
-                    <p:tab title="Lavori">
-
-                    </p:tab>
-                    <p:tab title="Materiale">
-
-                    </p:tab>
-                </p:accordionPanel>
             </h:form>
+        </p:tab>
+    </p:tabView>
+    <p:tabView id="tabview_pratiche2" rendered="#{not empty veicoliSearchView.selectedCar}" 
+               var="item" value="#{veicoliSearchView.pratiche}" scrollable="true" 
+               activeIndex="#{veicoliSearchView.activeIndexTab}"
+               >
+        <p:ajax listener="#{veicoliSearchView.onTabChange}" event="tabChange" update="tabview_pratiche2"/>
+        <p:tab title="asd">
+            <h:form>
+                <p:selectBooleanCheckbox value="#{veicoliSearchView.selectedPratica.collaudoUsl}"/>
+                <p:menubar>
+                    <p:menuitem value="Salva Pratica"
+                                actionListener="#{veicoliSearchView.savePratica(veicoliSearchView.selectedPratica)}" 
+                                icon="ui-icon-disk" />
+                </p:menubar>
+            </h:form>
+        </p:tab>
+    </p:tabView>
+
+    <p:tabView id="tabview_pratiche" rendered="#{not empty veicoliSearchView.selectedCar}" 
+               var="item" value="#{veicoliSearchView.pratiche}" scrollable="true">
+        <p:ajax event="tabChange" listener="#{veicoliSearchView.onTabChange(item)}" update="@(.tab_pratiche_panel)"/>
+        <p:tab id="tab_#{item.idPratica}" title="#{veicoliSearchView.getDate(item)}">
+            <h:form>
+                <p:selectBooleanCheckbox value="#{item.collaudoUsl}" itemLabel="item"/>
+                <p:selectBooleanCheckbox value="#{veicoliSearchView.selectedPratica.collaudoUsl}" 
+                                         itemLabel="bean"/>
+                <p:menubar>
+                    <p:menuitem value="Salva Pratica"
+                                actionListener="#{veicoliSearchView.savePratica(item)}" 
+                                icon="ui-icon-disk" />
+                </p:menubar>
+            </h:form>
+            <p:accordionPanel styleClass="tab_pratiche_panel">                
+                <p:tab title="Generale" >                   
+                    <!--                    <ui:include src="/pratiche/tabs/generale.xhtml"/> -->
+                </p:tab>
+                <p:tab title="Lavori">
+
+                </p:tab>
+                <p:tab title="Materiale">
+
+                </p:tab>
+            </p:accordionPanel>
         </p:tab>
     </p:tabView>
 </html>

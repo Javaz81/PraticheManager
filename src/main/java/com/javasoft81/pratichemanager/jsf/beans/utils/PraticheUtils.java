@@ -19,7 +19,7 @@ import java.util.TimeZone;
  *
  * @author andrea
  */
-public class PraticheVeicoloList implements Serializable {
+public class PraticheUtils implements Serializable {
     
     public static final int MAX_PRATICHE_ESTRAIBILI=200;
     
@@ -33,7 +33,7 @@ public class PraticheVeicoloList implements Serializable {
     
     private Long currentCarPratiche;
     
-    public PraticheVeicoloList() {
+    public PraticheUtils() {
     
     }
     /**
@@ -41,7 +41,7 @@ public class PraticheVeicoloList implements Serializable {
      * @param p la pratica in questione
      * @return una stringa che rappresenta la data dell'arrivo della pratica in formato italiano.
      */
-    public String getDate(Pratica p){        
+    public static String getDate(Pratica p){        
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Rome"), Locale.ITALY);
         cal.getTime();
         SimpleDateFormat sdf =new SimpleDateFormat("dd-MMM-yyyy"); 
