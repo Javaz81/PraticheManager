@@ -162,67 +162,40 @@
         </div>
     </p:outputPanel>
     <h:form>
-        <p:selectBooleanCheckbox value="#{veicoliSearchView.selectedPratica.collaudoUsl}"/>
-        <p:menubar>
-            <p:menuitem value="Salva Pratica"
-                        actionListener="#{veicoliSearchView.savePratica(veicoliSearchView.selectedPratica)}" 
-                        icon="ui-icon-disk" />
-        </p:menubar>
+        <p:tabView id="tabview_pratiche" rendered="#{not empty veicoliSearchView.selectedCar}" 
+                   var="item" value="#{veicoliSearchView.pratiche}" scrollable="true" 
+                   activeIndex="#{veicoliSearchView.activeIndexTab}" 
+                   dynamic="true" cache="false">
+            <p:ajax event="tabChange" listener="#{veicoliSearchView.onTabChange}" update="@(.tab_pratiche_panel)"/>
+            <p:tab title="#{veicoliSearchView.getDate(item)}">
+                <p:toolbar id="tb">
+                    <f:facet name="left">
+                        <p:commandButton type="button" value="Nuova" title="Nuova Pratica" action="#{veicoliSearchView.newPratica}" icon="ui-icon-document" update=":growl" />
+                        <p:commandButton type="button" value="Salva" title="Salva Pratica" action="#{veicoliSearchView.savePratica}" icon="ui-icon-disk" update=":growl"/>
+                        <p:commandButton type="button" value="Stampa" title="Stampa Pratica" action="#{veicoliSearchView.printPratica}" icon="ui-icon-print" update=":growl"/>
+                    </f:facet>
+                    <f:facet name="right">                      
+                        <p:commandButton type="button" value="Cancella" title="Cancella Pratica" action="#{veicoliSearchView.deletePratica}" icon="ui-icon-trash" update=":growl">
+                            <p:confirm header="Conferma" message="Vuoi cancellare questa pratica?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                          <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Cancella" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </f:facet>
+                </p:toolbar>               
+                <p:accordionPanel styleClass="tab_pratiche_panel">                
+                    <p:tab title="Generale" >                   
+                        <ui:include src="/pratiche/tabs/generale.xhtml"/> 
+                    </p:tab>
+                    <p:tab title="Lavori">
+                        <!-- <ui:include src="/pratiche/tabs/lavori.xhtml"/> -->
+                    </p:tab>
+                    <p:tab title="Materiale">
+                        <!-- <ui:include src="/pratiche/tabs/materiali.xhtml"/> -->
+                    </p:tab>
+                </p:accordionPanel>                
+            </p:tab>
+        </p:tabView>
     </h:form>
-    <p:tabView id="tabview_pratiche3" rendered="#{not empty veicoliSearchView.selectedCar}" scrollable="true">
-        <p:tab title="dsaasd">
-            <h:form>
-                <p:selectBooleanCheckbox value="#{veicoliSearchView.selectedPratica.collaudoUsl}"/>
-                <p:menubar>
-                    <p:menuitem value="Salva Pratica"
-                                actionListener="#{veicoliSearchView.savePratica(veicoliSearchView.selectedPratica)}" 
-                                icon="ui-icon-disk" />
-                </p:menubar>
-            </h:form>
-        </p:tab>
-    </p:tabView>
-    <p:tabView id="tabview_pratiche2" rendered="#{not empty veicoliSearchView.selectedCar}" 
-               var="item" value="#{veicoliSearchView.pratiche}" scrollable="true" 
-               activeIndex="#{veicoliSearchView.activeIndexTab}"
-               >
-        <p:ajax listener="#{veicoliSearchView.onTabChange}" event="tabChange" update="tabview_pratiche2"/>
-        <p:tab title="asd">
-            <h:form>
-                <p:selectBooleanCheckbox value="#{veicoliSearchView.selectedPratica.collaudoUsl}"/>
-                <p:menubar>
-                    <p:menuitem value="Salva Pratica"
-                                actionListener="#{veicoliSearchView.savePratica(veicoliSearchView.selectedPratica)}" 
-                                icon="ui-icon-disk" />
-                </p:menubar>
-            </h:form>
-        </p:tab>
-    </p:tabView>
-
-    <p:tabView id="tabview_pratiche" rendered="#{not empty veicoliSearchView.selectedCar}" 
-               var="item" value="#{veicoliSearchView.pratiche}" scrollable="true">
-        <p:ajax event="tabChange" listener="#{veicoliSearchView.onTabChange(item)}" update="@(.tab_pratiche_panel)"/>
-        <p:tab id="tab_#{item.idPratica}" title="#{veicoliSearchView.getDate(item)}">
-            <h:form>
-                <p:selectBooleanCheckbox value="#{item.collaudoUsl}" itemLabel="item"/>
-                <p:selectBooleanCheckbox value="#{veicoliSearchView.selectedPratica.collaudoUsl}" 
-                                         itemLabel="bean"/>
-                <p:menubar>
-                    <p:menuitem value="Salva Pratica"
-                                actionListener="#{veicoliSearchView.savePratica(item)}" 
-                                icon="ui-icon-disk" />
-                </p:menubar>
-            </h:form>
-            <p:accordionPanel styleClass="tab_pratiche_panel">                
-                <p:tab title="Generale" >                   
-                    <!--                    <ui:include src="/pratiche/tabs/generale.xhtml"/> -->
-                </p:tab>
-                <p:tab title="Lavori">
-
-                </p:tab>
-                <p:tab title="Materiale">
-
-                </p:tab>
-            </p:accordionPanel>
-        </p:tab>
-    </p:tabView>
 </html>

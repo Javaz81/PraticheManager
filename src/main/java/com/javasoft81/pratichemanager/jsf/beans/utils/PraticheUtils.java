@@ -47,7 +47,7 @@ public class PraticheUtils implements Serializable {
         SimpleDateFormat sdf =new SimpleDateFormat("dd-MMM-yyyy"); 
         return sdf.format(p.getDataArrivo());        
     }
-    public List<String> getStatiArrivo(){
+    public static List<String> getStatiArrivo(){
         return Pratica.STATO_ARRIVO_VEICOLO;
     }
     public void loadPratiche(Veicolo veicolo){

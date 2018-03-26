@@ -45,16 +45,23 @@ public class VeicoliSearchView implements Serializable {
 
     private Integer activeIndexTab;
 
+    private final List<String> statiArrivo;
+
     /**
      * Creates a new instance of VeicoliSearchView
      */
     public VeicoliSearchView() {
+        statiArrivo = PraticheUtils.getStatiArrivo();
     }
 
     @PostConstruct
     public void init() {
         veicoli = veicoliService.findAll();
         selectedCar = null;
+    }
+
+    public List<String> getStatiArrivo() {
+        return statiArrivo;
     }
 
     public List<Veicolo> getVeicoli() {
@@ -90,7 +97,9 @@ public class VeicoliSearchView implements Serializable {
     }
 
     /**
-     * ************************BUSINEES METHOD***********************
+     * ************************BUSINEES METHOD
+     *
+     ***********************
      * @param event
      */
     /*
@@ -99,14 +108,13 @@ public class VeicoliSearchView implements Serializable {
         this.currentPratiche.setSelected(event.getData();
     }         
      */
-    /*
+ /*
     public void onTabChange(Pratica p) {
         this.selectedPratica = p;
     }
-    */
+     */
     public void onTabChange(TabChangeEvent event) {
-        System.out.println(event.getTab().getTitle());
-        this.selectedPratica = (Pratica)event.getData();
+        this.selectedPratica = (Pratica) event.getData();
         this.activeIndexTab = this.pratiche.indexOf(this.selectedPratica);
     }
 
@@ -114,8 +122,29 @@ public class VeicoliSearchView implements Serializable {
         return PraticheUtils.getDate(p);
     }
 
-    public void savePratica(Pratica p) {
-        this.praticheService.edit(p);
+    public void newPratica() {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica Creata con successo", "Creazione avvenuta");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+        Pratica p = new Pratica();
+        this.praticheService.create(p);
+        this.pratiche = null; //re-trigger visualization of all tabs        
+        this.pratiche = this.praticheService.findPraticaByVeicolo(selectedCar, PraticheUtils.MAX_PRATICHE_ESTRAIBILI);
+        this.selectedPratica = this.pratiche.isEmpty() ? null : this.pratiche.get(0);
+    }
+
+    public void deletePratica() {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica cancellata!", "ID pratica:" + selectedPratica.getIdPratica());
+        FacesContext.getCurrentInstance().addMessage(null, message);
+        this.praticheService.remove(this.selectedPratica);
+        this.pratiche = null; //re-trigger visualization of all tabs
+        this.pratiche = this.praticheService.findPraticaByVeicolo(selectedCar, PraticheUtils.MAX_PRATICHE_ESTRAIBILI);
+        this.selectedPratica = this.pratiche.isEmpty() ? null : this.pratiche.get(0);
+    }
+
+    public void savePratica() {
+        this.praticheService.edit(this.selectedPratica);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica salvata correttamente", "ID pratica:" + selectedPratica.getIdPratica());
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public void chooseVeicoli() {

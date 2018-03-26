@@ -41,17 +41,14 @@
                         <p:menuitem id="aa_search"  value="Cerca..." icon="ui-icon-search" onclick="searchVeicoli()"/>
                         <p:menuitem id="aa_manage" value="Gestisci..." icon="ui-icon-wrench"/>
                     </p:submenu>                                       
-                    <f:facet name="options">
-                        <p:commandButton id="print_module" value="Stampa Modulo" type="button" icon="ui-icon-print">
-                            <p:printer target="tabview_pratiche" />
-                        </p:commandButton>
+                    <f:facet name="options">                       
                         <!-- ACTION BUTTONS -->
                         <p:commandButton  id="selectVeicoli" style="display: none"
                                           styleClass="commandButton" 
                                           actionListener="#{veicoliSearchView.chooseVeicoli}" 
                                           >
                             <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onVeicoliChosen}"                                    
-                                    update="growl pratiche_panel tabview_pratiche"
+                                    update="growl pratiche_panel"
                                     />                            
                         </p:commandButton>  
                     </f:facet>
