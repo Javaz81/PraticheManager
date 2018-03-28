@@ -31,7 +31,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Lavoripratichecustom.findAll", query = "SELECT l FROM Lavoripratichecustom l")
     , @NamedQuery(name = "Lavoripratichecustom.findById", query = "SELECT l FROM Lavoripratichecustom l WHERE l.id = :id")
-    , @NamedQuery(name = "Lavoripratichecustom.findByDescrizione", query = "SELECT l FROM Lavoripratichecustom l WHERE l.descrizione = :descrizione")})
+    , @NamedQuery(name = "Lavoripratichecustom.findByDescrizione", query = "SELECT l FROM Lavoripratichecustom l WHERE l.descrizione = :descrizione")
+    , @NamedQuery(name = "Lavoripratichecustom.findByPratica", query = "SELECT l FROM Lavoripratichecustom l WHERE l.pratica = :pratica ORDER BY l.categoria ASC")})
 public class Lavoripratichecustom implements Serializable {
 
     private static final long serialVersionUID = 1L;

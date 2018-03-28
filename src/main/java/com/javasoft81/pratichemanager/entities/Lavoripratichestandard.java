@@ -6,6 +6,7 @@
 package com.javasoft81.pratichemanager.entities;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,7 +29,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Lavoripratichestandard.findAll", query = "SELECT l FROM Lavoripratichestandard l")
-    , @NamedQuery(name = "Lavoripratichestandard.findById", query = "SELECT l FROM Lavoripratichestandard l WHERE l.id = :id")})
+    , @NamedQuery(name = "Lavoripratichestandard.findById", query = "SELECT l FROM Lavoripratichestandard l WHERE l.id = :id")
+    , @NamedQuery(name = "Lavoripratichestandard.findByPratica", query = "SELECT lps FROM Lavoripratichestandard lps \n" +
+        "JOIN Tipolavoro tl ON lps.tipolavoro = tl.idTipoLavoro\n" +
+        "JOIN Categoriatipolavoro ctl ON ctl.idCategoriaTipoLavoro = tl.categoria\n"+ 
+        "WHERE lps.pratica = :pratica\n" +
+        "ORDER BY tl.categoria ASC")})
 public class Lavoripratichestandard implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -74,7 +80,7 @@ public class Lavoripratichestandard implements Serializable {
     public void setTipolavoro(Tipolavoro tipolavoro) {
         this.tipolavoro = tipolavoro;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;

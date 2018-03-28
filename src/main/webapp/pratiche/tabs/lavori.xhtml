@@ -3,32 +3,31 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <div class="ui-g">     
-        <div class="ui-g-12 ui-md-4 ui-lg-4">
-            <!-- dati pratica -->
-            <div class="ui-g-12 ui-md-6 ui-lg-6">
-                
-                <!-- dati pratica -->
-                <p:panel header="Toggleable" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" widgetVar="panel" style="margin-bottom:20px">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <p:panelGrid columns="3" layout="grid">
+        <c:forEach items="#{lavoriManagerBean.categorie}" var="categoria" varStatus="metadata">
+            <p:panel header="#{categoria.nome}" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" widgetVar="panel" style="margin-bottom:20px">
 
-                    <p:ajax event="close" listener="#{panelView.onClose}" update="msgs" />
-                    <p:ajax event="toggle" listener="#{panelView.onToggle}" update="msgs" />
+                <p:ajax event="close" listener="#{panelView.onClose}" />
+                <p:ajax event="toggle" listener="#{panelView.onToggle}" />
 
-                    <h:panelGrid columns="2" cellpadding="10">
-                        <p:graphicImage name="demo/images/godfather/godfather2.jpg" />
-                        <h:outputText value="Francis Ford Coppola's legendary continuation..." />
-                    </h:panelGrid>
+                <f:facet name="options">
+                    <p:menu>
+                        <p:submenu label="Azioni">
+                            <p:menuitem value="Toggle" url="#" icon="ui-icon-newwin" onclick="PF('panel').toggle()" />
+                            <p:menuitem value="Remove" url="#" icon="ui-icon-close" onclick="PF('panel').close()" />
+                        </p:submenu>
+                    </p:menu>
+                </f:facet>
+                <!--
+                TODO: fare tutti
+                <p:selectManyCheckbox id="menu_#{categoria.nome}" value="" layout="responsive" columns="3">
+                    <f:selectItems value="#{checkboxView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}" />
+                </p:selectManyCheckbox>
+                -->
+            </p:panel>
 
-                    <f:facet name="options">
-                        <p:menu>
-                            <p:submenu label="Settings">
-                                <p:menuitem value="Toggle" url="#" icon="ui-icon-newwin" onclick="PF('panel').toggle()" />
-                                <p:menuitem value="Remove" url="#" icon="ui-icon-close" onclick="PF('panel').close()" />
-                            </p:submenu>
-                        </p:menu>
-                    </f:facet>
-                </p:panel>
-            </div>
-        </div>
+        </c:forEach>
+    </p:panelGrid>
 </html>

@@ -6,6 +6,8 @@
 package com.javasoft81.pratichemanager.entities.beans;
 
 import com.javasoft81.pratichemanager.entities.Lavoripratichestandard;
+import com.javasoft81.pratichemanager.entities.Pratica;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,9 +26,17 @@ public class LavoripratichestandardFacade extends AbstractFacade<Lavoripratiches
     protected EntityManager getEntityManager() {
         return em;
     }
+    
 
     public LavoripratichestandardFacade() {
         super(Lavoripratichestandard.class);
     }
+    
+     public List<Lavoripratichestandard> getLavoriStandardPerPratica(Pratica p){
+         return (List<Lavoripratichestandard>)getEntityManager().createNamedQuery("Lavoripratichestandard.findByPratica")
+                .setParameter("pratica", p)
+                .getResultList();     
+    }
+    
     
 }
