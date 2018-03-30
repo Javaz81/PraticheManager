@@ -5,6 +5,8 @@
  */
 package com.javasoft81.pratichemanager.jsf.beans;
 
+import com.javasoft81.pratichemanager.entities.Lavoripratichecustom;
+import com.javasoft81.pratichemanager.entities.Lavoripratichestandard;
 import com.javasoft81.pratichemanager.entities.Pratica;
 import com.javasoft81.pratichemanager.jsf.beans.utils.PraticheUtils;
 import com.javasoft81.pratichemanager.entities.Veicolo;
@@ -17,6 +19,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
@@ -27,6 +30,8 @@ import org.primefaces.event.TabChangeEvent;
  * @author andrea
  */
 public class VeicoliSearchView implements Serializable {
+
+    private LavoriManagerBean lavoriManagerBean;
 
     @EJB
     private VeicoloFacade veicoliService;
@@ -57,8 +62,18 @@ public class VeicoliSearchView implements Serializable {
     @PostConstruct
     public void init() {
         veicoli = veicoliService.findAll();
-        selectedCar = null;
+        selectedCar = null;        
     }
+
+    public LavoriManagerBean getLavoriManagerBean() {
+        return lavoriManagerBean;
+    }
+
+    public void setLavoriManagerBean(LavoriManagerBean lavoriManagerBean) {
+        this.lavoriManagerBean = lavoriManagerBean;
+    }
+    
+    
 
     public List<String> getStatiArrivo() {
         return statiArrivo;

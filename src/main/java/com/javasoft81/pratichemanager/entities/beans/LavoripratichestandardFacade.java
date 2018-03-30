@@ -11,6 +11,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -33,9 +34,10 @@ public class LavoripratichestandardFacade extends AbstractFacade<Lavoripratiches
     }
     
      public List<Lavoripratichestandard> getLavoriStandardPerPratica(Pratica p){
-         return (List<Lavoripratichestandard>)getEntityManager().createNamedQuery("Lavoripratichestandard.findByPratica")
-                .setParameter("pratica", p)
-                .getResultList();     
+        Query q = getEntityManager().createNamedQuery("Lavoripratichestandard.findByPratica");
+        q.setParameter("pratica", p);
+        List<Lavoripratichestandard> lps = q.getResultList();
+        return lps;
     }
     
     

@@ -5,7 +5,9 @@
  */
 package com.javasoft81.pratichemanager.entities.beans;
 
+import com.javasoft81.pratichemanager.entities.Categoriatipolavoro;
 import com.javasoft81.pratichemanager.entities.Tipolavoro;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,6 +29,11 @@ public class TipolavoroFacade extends AbstractFacade<Tipolavoro> {
 
     public TipolavoroFacade() {
         super(Tipolavoro.class);
+    }
+    
+    public List<Tipolavoro> findByCategoria(Categoriatipolavoro categoria){
+        return getEntityManager().createNamedQuery("Tipolavoro.findByCategoria")
+                .setParameter("categoria", categoria).getResultList();
     }
     
 }

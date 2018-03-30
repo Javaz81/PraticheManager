@@ -29,12 +29,17 @@
         <managed-bean-name>veicoliSearchView</managed-bean-name>
         <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.VeicoliSearchView</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
+        <managed-property>
+            <property-name>lavoriManagerBean</property-name>
+            <property-class>com.javasoft81.pratichemanager.jsf.beans.LavoriManagerBean</property-class>
+            <value>#{lavoriManagerBean}</value>            
+        </managed-property>
     </managed-bean>
     <managed-bean>
         <description>E' il bean che si occupa di preparare e far utilizzare all'applicazione l'anagrafica di tutti i lavori 
 ( sia standard e custom) per categoria associata.</description>
         <managed-bean-name>lavoriManagerBean</managed-bean-name>
         <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.LavoriManagerBean</managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
+        <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 </faces-config>
