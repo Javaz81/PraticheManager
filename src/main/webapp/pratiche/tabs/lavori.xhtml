@@ -1,21 +1,32 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"          
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:p="http://primefaces.org/ui"          
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <div class="ui-g ui-fluid">
         <ui:repeat value="#{veicoliSearchView.lavoriManagerBean.categorie}" var="categoria" >
             <div class="ui-g-12 ui-md-4 ui-lg-4">
-                <p:panel header="#{categoria.nome}">
-                    <ui:repeat value="#{veicoliSearchView.lavoriManagerBean.categoriaLavori.get(categoria)}" var="lav">
-                        <p:selectBooleanCheckbox itemLabel="#{lav.descrizione}" 
-                                                 id="cb_lav_#{veicoliSearchView.selectedPratica.idPratica}_#{lav.idTipoLavoro}"
-                                                 value="#{veicoliSearchView.lavoriManagerBean.isLavoroSelected(
-                                                          veicoliSearchView.selectedPratica,
-                                                          lav
-                                                          )}"/>
-                    </ui:repeat>                
+                <p:panel header="#{categoria.nome}" id="panel_#{veicoliSearchView.selectedPratica.idPratica}_#{categoria.idCategoriaTipoLavoro}">
+                    <f:facet name="options">
+                        <p:menu>
+                            <p:submenu label="Gestisci categoria">
+                                <p:menuitem value="Modifica" url="#" icon="ui-icon-newwin" />                              
+                            </p:submenu>
+                        </p:menu>
+                    </f:facet>
+                    <ul>
+                        <ui:repeat value="#{veicoliSearchView.selectedPraticaLavoriStandard.get(categoria)}" var="lav">                     
+                            <li>
+                                <p:outputLabel value="#{lav.tipolavoro.descrizione}"/>
+                            </li> 
+                        </ui:repeat> 
+                        <ui:repeat value="#{veicoliSearchView.selectedPraticaLavoriCustom.get(categoria)}" var="lav">
+                            <li>
+                                <p:outputLabel value="#{lav.descrizione}"/>
+                            </li>                       
+                        </ui:repeat> 
+                    </ul>
                 </p:panel>
             </div>            
         </ui:repeat>

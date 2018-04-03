@@ -40,6 +40,6 @@
 ( sia standard e custom) per categoria associata.</description>
         <managed-bean-name>lavoriManagerBean</managed-bean-name>
         <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.LavoriManagerBean</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
+        <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
 </faces-config>

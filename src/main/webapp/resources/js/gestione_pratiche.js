@@ -6,6 +6,5 @@
 
 
 function searchVeicoli(){
-    console.log("CIAO");
     $('.commandButton').click();
 }

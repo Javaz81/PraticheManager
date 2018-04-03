@@ -33,6 +33,7 @@ public class LavoriManagerBean implements Serializable {
 
     @EJB
     private CategoriatipolavoroFacade categoriaService;
+    
     @EJB
     private TipolavoroFacade tipoLavoroService;
 
@@ -137,7 +138,7 @@ public class LavoriManagerBean implements Serializable {
     public HashMap<Categoriatipolavoro, List<Tipolavoro>> getCategoriaLavori() {
         return categoriaLavori;
     }
-
+    
     public Boolean isLavoroSelected(Pratica p, Tipolavoro t) {
         List<Lavoripratichestandard> lav = getLavoriStandard(p);
         for (Lavoripratichestandard l : lav) {
@@ -148,9 +149,9 @@ public class LavoriManagerBean implements Serializable {
         return false;
     }
 
-    private List<Lavoripratichestandard> getLavoriStandardByCategoria(Categoriatipolavoro c, Pratica p) {
+    public List<Lavoripratichestandard> getLavoriStandardByCategoria(Categoriatipolavoro c, Pratica p) {
         List<Lavoripratichestandard> result = new ArrayList<>();
-        for (Lavoripratichestandard l : getLavoriStandard(p)) {
+        for (Lavoripratichestandard l : getLavoriStandard(p)) {           
             if (l.getTipolavoro().getCategoria().getIdCategoriaTipoLavoro().equals(c.getIdCategoriaTipoLavoro())) {
                 result.add(l);
             }
@@ -158,7 +159,7 @@ public class LavoriManagerBean implements Serializable {
         return result;
     }
 
-    private List<Lavoripratichecustom> getLavoriCustomByCategoria(Categoriatipolavoro c, Pratica p) {
+    public List<Lavoripratichecustom> getLavoriCustomByCategoria(Categoriatipolavoro c, Pratica p) {
         List<Lavoripratichecustom> result = new ArrayList<>();
         for (Lavoripratichecustom l : getLavoriCustom(p)) {
             if (l.getCategoria().getIdCategoriaTipoLavoro().equals(c.getIdCategoriaTipoLavoro())) {
@@ -168,6 +169,15 @@ public class LavoriManagerBean implements Serializable {
         return result;
     }
 
+    public void cancellaTuttiLavoriDiCategoria(List<Lavoripratichestandard> s, List<Lavoripratichecustom> c){
+        for(Lavoripratichestandard lps: s){
+            this.lavoriStandardService.remove(lps);
+        }
+        for(Lavoripratichecustom lpc: c){
+            this.lavoriCustomService.remove(lpc);
+        }
+    }
+    
     private List<Lavoripratichestandard> getLavoriStandard(Pratica p) {
         return this.lavoriStandardService.getLavoriStandardPerPratica(p);
     }

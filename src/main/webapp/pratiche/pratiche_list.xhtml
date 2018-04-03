@@ -18,7 +18,7 @@
                     <f:facet name="header">
                         <p:row>
                             <p:column colspan="4">
-                                <h:form>
+                                <h:form>                                   
                                     Dati Piattaforma/auto-articolato
                                     <p:commandButton id="buttonVeicolo" icon="fa fa-edit"  />
                                     <p:tooltip id="toolTip" for="buttonVeicolo" position="top" 
@@ -171,8 +171,7 @@
                 <p:toolbar id="tb">
                     <f:facet name="left">
                         <p:commandButton type="button" value="Nuova" title="Nuova Pratica" action="#{veicoliSearchView.newPratica}" icon="ui-icon-document" update=":growl" />
-                        <p:commandButton type="button" value="Salva" title="Salva Pratica" action="#{veicoliSearchView.savePratica}" icon="ui-icon-disk" update=":growl"/>
-                        <p:commandButton type="button" value="Stampa" title="Stampa Pratica" action="#{veicoliSearchView.printPratica}" icon="ui-icon-print" update=":growl"/>
+                        <p:commandButton type="button" value="Salva" title="Salva Pratica" action="#{veicoliSearchView.savePratica}" icon="ui-icon-disk" update=":growl"/>      
                     </f:facet>
                     <f:facet name="right">                      
                         <p:commandButton type="button" value="Cancella" title="Cancella Pratica" action="#{veicoliSearchView.deletePratica}" icon="ui-icon-trash" update=":growl">
@@ -183,7 +182,8 @@
                             <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                         </p:confirmDialog>
                     </f:facet>
-                </p:toolbar>               
+                </p:toolbar>
+                <p:separator style=" size: 0.2em"/>
                 <p:accordionPanel styleClass="tab_pratiche_panel">                
                     <p:tab title="Generale" >                   
                         <ui:include src="/pratiche/tabs/generale.xhtml"/> 
