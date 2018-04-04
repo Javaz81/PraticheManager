@@ -6,6 +6,8 @@
 package com.javasoft81.pratichemanager.entities.beans;
 
 import com.javasoft81.pratichemanager.entities.Materialepratica;
+import com.javasoft81.pratichemanager.entities.Pratica;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,5 +30,8 @@ public class MaterialepraticaFacade extends AbstractFacade<Materialepratica> {
     public MaterialepraticaFacade() {
         super(Materialepratica.class);
     }
-    
+       public List<Materialepratica> findByPratica(Pratica p) {
+        return getEntityManager().createNamedQuery("Materialepratica.findByPratica")
+                .setParameter("pratica", p.getIdPratica()).getResultList();
+    }
 }

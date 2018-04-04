@@ -14,3 +14,9 @@ html{
     font-size: 0.9em !important;
     font-style: oblique !important;    
 }
+
+.materiale-pratica-item {
+    border-width: 0.08em !important;
+    border-style: solid;
+    border-color: #999999;
+}

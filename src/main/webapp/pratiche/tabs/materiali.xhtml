@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"          
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <p:panelGrid columns="5" layout="grid" id="panel_materiali_#{veicoliSearchView.selectedPratica.idPratica}">
+        <ui:repeat value="#{veicoliSearchView.selectedMaterialePratica}"  var="mat">
+            <p:panelGrid class="materiale-pratica-item">
+                <p:outputLabel value="#{mat.articolo1.descrizione}"/>
+                <p:outputLabel value="#{mat.quantitaConsumata}"/>
+                <p:outputLabel value="#{mat.articolo1.unitaDiMisura}"/>
+            </p:panelGrid>
+        </ui:repeat>                               
+    </p:panelGrid>
+</html>

@@ -163,13 +163,13 @@
         </div>
     </p:outputPanel>
     <h:form>
-        <p:toolbar id="tb_#{item.idPratica}">
+        <p:toolbar rendered="#{not empty veicoliSearchView.selectedCar}" id="tb_#{item.idPratica}">
             <f:facet name="left">
-                <p:commandButton  value="Nuova" title="Nuova Pratica" action="#{veicoliSearchView.newPratica}" icon="ui-icon-document" update=":growl" />
-                <p:commandButton  value="Salva" title="Salva Pratica" action="#{veicoliSearchView.savePratica}" icon="ui-icon-disk" update=":growl"/>      
+                <p:commandButton value="Nuova" title="Nuova Pratica" action="#{veicoliSearchView.newPratica}" icon="ui-icon-document" update=":growl" />
+                <p:commandButton rendered="#{not empty veicoliSearchView.selectedPratica}" value="Salva" title="Salva Pratica" action="#{veicoliSearchView.savePratica}" icon="ui-icon-disk" update=":growl"/>      
             </f:facet>
             <f:facet name="right">
-                <p:commandButton value="Cancella" title="Cancella Pratica" action="#{veicoliSearchView.deletePratica}" icon="ui-icon-trash" update=":growl">
+                <p:commandButton rendered="#{not empty veicoliSearchView.selectedPratica}" value="Cancella" title="Cancella Pratica" action="#{veicoliSearchView.deletePratica}" icon="ui-icon-trash" update=":growl">
                     <p:confirm header="Conferma" message="Vuoi cancellare questa pratica?" icon="ui-icon-alert" />
                 </p:commandButton>
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -193,7 +193,7 @@
                          <ui:include src="/pratiche/tabs/lavori.xhtml"/> 
                     </p:tab>
                     <p:tab title="Materiale">
-                        <!-- <ui:include src="/pratiche/tabs/materiali.xhtml"/> -->
+                        <ui:include src="/pratiche/tabs/materiali.xhtml"/>
                     </p:tab>
                 </p:accordionPanel> 
             </p:tab>

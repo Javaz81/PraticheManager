@@ -8,12 +8,14 @@ package com.javasoft81.pratichemanager.jsf.beans;
 import com.javasoft81.pratichemanager.entities.Categoriatipolavoro;
 import com.javasoft81.pratichemanager.entities.Lavoripratichecustom;
 import com.javasoft81.pratichemanager.entities.Lavoripratichestandard;
+import com.javasoft81.pratichemanager.entities.Materialepratica;
 import com.javasoft81.pratichemanager.entities.Pratica;
 import com.javasoft81.pratichemanager.jsf.beans.utils.PraticheUtils;
 import com.javasoft81.pratichemanager.entities.Veicolo;
 import com.javasoft81.pratichemanager.entities.beans.PraticaFacade;
 import com.javasoft81.pratichemanager.entities.beans.VeicoloFacade;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +38,9 @@ public class VeicoliSearchView implements Serializable {
 
     @ManagedProperty(value="lavoriManagerBean")
     private LavoriManagerBean lavoriManagerBean;
+    
+    @ManagedProperty(value="materialiManagerBean")
+    private MaterialiManagerBean materialiManagerBean;
 
     @EJB
     private VeicoloFacade veicoliService;
@@ -55,6 +60,8 @@ public class VeicoliSearchView implements Serializable {
     private HashMap<Categoriatipolavoro,List<Lavoripratichestandard>> selectedPraticaLavoriStandard;
     
     private HashMap<Categoriatipolavoro,List<Lavoripratichecustom>> selectedPraticaLavoriCustom;
+    
+    private List<Materialepratica> selectedMaterialePratica;
 
     private Integer activeIndexTab;
 
@@ -80,6 +87,23 @@ public class VeicoliSearchView implements Serializable {
     public void setLavoriManagerBean(LavoriManagerBean lavoriManagerBean) {
         this.lavoriManagerBean = lavoriManagerBean;
     }
+
+    public MaterialiManagerBean getMaterialiManagerBean() {
+        return materialiManagerBean;
+    }
+
+    public void setMaterialiManagerBean(MaterialiManagerBean materialiManagerBean) {
+        this.materialiManagerBean = materialiManagerBean;
+    }
+
+    public List<Materialepratica> getSelectedMaterialePratica() {
+        return selectedMaterialePratica;
+    }
+
+    public void setSelectedMaterialePratica(List<Materialepratica> selectedMaterialePratica) {
+        this.selectedMaterialePratica = selectedMaterialePratica;
+    }
+    
     
 
     public List<String> getStatiArrivo() {
@@ -139,12 +163,17 @@ public class VeicoliSearchView implements Serializable {
         }else{
             this.selectedPraticaLavoriCustom.clear();
         }
-         /******************* MANCA DI REINIZIALIZZARE ANCHE IL MATERIALE ASSOCIATO ****************/
+        if(this.selectedMaterialePratica == null){
+            this.selectedMaterialePratica = new ArrayList<>();
+        }else{
+            this.selectedMaterialePratica.clear();
+        }
         if (!this.pratiche.isEmpty()){
             for(Categoriatipolavoro cat: this.lavoriManagerBean.getCategorie()){
                 this.selectedPraticaLavoriStandard.put(cat, this.lavoriManagerBean.getLavoriStandardByCategoria(cat, selectedPratica));
                 this.selectedPraticaLavoriCustom.put(cat, this.lavoriManagerBean.getLavoriCustomByCategoria(cat, selectedPratica));
             }
+            this.selectedMaterialePratica=this.materialiManagerBean.getMaterialePratica(selectedPratica);
         }
         
     }
@@ -166,6 +195,11 @@ public class VeicoliSearchView implements Serializable {
                 this.selectedPraticaLavoriStandard.put(cat, null);
                 this.selectedPraticaLavoriCustom.put(cat, null);
             }
+            if(this.selectedMaterialePratica == null){
+            this.selectedMaterialePratica = new ArrayList<>();
+        }else{
+            this.selectedMaterialePratica.clear();
+        }
         }
         /*********************       QUI VANNO CREATI  ANCHE TUTTI I MATERIALI ASSOCIATI !!!!!  **********************/
     }
@@ -221,12 +255,18 @@ public class VeicoliSearchView implements Serializable {
         }else{
             this.selectedPraticaLavoriCustom.clear();
         }
+         if(this.selectedMaterialePratica == null){
+            this.selectedMaterialePratica = new ArrayList<>();
+        }else{
+            this.selectedMaterialePratica.clear();
+        }
          /******************* MANCA DI REINIZIALIZZARE ANCHE IL MATERIALE ASSOCIATO ****************/
         if (!this.pratiche.isEmpty()){
             for(Categoriatipolavoro cat: this.lavoriManagerBean.getCategorie()){
                 this.selectedPraticaLavoriStandard.put(cat, this.lavoriManagerBean.getLavoriStandardByCategoria(cat, selectedPratica));
                 this.selectedPraticaLavoriCustom.put(cat, this.lavoriManagerBean.getLavoriCustomByCategoria(cat, selectedPratica));
             }
+            this.selectedMaterialePratica = this.materialiManagerBean.getMaterialePratica(selectedPratica);
         }
         //closing dialog trigger the <p:ajax> event dialogReturn and its 
         //listener 'onVeicoliChosen'        

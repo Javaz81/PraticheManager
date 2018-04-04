@@ -34,6 +34,11 @@
             <property-class>com.javasoft81.pratichemanager.jsf.beans.LavoriManagerBean</property-class>
             <value>#{lavoriManagerBean}</value>            
         </managed-property>
+        <managed-property>
+            <property-name>materialiManagerBean</property-name>
+            <property-class>com.javasoft81.pratichemanager.jsf.beans.MaterialiManagerBean</property-class>
+            <value>#{materialiManagerBean}</value>
+        </managed-property>
     </managed-bean>
     <managed-bean>
         <description>E' il bean che si occupa di preparare e far utilizzare all'applicazione l'anagrafica di tutti i lavori 
@@ -41,5 +46,11 @@
         <managed-bean-name>lavoriManagerBean</managed-bean-name>
         <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.LavoriManagerBean</managed-bean-class>
         <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>Bean che gestisce gli accessi ai materiali delle varie pratiche.</description>
+        <managed-bean-name>materialiManagerBean</managed-bean-name>
+        <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.MaterialiManagerBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 </faces-config>
