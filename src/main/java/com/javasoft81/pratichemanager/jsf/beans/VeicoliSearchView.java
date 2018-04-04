@@ -183,10 +183,6 @@ public class VeicoliSearchView implements Serializable {
         this.selectedPratica = this.pratiche.isEmpty() ? null : this.pratiche.get(0);
     }
     
-    public void click1(){
-        System.err.println("ASDDDDDDDDDDDDDDDDDDD!!!!");
-    }
-    
     public void savePratica() {
         this.praticheService.edit(this.selectedPratica);
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica salvata correttamente", "ID pratica:" + selectedPratica.getIdPratica());

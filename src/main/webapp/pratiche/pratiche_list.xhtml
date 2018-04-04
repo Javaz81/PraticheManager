@@ -11,6 +11,7 @@
             Nessuna pratica presente  
         </p:outputLabel>
     </p:panelGrid>
+
     <p:outputPanel rendered="#{not empty veicoliSearchView.selectedCar}">
         <div class="ui-g">
             <div class="ui-g-12 ui-md-4 ui-lg-4">
@@ -162,39 +163,39 @@
         </div>
     </p:outputPanel>
     <h:form>
+        <p:toolbar id="tb_#{item.idPratica}">
+            <f:facet name="left">
+                <p:commandButton  value="Nuova" title="Nuova Pratica" action="#{veicoliSearchView.newPratica}" icon="ui-icon-document" update=":growl" />
+                <p:commandButton  value="Salva" title="Salva Pratica" action="#{veicoliSearchView.savePratica}" icon="ui-icon-disk" update=":growl"/>      
+            </f:facet>
+            <f:facet name="right">
+                <p:commandButton value="Cancella" title="Cancella Pratica" action="#{veicoliSearchView.deletePratica}" icon="ui-icon-trash" update=":growl">
+                    <p:confirm header="Conferma" message="Vuoi cancellare questa pratica?" icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Cancella" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+            </f:facet>
+        </p:toolbar>
         <p:tabView id="tabview_pratiche" rendered="#{not empty veicoliSearchView.selectedCar}" 
                    var="item" value="#{veicoliSearchView.pratiche}" scrollable="true" 
                    activeIndex="#{veicoliSearchView.activeIndexTab}" 
                    dynamic="true" cache="false">
             <p:ajax event="tabChange" listener="#{veicoliSearchView.onTabChange}" update="@(.tab_pratiche_panel)"/>
-            <p:tab title="#{veicoliSearchView.getDate(item)}">
-                <p:toolbar id="tb">
-                    <f:facet name="left">
-                        <p:commandButton type="button" value="Nuova" title="Nuova Pratica" action="#{veicoliSearchView.newPratica}" icon="ui-icon-document" update=":growl" />
-                        <p:commandButton type="button" value="Salva" title="Salva Pratica" action="#{veicoliSearchView.savePratica}" icon="ui-icon-disk" update=":growl"/>      
-                    </f:facet>
-                    <f:facet name="right">                      
-                        <p:commandButton type="button" value="Cancella" title="Cancella Pratica" action="#{veicoliSearchView.deletePratica}" icon="ui-icon-trash" update=":growl">
-                            <p:confirm header="Conferma" message="Vuoi cancellare questa pratica?" icon="ui-icon-alert" />
-                        </p:commandButton>
-                          <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                            <p:commandButton value="Cancella" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                        </p:confirmDialog>
-                    </f:facet>
-                </p:toolbar>
+            <p:tab title="#{veicoliSearchView.getDate(item)}">                
                 <p:separator style=" size: 0.2em"/>
                 <p:accordionPanel styleClass="tab_pratiche_panel">                
-                    <p:tab title="Generale" >                   
-                        <ui:include src="/pratiche/tabs/generale.xhtml"/> 
+                    <p:tab title="Generale" >
+                        <ui:include src="/pratiche/tabs/generale.xhtml"/>                  
                     </p:tab>
                     <p:tab title="Lavori">
-                        <ui:include src="/pratiche/tabs/lavori.xhtml"/>
+                        <!--  <ui:include src="/pratiche/tabs/lavori.xhtml"/> -->
                     </p:tab>
                     <p:tab title="Materiale">
                         <!-- <ui:include src="/pratiche/tabs/materiali.xhtml"/> -->
                     </p:tab>
-                </p:accordionPanel>                
+                </p:accordionPanel> 
             </p:tab>
         </p:tabView>
     </h:form>

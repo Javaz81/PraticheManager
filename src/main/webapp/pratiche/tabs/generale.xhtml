@@ -4,165 +4,165 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <div class="ui-g ui-fluid">     
-        <div class="ui-g-12 ui-md-6 ui-lg-6">
-            <!-- dati pratica -->
-            <p:panelGrid id="general_grid_dati">                
-                <f:facet name="header">
-                    <p:row>
-                        <p:column colspan="4">                              
-                            Dati della pratica 
+        <div class="ui-g ui-fluid">     
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
+                <!-- dati pratica -->
+                <p:panelGrid id="general_grid_dati">                
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="4">                              
+                                Dati della pratica 
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>                            
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            N.ARRIVO
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:inputText value="#{item.arrivo}"/>
+                        </p:column>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            DATA ARRIVO
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{item.dataArrivo}" />
                         </p:column>
                     </p:row>
-                </f:facet>
-                <p:row>                            
-                    <p:column colspan="1"  style="font-weight: bold;">
-                        N.ARRIVO
-                    </p:column>
-                    <p:column colspan="1">
-                        <p:inputText value="#{item.arrivo}"/>
-                    </p:column>
-                    <p:column colspan="1"  style="font-weight: bold;">
-                        DATA ARRIVO
-                    </p:column>
-                    <p:column colspan="1">
-                        <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{item.dataArrivo}" />
-                    </p:column>
-                </p:row>
-                <p:row>                            
-                    <p:column colspan="1"  style="font-weight: bold;">
-                        N.USCITA
-                    </p:column>
-                    <p:column colspan="1">
-                        <p:inputText value="#{item.uscita}"/>
-                    </p:column>
-                    <p:column colspan="1"  style="font-weight: bold;">
-                        DATA USCITA
-                    </p:column>
-                    <p:column colspan="1">
-                        <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{item.dataUscita}" />
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column colspan="1"  style="font-weight: bold;">
-                        N.FATTURA
-                    </p:column>
-                    <p:column colspan="1">
-                        <p:inputText   value="#{item.numeroFattura}"/>
-                    </p:column>
-                    <p:column colspan="1"  style="font-weight: bold;">
-                        DATA FATTURA
-                    </p:column>
-                    <p:column colspan="1">
-                        <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{item.dataFattura}"/>
-                    </p:column>
-                </p:row>
-                <p:row>                            
-                    <p:column colspan="1"  style="font-weight: bold;">
-                        COLLAUDO USL
-                    </p:column>
-                    <p:column colspan="1"  style="text-align: center" >
-                        <p:selectBooleanCheckbox value="#{item.collaudoUsl}"/>
-                    </p:column>
-                    <p:column colspan="1"  style="font-weight: bold;">
-                        DATA COL. USL
-                    </p:column>
-                    <p:column colspan="1">
-                        <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{item.collaudoUslData}"/>
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column colspan="1"  style="font-weight: bold;">
-                        REGISTRO CONTROLLO
-                    </p:column>
-                    <p:column colspan="1" style="text-align: center">
-                        <p:selectBooleanCheckbox value="#{item.registroDiControllo}"/>
-                    </p:column>
-                    <p:column colspan="1"  style="font-weight: bold;">
-                        DATA REG.CONTROLLO
-                    </p:column>
-                    <p:column colspan="1">
-                        <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{item.registroDiControlloData}"/>
-                    </p:column>
-                </p:row> 
-                <p:row>
-                    <p:column colspan="1"  style="font-weight: bold;">
-                        REVISIONE MCTC
-                    </p:column>
-                    <p:column colspan="1" style="text-align: center">
-                        <p:selectBooleanCheckbox value="#{item.revisioneMctc}"/>
-                    </p:column>
-                    <p:column colspan="1"  style="font-weight: bold;">
-                        DATA REV. MCTC
-                    </p:column>
-                    <p:column colspan="1">
-                        <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{item.revisioneMctcData}"/>
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column colspan="1"  style="font-weight: bold;">
-                        PREVENTIVO LAVORI
-                    </p:column>
-                    <p:column colspan="1" style="text-align: center">
-                        <p:selectBooleanCheckbox value="#{item.preventivoLavori}"/>
-                    </p:column>
-                    <p:column colspan="1"  style="font-weight: bold;">
-                        DATA PREV. LAVORI
-                    </p:column>
-                    <p:column colspan="1" >
-                        <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{item.preventivoLavoriData}"/>
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column colspan="1"  style="font-weight: bold;">
-                        KM
-                    </p:column>
-                    <p:column colspan="1">
-                        <p:spinner value="#{item.kilometraggio}" />
-                    </p:column>
-                    <p:column colspan="1"  style="font-weight: bold;">
-                        ORE
-                    </p:column>
-                    <p:column colspan="1" >
-                        <p:spinner value="#{item.ore}"/>
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column colspan="1"  style="font-weight: bold;">
-                        DIFE ?
-                    </p:column>
-                    <p:column colspan="1" style="text-align: center">
-                        <p:selectBooleanCheckbox value="#{item.dife}"/>
-                    </p:column>
-                    <p:column colspan="1"  style="font-weight: bold;">
-                        DATA INTERVENTO
-                    </p:column>
-                    <p:column colspan="1" >
-                        <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{item.interventoData}"/>
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column colspan="1"  style="font-weight: bold;">
-                        LAVORI SEGNALATI ALL'INGRESSO:
-                    </p:column>
-                    <p:column colspan="3" style="text-align: justify !important;">
-                        <p:inputTextarea value="#{item.lavoriSegnalati}" rows="5" cols='82'  autoResize="false"/>
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column colspan="1"  style="font-weight: bold;">
-                        STATO MACCHINA ALL'ARRIVO
-                    </p:column>
-                    <p:column colspan="3" style="text-align: justify !important;">                       
-                        <p:selectOneMenu value="#{item.statoVeicoloArrivo}" 
-                                         effect="fold" editable="true"
-                                         >
-                            <f:selectItem itemLabel="Select One" itemValue="" />
-                            <f:selectItems value="#{veicoliSearchView.statiArrivo}" />
-                        </p:selectOneMenu>
-                    </p:column>
-                </p:row>
-            </p:panelGrid>
+                    <p:row>                            
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            N.USCITA
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:inputText value="#{item.uscita}"/>
+                        </p:column>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            DATA USCITA
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{item.dataUscita}" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            N.FATTURA
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:inputText   value="#{item.numeroFattura}"/>
+                        </p:column>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            DATA FATTURA
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{item.dataFattura}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>                            
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            COLLAUDO USL
+                        </p:column>
+                        <p:column colspan="1"  style="text-align: center" >
+                            <p:selectBooleanCheckbox value="#{item.collaudoUsl}"/>
+                        </p:column>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            DATA COL. USL
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{item.collaudoUslData}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            REGISTRO CONTROLLO
+                        </p:column>
+                        <p:column colspan="1" style="text-align: center">
+                            <p:selectBooleanCheckbox value="#{item.registroDiControllo}"/>
+                        </p:column>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            DATA REG.CONTROLLO
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{item.registroDiControlloData}"/>
+                        </p:column>
+                    </p:row> 
+                    <p:row>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            REVISIONE MCTC
+                        </p:column>
+                        <p:column colspan="1" style="text-align: center">
+                            <p:selectBooleanCheckbox value="#{item.revisioneMctc}"/>
+                        </p:column>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            DATA REV. MCTC
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{item.revisioneMctcData}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            PREVENTIVO LAVORI
+                        </p:column>
+                        <p:column colspan="1" style="text-align: center">
+                            <p:selectBooleanCheckbox value="#{item.preventivoLavori}"/>
+                        </p:column>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            DATA PREV. LAVORI
+                        </p:column>
+                        <p:column colspan="1" >
+                            <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{item.preventivoLavoriData}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            KM
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:spinner value="#{item.kilometraggio}" />
+                        </p:column>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            ORE
+                        </p:column>
+                        <p:column colspan="1" >
+                            <p:spinner value="#{item.ore}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            DIFE ?
+                        </p:column>
+                        <p:column colspan="1" style="text-align: center">
+                            <p:selectBooleanCheckbox value="#{item.dife}"/>
+                        </p:column>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            DATA INTERVENTO
+                        </p:column>
+                        <p:column colspan="1" >
+                            <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{item.interventoData}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            LAVORI SEGNALATI ALL'INGRESSO:
+                        </p:column>
+                        <p:column colspan="3" style="text-align: justify !important;">
+                            <p:inputTextarea value="#{item.lavoriSegnalati}" rows="5" cols='82'  autoResize="false"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            STATO MACCHINA ALL'ARRIVO
+                        </p:column>
+                        <p:column colspan="3" style="text-align: justify !important;">                       
+                            <p:selectOneMenu value="#{item.statoVeicoloArrivo}" 
+                                             effect="fold" editable="true"
+                                             >
+                                <f:selectItem itemLabel="Select One" itemValue="" />
+                                <f:selectItems value="#{veicoliSearchView.statiArrivo}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </div>
         </div>
-    </div>
 </html>
