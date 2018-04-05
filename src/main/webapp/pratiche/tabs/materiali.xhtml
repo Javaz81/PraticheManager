@@ -8,13 +8,20 @@ and open the template in the editor.
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:p="http://primefaces.org/ui"          
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <p:panelGrid columns="5" layout="grid" id="panel_materiali_#{veicoliSearchView.selectedPratica.idPratica}">
-        <ui:repeat value="#{veicoliSearchView.selectedMaterialePratica}"  var="mat">
-            <p:panelGrid class="materiale-pratica-item">
-                <p:outputLabel value="#{mat.articolo1.descrizione}"/>
-                <p:outputLabel value="#{mat.quantitaConsumata}"/>
-                <p:outputLabel value="#{mat.articolo1.unitaDiMisura}"/>
-            </p:panelGrid>
-        </ui:repeat>                               
-    </p:panelGrid>
+    <div class="ui-fluid">
+        <p:panelGrid>
+            <ui:repeat value="#{veicoliSearchView.selectedMaterialePratica}" var="mat">
+                <div class="ui-g-12 ui-lg-4 ui-md-2">
+                    <p:outputLabel value="#{mat.articolo1.descrizione}"/>
+                    <b><p:outputLabel value="#{mat.quantitaConsumata}"/></b>
+                    <p:commandButton
+                    <p:outputLabel value="#{mat.articolo1.unitaDiMisura}"/>
+                    <p:commandButton icon="fa fa-fw fa-remove"
+                                     action="#{veicoliSearchView.removeMateriale(mat)}">
+                        <p:ajax event="dialogReturn" listener="#{dfView.onCarChosen}" update="@(.tab_pratiche_panel) growl" />
+                    </commandButton>
+                </div>
+            </ui:repeat>
+        </p:panelGrid>
+    </div>
 </html>

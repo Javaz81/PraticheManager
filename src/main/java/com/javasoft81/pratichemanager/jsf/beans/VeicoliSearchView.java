@@ -222,7 +222,14 @@ public class VeicoliSearchView implements Serializable {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica salvata correttamente", "ID pratica:" + selectedPratica.getIdPratica());
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-
+    
+    public void removeMateriale(Materialepratica m){
+        this.materialiManagerBean.removeMateriale(m);
+        this.selectedMaterialePratica.remove(m);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Materiale rimosso","Rimozione materiale processata con successo.");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+    
     public void chooseVeicoli() {
         Map<String, Object> options = new HashMap<>();
         options.put("resizable", false);

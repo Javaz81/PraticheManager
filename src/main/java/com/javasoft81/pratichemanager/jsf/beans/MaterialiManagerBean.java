@@ -30,4 +30,8 @@ public class MaterialiManagerBean implements Serializable{
     public List<Materialepratica> getMaterialePratica(Pratica p){
         return materialeService.findByPratica(p);
     }
+    
+    public void removeMateriale(Materialepratica mat){
+        this.materialeService.remove(mat);
+    }
 }
