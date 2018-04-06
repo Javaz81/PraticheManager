@@ -7,12 +7,14 @@ and open the template in the editor.
     Created on : 14-feb-2018, 22.30.53
     Author     : andrea
 */
-html{
-    font-size: 0.67em !important;
-}
+
 .col-value{
     font-size: 0.9em !important;
     font-style: oblique !important;    
+}
+
+.ui-widget, .ui-widget .ui-widget {
+font-size: 93% !important;
 }
 
 .materiale-pratica-item {

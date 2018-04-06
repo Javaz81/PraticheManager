@@ -181,5 +181,16 @@ public class LavoriManagerBean implements Serializable {
     private List<Lavoripratichestandard> getLavoriStandard(Pratica p) {
         return this.lavoriStandardService.getLavoriStandardPerPratica(p);
     }
-
+    
+    public void cancellaLavoroStandard(Lavoripratichestandard s){
+        this.lavoriStandardService.remove(s);
+    }
+    
+    public void cancellaLavoroCustom(Lavoripratichecustom c){
+        this.lavoriCustomService.remove(c);
+    }
+    
+    public void editLavoroCustom(Lavoripratichecustom c){
+        this.lavoriCustomService.edit(c);
+    }
 }

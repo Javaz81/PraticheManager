@@ -9,19 +9,27 @@ and open the template in the editor.
       xmlns:p="http://primefaces.org/ui"          
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <div class="ui-fluid">
-        <p:panelGrid>
-            <ui:repeat value="#{veicoliSearchView.selectedMaterialePratica}" var="mat">
-                <div class="ui-g-12 ui-lg-4 ui-md-2">
-                    <p:outputLabel value="#{mat.articolo1.descrizione}"/>
-                    <b><p:outputLabel value="#{mat.quantitaConsumata}"/></b>
-                    <p:commandButton
-                    <p:outputLabel value="#{mat.articolo1.unitaDiMisura}"/>
-                    <p:commandButton icon="fa fa-fw fa-remove"
-                                     action="#{veicoliSearchView.removeMateriale(mat)}">
-                        <p:ajax event="dialogReturn" listener="#{dfView.onCarChosen}" update="@(.tab_pratiche_panel) growl" />
-                    </commandButton>
+        <ui:repeat value="#{veicoliSearchView.selectedMaterialePratica}" var="mat">
+            <div class="ui-g-12 ui-lg-4 ui-md-6">
+                <div class="ui-g">
+                    <div class="ui-g-6">
+                        #{mat.articolo1.descrizione} &#160; <b>#{mat.quantitaConsumata}</b> &#160; #{mat.articolo1.unitaDiMisura}
+                    </div>
+                    <div class="ui-g-6">
+                        <p:commandButton icon="fa fa-fw fa-edit"
+                                         action="#{veicoliSearchView.menuMateriale(mat)}">
+                            <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onMaterialePraticaEdit}" update="@(.tab_pratiche_panel) growl" />
+                        </p:commandButton>
+                        <p:commandButton icon="fa fa-fw fa-trash" action="#{veicoliSearchView.removeMateriale(mat)}" update="@(.tab_pratiche_panel) growl">
+                            <p:confirm header="Conferma rimozione" message="Vuoi rimuovere questo materiale dalla pratica?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Rimuovi" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="Annulla" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </div>
                 </div>
-            </ui:repeat>
-        </p:panelGrid>
+            </div>
+        </ui:repeat>
     </div>
 </html>

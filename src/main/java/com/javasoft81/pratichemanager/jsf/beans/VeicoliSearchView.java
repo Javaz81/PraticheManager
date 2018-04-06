@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -33,13 +34,13 @@ import org.primefaces.event.TabChangeEvent;
  * @author andrea
  */
 public class VeicoliSearchView implements Serializable {
-    
+
     private static final long serialVersionUID = 4798826631018877624L;
 
-    @ManagedProperty(value="lavoriManagerBean")
+    @ManagedProperty(value = "lavoriManagerBean")
     private LavoriManagerBean lavoriManagerBean;
-    
-    @ManagedProperty(value="materialiManagerBean")
+
+    @ManagedProperty(value = "materialiManagerBean")
     private MaterialiManagerBean materialiManagerBean;
 
     @EJB
@@ -56,16 +57,20 @@ public class VeicoliSearchView implements Serializable {
     private Veicolo selectedCar;
 
     private Pratica selectedPratica;
-    
-    private HashMap<Categoriatipolavoro,List<Lavoripratichestandard>> selectedPraticaLavoriStandard;
-    
-    private HashMap<Categoriatipolavoro,List<Lavoripratichecustom>> selectedPraticaLavoriCustom;
-    
+
+    private HashMap<Categoriatipolavoro, List<Lavoripratichestandard>> selectedPraticaLavoriStandard;
+
+    private HashMap<Categoriatipolavoro, List<Lavoripratichecustom>> selectedPraticaLavoriCustom;
+
     private List<Materialepratica> selectedMaterialePratica;
 
     private Integer activeIndexTab;
 
     private final List<String> statiArrivo;
+
+    private Materialepratica selectedMaterialePraticaDialog;
+
+    private Lavoripratichecustom selectedLavoroCustomDialog;
 
     /**
      * Creates a new instance of VeicoliSearchView
@@ -77,7 +82,7 @@ public class VeicoliSearchView implements Serializable {
     @PostConstruct
     public void init() {
         veicoli = veicoliService.findAll();
-        selectedCar = null;        
+        selectedCar = null;
     }
 
     public LavoriManagerBean getLavoriManagerBean() {
@@ -103,8 +108,22 @@ public class VeicoliSearchView implements Serializable {
     public void setSelectedMaterialePratica(List<Materialepratica> selectedMaterialePratica) {
         this.selectedMaterialePratica = selectedMaterialePratica;
     }
-    
-    
+
+    public Materialepratica getSelectedMaterialePraticaDialog() {
+        return selectedMaterialePraticaDialog;
+    }
+
+    public void setSelectedMaterialePraticaDialog(Materialepratica selectedMaterialePraticaDialog) {
+        this.selectedMaterialePraticaDialog = selectedMaterialePraticaDialog;
+    }
+
+    public Lavoripratichecustom getSelectedLavoroCustomDialog() {
+        return selectedLavoroCustomDialog;
+    }
+
+    public void setSelectedLavoroCustomDialog(Lavoripratichecustom selectedLavoroCustomDialog) {
+        this.selectedLavoroCustomDialog = selectedLavoroCustomDialog;
+    }
 
     public List<String> getStatiArrivo() {
         return statiArrivo;
@@ -153,29 +172,29 @@ public class VeicoliSearchView implements Serializable {
     public void onTabChange(TabChangeEvent event) {
         this.selectedPratica = (Pratica) event.getData();
         this.activeIndexTab = this.pratiche.indexOf(this.selectedPratica);
-         if (this.selectedPraticaLavoriStandard == null){
+        if (this.selectedPraticaLavoriStandard == null) {
             this.selectedPraticaLavoriStandard = new HashMap<>();
-        }else{
+        } else {
             this.selectedPraticaLavoriStandard.clear();
         }
-         if (this.selectedPraticaLavoriCustom == null){
+        if (this.selectedPraticaLavoriCustom == null) {
             this.selectedPraticaLavoriCustom = new HashMap<>();
-        }else{
+        } else {
             this.selectedPraticaLavoriCustom.clear();
         }
-        if(this.selectedMaterialePratica == null){
+        if (this.selectedMaterialePratica == null) {
             this.selectedMaterialePratica = new ArrayList<>();
-        }else{
+        } else {
             this.selectedMaterialePratica.clear();
         }
-        if (!this.pratiche.isEmpty()){
-            for(Categoriatipolavoro cat: this.lavoriManagerBean.getCategorie()){
+        if (!this.pratiche.isEmpty()) {
+            for (Categoriatipolavoro cat : this.lavoriManagerBean.getCategorie()) {
                 this.selectedPraticaLavoriStandard.put(cat, this.lavoriManagerBean.getLavoriStandardByCategoria(cat, selectedPratica));
                 this.selectedPraticaLavoriCustom.put(cat, this.lavoriManagerBean.getLavoriCustomByCategoria(cat, selectedPratica));
             }
-            this.selectedMaterialePratica=this.materialiManagerBean.getMaterialePratica(selectedPratica);
+            this.selectedMaterialePratica = this.materialiManagerBean.getMaterialePratica(selectedPratica);
         }
-        
+
     }
 
     public String getDate(Pratica p) {
@@ -190,52 +209,106 @@ public class VeicoliSearchView implements Serializable {
         this.pratiche = null; //re-trigger visualization of all tabs        
         this.pratiche = this.praticheService.findPraticaByVeicolo(selectedCar, PraticheUtils.MAX_PRATICHE_ESTRAIBILI);
         this.selectedPratica = this.pratiche.isEmpty() ? null : this.pratiche.get(0);
-         if (!this.pratiche.isEmpty()){
-            for(Categoriatipolavoro cat: this.lavoriManagerBean.getCategorie()){
+        if (!this.pratiche.isEmpty()) {
+            for (Categoriatipolavoro cat : this.lavoriManagerBean.getCategorie()) {
                 this.selectedPraticaLavoriStandard.put(cat, null);
                 this.selectedPraticaLavoriCustom.put(cat, null);
             }
-            if(this.selectedMaterialePratica == null){
-            this.selectedMaterialePratica = new ArrayList<>();
-        }else{
-            this.selectedMaterialePratica.clear();
+            if (this.selectedMaterialePratica == null) {
+                this.selectedMaterialePratica = new ArrayList<>();
+            } else {
+                this.selectedMaterialePratica.clear();
+            }
         }
-        }
-        /*********************       QUI VANNO CREATI  ANCHE TUTTI I MATERIALI ASSOCIATI !!!!!  **********************/
+        /**
+         * ******************* QUI VANNO CREATI ANCHE TUTTI I MATERIALI
+         * ASSOCIATI !!!!!  *********************
+         */
     }
 
     public void deletePratica() {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica cancellata!", "ID pratica:" + selectedPratica.getIdPratica());
         FacesContext.getCurrentInstance().addMessage(null, message);
-        for(Categoriatipolavoro c: this.lavoriManagerBean.getCategorie()){
+        for (Categoriatipolavoro c : this.lavoriManagerBean.getCategorie()) {
             this.lavoriManagerBean.cancellaTuttiLavoriDiCategoria(this.selectedPraticaLavoriStandard.get(c), this.selectedPraticaLavoriCustom.get(c));
         }
-        /*********************       QUI VANNO CANCELLATI ANCHE TUTTI I MATERIALI ASSOCIATI !!!!!  **********************/
+        /**
+         * ******************* QUI VANNO CANCELLATI ANCHE TUTTI I MATERIALI
+         * ASSOCIATI !!!!!  *********************
+         */
         this.praticheService.remove(this.selectedPratica);
         this.pratiche = null; //re-trigger visualization of all tabs
         this.pratiche = this.praticheService.findPraticaByVeicolo(selectedCar, PraticheUtils.MAX_PRATICHE_ESTRAIBILI);
         this.selectedPratica = this.pratiche.isEmpty() ? null : this.pratiche.get(0);
     }
-    
+
+    public void removeLavoroStandard(Lavoripratichestandard lav) {
+        this.lavoriManagerBean.cancellaLavoroStandard(lav);
+        this.selectedPraticaLavoriStandard.get(lav.getTipolavoro().getCategoria()).removeIf((Lavoripratichestandard i) -> i.getId().equals(lav.getId()));
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Lavoro rimosso correttamente", "Successo");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    public void removeLavoroCustom(Lavoripratichecustom lav) {
+        this.lavoriManagerBean.cancellaLavoroCustom(lav);
+        this.selectedPraticaLavoriCustom.get(lav.getCategoria()).removeIf((Lavoripratichecustom i) -> i.getId().equals(lav.getId()));
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Lavoro rimosso correttamente", "Successo");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
     public void savePratica() {
         this.praticheService.edit(this.selectedPratica);
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica salvata correttamente", "ID pratica:" + selectedPratica.getIdPratica());
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-    
-    public void removeMateriale(Materialepratica m){
+
+    public void removeMateriale(Materialepratica m) {
         this.materialiManagerBean.removeMateriale(m);
         this.selectedMaterialePratica.remove(m);
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Materiale rimosso","Rimozione materiale processata con successo.");
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Materiale rimosso", "Rimozione materiale processata con successo.");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-    
+
     public void chooseVeicoli() {
         Map<String, Object> options = new HashMap<>();
         options.put("resizable", false);
         options.put("draggable", true);
         options.put("modal", true);
         RequestContext.getCurrentInstance().openDialog("searchVeicoli", options, null);
+    }
+
+    public void menuMateriale(Materialepratica mat) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("resizable", false);
+        options.put("draggable", true);
+        options.put("modal", true);
+        this.selectedMaterialePraticaDialog = mat;
+        RequestContext.getCurrentInstance().openDialog("materiale/menuMateriale", options, null);
+    }
+
+    public void editLavoroCustom(Lavoripratichecustom lav) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("resizable", false);
+        options.put("draggable", true);
+        options.put("modal", true);
+        this.selectedLavoroCustomDialog = lav;
+        RequestContext.getCurrentInstance().openDialog("lavori/menuLavori", options, null);
+    }
+
+    public void onLavoriCustomEdit(SelectEvent event) {
+        this.lavoriManagerBean.editLavoroCustom(this.selectedLavoroCustomDialog);
+        this.selectedPraticaLavoriCustom.get(this.selectedLavoroCustomDialog.getCategoria()).forEach((Lavoripratichecustom i) -> {
+            if(i.getId().equals(VeicoliSearchView.this.selectedLavoroCustomDialog.getId()))
+                i.setDescrizione(selectedLavoroCustomDialog.getDescrizione());
+        });
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Descrizione modificato", "Successo");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    public void onMaterialePraticaEdit(SelectEvent event) {
+        this.materialiManagerBean.editQty(this.selectedMaterialePraticaDialog);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Materiale modificato", "Id:" + this.selectedMaterialePraticaDialog.getArticolo1().getDescrizione());
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public void onVeicoliChosen(SelectEvent event) {
@@ -248,28 +321,35 @@ public class VeicoliSearchView implements Serializable {
         this.selectedCar = selectedCar;
     }
 
+    public void closeDialogMenu() {
+        RequestContext.getCurrentInstance().closeDialog(null);
+    }
+
     public void selectCarFromDialog(Veicolo veicolo) {
         this.selectedCar = veicolo;
         this.pratiche = this.praticheService.findPraticaByVeicolo(selectedCar, PraticheUtils.MAX_PRATICHE_ESTRAIBILI);
         this.selectedPratica = this.pratiche.isEmpty() ? null : this.pratiche.get(0);
-        if (this.selectedPraticaLavoriStandard == null){
+        if (this.selectedPraticaLavoriStandard == null) {
             this.selectedPraticaLavoriStandard = new HashMap<>();
-        }else{
+        } else {
             this.selectedPraticaLavoriStandard.clear();
         }
-         if (this.selectedPraticaLavoriCustom == null){
+        if (this.selectedPraticaLavoriCustom == null) {
             this.selectedPraticaLavoriCustom = new HashMap<>();
-        }else{
+        } else {
             this.selectedPraticaLavoriCustom.clear();
         }
-         if(this.selectedMaterialePratica == null){
+        if (this.selectedMaterialePratica == null) {
             this.selectedMaterialePratica = new ArrayList<>();
-        }else{
+        } else {
             this.selectedMaterialePratica.clear();
         }
-         /******************* MANCA DI REINIZIALIZZARE ANCHE IL MATERIALE ASSOCIATO ****************/
-        if (!this.pratiche.isEmpty()){
-            for(Categoriatipolavoro cat: this.lavoriManagerBean.getCategorie()){
+        /**
+         * ***************** MANCA DI REINIZIALIZZARE ANCHE IL MATERIALE
+         * ASSOCIATO ***************
+         */
+        if (!this.pratiche.isEmpty()) {
+            for (Categoriatipolavoro cat : this.lavoriManagerBean.getCategorie()) {
                 this.selectedPraticaLavoriStandard.put(cat, this.lavoriManagerBean.getLavoriStandardByCategoria(cat, selectedPratica));
                 this.selectedPraticaLavoriCustom.put(cat, this.lavoriManagerBean.getLavoriCustomByCategoria(cat, selectedPratica));
             }

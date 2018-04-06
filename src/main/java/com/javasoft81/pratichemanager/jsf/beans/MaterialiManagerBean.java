@@ -34,4 +34,8 @@ public class MaterialiManagerBean implements Serializable{
     public void removeMateriale(Materialepratica mat){
         this.materialeService.remove(mat);
     }
+
+    void editQty(Materialepratica mat) {
+        this.materialeService.edit(mat);
+    }
 }
