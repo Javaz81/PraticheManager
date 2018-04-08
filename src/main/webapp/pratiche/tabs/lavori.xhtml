@@ -10,11 +10,26 @@
                 <p:panel header="#{categoria.nome}" id="panel_#{veicoliSearchView.selectedPratica.idPratica}_#{categoria.idCategoriaTipoLavoro}">
                     <f:facet name="options">
                         <p:menu>
-                            <p:submenu label="Gestisci categoria">
-                                <p:menuitem value="Modifica" url="#" icon="ui-icon-newwin" />                              
+                            <p:submenu label="Gestisci lavori categoria">
+                                <p:menuitem value="aggiungi lavoro da anagrafica" onclick="addLavoriStandard('.selectLavoriStandard_#{categoria.idCategoriaTipoLavoro}')" />
+                                <p:menuitem value="aggiungi lavoro personalizzato" onclick="addLavoriCustom()" />
                             </p:submenu>
-                        </p:menu>
+                        </p:menu>                       
+                        <!--                         <p:commandButton  id="selectLavoriCustom" style="display: none"                                          
+                                                                  actionListener="#{veicoliSearchView.chooseLavoriCustom(categoria)}" 
+                                                                  >
+                                                    <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onLavoriCustomChosen}"                                    
+                                                            update="growl pratiche_panel"
+                                                            />                            
+                                                </p:commandButton> -->
                     </f:facet>
+                    <p:commandButton  styleClass="selectLavoriStandard_#{categoria.idCategoriaTipoLavoro}" style="display: none"                                           
+                                      actionListener="#{veicoliSearchView.chooseLavoriStandard(categoria)}" 
+                                      >
+                        <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onLavoriStandardChosen}"                                    
+                                update="growl pratiche_panel"
+                                />                            
+                    </p:commandButton>
                     <ul>
                         <ui:repeat value="#{veicoliSearchView.selectedPraticaLavoriStandard.get(categoria)}" var="lav">                     
                             <li>
@@ -41,7 +56,7 @@
                                     <div class="ui-g-8">
                                         #{lav.descrizione} &nbsp; 
                                     </div>
-                                     <div class="ui-g-2">
+                                    <div class="ui-g-2">
                                         <p:commandButton icon="fa fa-fw fa-edit" action="#{veicoliSearchView.editLavoroCustom(lav)}" >
                                             <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onLavoriCustomEdit}" update="@(.tab_pratiche_panel) growl"/>
                                         </p:commandButton>

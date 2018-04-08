@@ -15,8 +15,8 @@
     <h:body>
         <h:form>
             <div style="margin: auto !important">
-                <p:outputLabel style="margin:2em" value="Descrizione Lavoro  " for="desc"/>
-                <p:inputText id="desc" value="#{veicoliSearchView.selectedLavoroCustomDialog.descrizione}" required="true" />
+                <p:outputLabel style="margin:1em" value="Descrizione Lavoro " for="desc"/>
+                <p:inputText id="desc" value="#{veicoliSearchView.selectedLavoroCustomDialog.descrizione}" required="true" style=" min-width: 30em !important " />
                 <p:commandButton style="margin-left: 2em" icon="fa fa-fw fa-edit" 
                                  value="Modifica" 
                                  actionListener="#{veicoliSearchView.closeDialogMenu}"/>

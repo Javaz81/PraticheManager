@@ -65,19 +65,19 @@ public class LavoriManagerBean implements Serializable {
         this.categorieDesc = new HashMap(this.categorie.size());
         this.lavoriDesc = new HashMap(this.lavori.size());
         this.categoriaLavori = new HashMap<>();
-        for (Categoriatipolavoro c : this.categorie) {
+        this.categorie.stream().map((c) -> {
             this.categorieDesc.put(c.getIdCategoriaTipoLavoro(), c.getNome());
+            return c;
+        }).forEachOrdered((c) -> {
             List<Tipolavoro> lc = new ArrayList<>();
-            for (Tipolavoro tl : this.lavori) {
-                if (tl.getCategoria().equals(c)) {
-                    lc.add(tl);
-                }
-            }
+            this.lavori.stream().filter((tl) -> (tl.getCategoria().equals(c))).forEachOrdered((tl) -> {
+                lc.add(tl);
+            });
             this.categoriaLavori.put(c, lc);
-        }
-        for (Tipolavoro t : this.getLavori()) {
+        });
+        this.getLavori().forEach((t) -> {
             this.lavoriDesc.put(t.getIdTipoLavoro(), "[".concat(t.getCodice()).concat("] - ").concat(t.getDescrizione()));
-        }
+        });
 
         loadingBusy = new AtomicBoolean(true);
     }
@@ -98,19 +98,19 @@ public class LavoriManagerBean implements Serializable {
         this.lavoriDesc.clear();
         this.categorieDesc.clear();
         this.categoriaLavori.clear();
-        for (Categoriatipolavoro c : this.categorie) {
+        this.categorie.stream().map((c) -> {
             this.categorieDesc.put(c.getIdCategoriaTipoLavoro(), c.getNome());
+            return c;
+        }).forEachOrdered((c) -> {
             List<Tipolavoro> lc = new ArrayList<>();
-            for (Tipolavoro tl : this.lavori) {
-                if (tl.getCategoria().equals(c)) {
-                    lc.add(tl);
-                }
-            }
+            this.lavori.stream().filter((tl) -> (tl.getCategoria().equals(c))).forEachOrdered((tl) -> {
+                lc.add(tl);
+            });
             this.categoriaLavori.put(c, lc);
-        }
-        for (Tipolavoro t : this.getLavori()) {
+        });
+        this.getLavori().forEach((t) -> {
             this.lavoriDesc.put(t.getIdTipoLavoro(), "[".concat(t.getCodice()).concat("] - ").concat(t.getDescrizione()));
-        }
+        });
         loadingBusy.compareAndSet(false, true);
         notify();
     }
@@ -141,41 +141,32 @@ public class LavoriManagerBean implements Serializable {
     
     public Boolean isLavoroSelected(Pratica p, Tipolavoro t) {
         List<Lavoripratichestandard> lav = getLavoriStandard(p);
-        for (Lavoripratichestandard l : lav) {
-            if (l.getTipolavoro().getIdTipoLavoro().equals(t.getIdTipoLavoro())) {
-                return true;
-            }
-        }
-        return false;
+        return lav.stream().anyMatch((l) -> (l.getTipolavoro().getIdTipoLavoro().equals(t.getIdTipoLavoro())));
     }
 
     public List<Lavoripratichestandard> getLavoriStandardByCategoria(Categoriatipolavoro c, Pratica p) {
         List<Lavoripratichestandard> result = new ArrayList<>();
-        for (Lavoripratichestandard l : getLavoriStandard(p)) {           
-            if (l.getTipolavoro().getCategoria().getIdCategoriaTipoLavoro().equals(c.getIdCategoriaTipoLavoro())) {
-                result.add(l);
-            }
-        }
+        getLavoriStandard(p).stream().filter((l) -> (l.getTipolavoro().getCategoria().getIdCategoriaTipoLavoro().equals(c.getIdCategoriaTipoLavoro()))).forEachOrdered((l) -> {
+            result.add(l);
+        });
         return result;
     }
 
     public List<Lavoripratichecustom> getLavoriCustomByCategoria(Categoriatipolavoro c, Pratica p) {
         List<Lavoripratichecustom> result = new ArrayList<>();
-        for (Lavoripratichecustom l : getLavoriCustom(p)) {
-            if (l.getCategoria().getIdCategoriaTipoLavoro().equals(c.getIdCategoriaTipoLavoro())) {
-                result.add(l);
-            }
-        }
+        getLavoriCustom(p).stream().filter((l) -> (l.getCategoria().getIdCategoriaTipoLavoro().equals(c.getIdCategoriaTipoLavoro()))).forEachOrdered((l) -> {
+            result.add(l);
+        });
         return result;
     }
 
     public void cancellaTuttiLavoriDiCategoria(List<Lavoripratichestandard> s, List<Lavoripratichecustom> c){
-        for(Lavoripratichestandard lps: s){
+        s.forEach((lps) -> {
             this.lavoriStandardService.remove(lps);
-        }
-        for(Lavoripratichecustom lpc: c){
+        });
+        c.forEach((lpc) -> {
             this.lavoriCustomService.remove(lpc);
-        }
+        });
     }
     
     private List<Lavoripratichestandard> getLavoriStandard(Pratica p) {
@@ -192,5 +183,27 @@ public class LavoriManagerBean implements Serializable {
     
     public void editLavoroCustom(Lavoripratichecustom c){
         this.lavoriCustomService.edit(c);
+    }
+
+    public Lavoripratichestandard creaNuovoLavoroStandard(Pratica selectedPratica, Tipolavoro i) {
+        Lavoripratichestandard l = new Lavoripratichestandard();
+        l.setPratica(selectedPratica);
+        l.setTipolavoro(i);
+        this.lavoriStandardService.create(l);       
+        for(Lavoripratichestandard ll : this.lavoriStandardService.getLavoriStandardPerPratica(selectedPratica)){
+            if(ll.getTipolavoro().getIdTipoLavoro().equals(i.getIdTipoLavoro()))
+                return ll;
+        }
+        //It should be never happen...
+        return null;
+    }
+
+    public List<Tipolavoro> getLavoriCategoria(Categoriatipolavoro cat) {
+        List<Tipolavoro> lavcat = new ArrayList<>();
+        this.lavori.forEach(i->{
+            if(i.getCategoria().getIdCategoriaTipoLavoro().equals(cat.getIdCategoriaTipoLavoro()))
+                lavcat.add(i);
+        });
+        return lavcat;
     }
 }

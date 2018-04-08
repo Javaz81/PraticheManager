@@ -10,6 +10,7 @@ import com.javasoft81.pratichemanager.entities.Lavoripratichecustom;
 import com.javasoft81.pratichemanager.entities.Lavoripratichestandard;
 import com.javasoft81.pratichemanager.entities.Materialepratica;
 import com.javasoft81.pratichemanager.entities.Pratica;
+import com.javasoft81.pratichemanager.entities.Tipolavoro;
 import com.javasoft81.pratichemanager.jsf.beans.utils.PraticheUtils;
 import com.javasoft81.pratichemanager.entities.Veicolo;
 import com.javasoft81.pratichemanager.entities.beans.PraticaFacade;
@@ -19,7 +20,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -72,6 +72,8 @@ public class VeicoliSearchView implements Serializable {
 
     private Lavoripratichecustom selectedLavoroCustomDialog;
 
+    private Categoriatipolavoro selectedCategoriaDialog;
+
     /**
      * Creates a new instance of VeicoliSearchView
      */
@@ -123,6 +125,14 @@ public class VeicoliSearchView implements Serializable {
 
     public void setSelectedLavoroCustomDialog(Lavoripratichecustom selectedLavoroCustomDialog) {
         this.selectedLavoroCustomDialog = selectedLavoroCustomDialog;
+    }
+
+    public Categoriatipolavoro getSelectedCategoriaDialog() {
+        return selectedCategoriaDialog;
+    }
+
+    public void setSelectedCategoriaDialog(Categoriatipolavoro selectedCategoriaDialog) {
+        this.selectedCategoriaDialog = selectedCategoriaDialog;
     }
 
     public List<String> getStatiArrivo() {
@@ -222,7 +232,7 @@ public class VeicoliSearchView implements Serializable {
         }
         /**
          * ******************* QUI VANNO CREATI ANCHE TUTTI I MATERIALI
-         * ASSOCIATI !!!!!  *********************
+         * ASSOCIATI !!!!! *********************
          */
     }
 
@@ -234,7 +244,7 @@ public class VeicoliSearchView implements Serializable {
         }
         /**
          * ******************* QUI VANNO CANCELLATI ANCHE TUTTI I MATERIALI
-         * ASSOCIATI !!!!!  *********************
+         * ASSOCIATI !!!!! *********************
          */
         this.praticheService.remove(this.selectedPratica);
         this.pratiche = null; //re-trigger visualization of all tabs
@@ -277,6 +287,15 @@ public class VeicoliSearchView implements Serializable {
         RequestContext.getCurrentInstance().openDialog("searchVeicoli", options, null);
     }
 
+    public void chooseLavoriStandard(Categoriatipolavoro cat) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("resizable", false);
+        options.put("draggable", true);
+        options.put("modal", true);
+        this.selectedCategoriaDialog = cat;
+        RequestContext.getCurrentInstance().openDialog("lavori/selectionLavoriStandard", options, null);
+    }
+
     public void menuMateriale(Materialepratica mat) {
         Map<String, Object> options = new HashMap<>();
         options.put("resizable", false);
@@ -298,11 +317,38 @@ public class VeicoliSearchView implements Serializable {
     public void onLavoriCustomEdit(SelectEvent event) {
         this.lavoriManagerBean.editLavoroCustom(this.selectedLavoroCustomDialog);
         this.selectedPraticaLavoriCustom.get(this.selectedLavoroCustomDialog.getCategoria()).forEach((Lavoripratichecustom i) -> {
-            if(i.getId().equals(VeicoliSearchView.this.selectedLavoroCustomDialog.getId()))
+            if (i.getId().equals(VeicoliSearchView.this.selectedLavoroCustomDialog.getId())) {
                 i.setDescrizione(selectedLavoroCustomDialog.getDescrizione());
+            }
         });
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Descrizione modificato", "Successo");
         FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    public void onLavoriStandardChosen(SelectEvent event) {
+        List<Tipolavoro> selezionati = (List<Tipolavoro>) event.getSource();
+        //rimuove i lavori deselezionati...
+        this.selectedPraticaLavoriStandard.get(this.selectedCategoriaDialog).removeIf((Lavoripratichestandard i) -> {
+            if (!selezionati.stream().noneMatch((l) -> (l.getIdTipoLavoro().equals(i.getId())))) {
+                return false;
+            }
+            VeicoliSearchView.this.lavoriManagerBean.cancellaLavoroStandard(i);
+            return true;
+        });
+        //aggiunge i nuovi selezionati
+        selezionati.forEach((Tipolavoro i) -> {
+            Lavoripratichestandard found=null;
+            for (Lavoripratichestandard l : VeicoliSearchView.this.selectedPraticaLavoriStandard.get(VeicoliSearchView.this.selectedCategoriaDialog)) {
+                if(l.getTipolavoro().getIdTipoLavoro().equals(i.getIdTipoLavoro())){
+                    found=l;
+                    break;
+                }
+            }
+            if (found==null) {
+                found = VeicoliSearchView.this.lavoriManagerBean.creaNuovoLavoroStandard(VeicoliSearchView.this.selectedPratica, i);
+                VeicoliSearchView.this.selectedPraticaLavoriStandard.get(VeicoliSearchView.this.selectedCategoriaDialog).add(found);
+            }
+        });
     }
 
     public void onMaterialePraticaEdit(SelectEvent event) {

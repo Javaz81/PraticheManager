@@ -53,4 +53,10 @@
         <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.MaterialiManagerBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <description>Bean per la selezione dei lavori standard</description>
+        <managed-bean-name>lavoriStandardDialog</managed-bean-name>
+        <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.utils.LavoriStandardDialog</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
 </faces-config>

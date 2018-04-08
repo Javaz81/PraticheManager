@@ -38,7 +38,5 @@ public class LavoripratichestandardFacade extends AbstractFacade<Lavoripratiches
         q.setParameter("pratica", p);
         List<Lavoripratichestandard> lps = q.getResultList();
         return lps;
-    }
-    
-    
+    }    
 }
