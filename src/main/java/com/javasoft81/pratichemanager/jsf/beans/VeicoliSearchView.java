@@ -295,6 +295,14 @@ public class VeicoliSearchView implements Serializable {
         this.selectedCategoriaDialog = cat;
         RequestContext.getCurrentInstance().openDialog("lavori/selectionLavoriStandard", options, null);
     }
+     public void chooseLavoriCustom(Categoriatipolavoro cat) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("resizable", false);
+        options.put("draggable", true);
+        options.put("modal", true);
+        this.selectedCategoriaDialog = cat;
+        RequestContext.getCurrentInstance().openDialog("lavori/addLavoriCustom", options, null);
+    }
 
     public void menuMateriale(Materialepratica mat) {
         Map<String, Object> options = new HashMap<>();
@@ -325,6 +333,20 @@ public class VeicoliSearchView implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
+    public void onLavoriCustomChosen(SelectEvent event) {
+        List<Lavoripratichecustom> selezionati = (List<Lavoripratichecustom>) event.getObject();
+        //rimuove i lavori deselezionati...
+        selezionati.forEach(i->{
+           this.selectedPraticaLavoriCustom.get(this.selectedCategoriaDialog)
+                   .add(this.lavoriManagerBean
+                           .creaNuovoLavoroCustom(this.selectedPratica, i)
+                   );
+        });
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Lavori aggiornati",
+                "Categoria ".concat(this.selectedCategoriaDialog.getNome()).concat(" aggiornata con successo!"));
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+    
     public void onLavoriStandardChosen(SelectEvent event) {
         List<Tipolavoro> selezionati = (List<Tipolavoro>) event.getObject();
         //rimuove i lavori deselezionati...

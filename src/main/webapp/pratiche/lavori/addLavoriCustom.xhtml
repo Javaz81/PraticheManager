@@ -5,12 +5,53 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"          
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <style type="text/css">
+            .ui-widget, .ui-widget .ui-widget {
+                font-size: 90%;
+            }
+        </style>
+        <title>Creazione lavoro personalizzato nella categoria - #{veicoliSearchView.selectedCategoriaDialog.nome}</title>
+    </h:head>
+    <h:body>
+        <h:form id="form_add_lavori_custom">
+            <p:panel header="Crea un nuovo lavoro personalizzato" style="margin-bottom:20px">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <h:outputLabel value="Categoria : " for="txt_categoria"></h:outputLabel>
+                    <p:inputText id="txt_categoria" value="#{lavoriCustomDialog.lavoro.categoria.nome}" disabled="true"/>
+
+                    <h:outputLabel value="Descrizione lavoro : *" for="txt_desc"></h:outputLabel>
+                    <p:inputText id="txt_desc" value="#{lavoriCustomDialog.lavoro.descrizione}" required="true"/>
+                    
+                    <p:commandButton id="btn_add" value="Aggiungi" update="lavoriCustom" action="#{lavoriCustomDialog.reinit}" >
+                        <p:collector value="#{lavoriCustomDialog.lavoro}" addTo="#{lavoriCustomDialog.lavoriCustom}" unique="false"/>
+                    </p:commandButton>
+                    <p:commandButton id="btn_save" value="Salva" actionListener="#{lavoriCustomDialog.closeDialog}"/>                  
+                </h:panelGrid>
+            </p:panel>
+
+            <p:outputPanel id="lavoriCustom">
+                <p:dataTable value="#{lavoriCustomDialog.lavoriCustom}" var="lav" id="lavoriCustomTable">
+
+                    <p:column headerText="Categoria">
+                        <h:outputText value="#{lav.categoria.nome}" />
+                    </p:column>
+
+                    <p:column headerText="Descrizione">
+                        <h:outputText value="#{lav.descrizione}" />
+                    </p:column>
+
+                    <p:column headerText="Rimuovi?" style="text-align: center !important">
+                        <p:commandButton icon="fa fa-fw fa-trash" update="form_add_lavori_custom" label="rimuovi" process="form_add_lavori_custom">
+                            <p:collector value="#{lav}" removeFrom="#{lavoriCustomDialog.lavoriCustom}" unique="true"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </p:outputPanel>        
+        </h:form>
+    </h:body>
 </html>

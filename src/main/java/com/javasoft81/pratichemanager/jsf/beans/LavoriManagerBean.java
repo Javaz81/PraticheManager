@@ -33,7 +33,7 @@ public class LavoriManagerBean implements Serializable {
 
     @EJB
     private CategoriatipolavoroFacade categoriaService;
-    
+
     @EJB
     private TipolavoroFacade tipoLavoroService;
 
@@ -138,7 +138,7 @@ public class LavoriManagerBean implements Serializable {
     public HashMap<Categoriatipolavoro, List<Tipolavoro>> getCategoriaLavori() {
         return categoriaLavori;
     }
-    
+
     public Boolean isLavoroSelected(Pratica p, Tipolavoro t) {
         List<Lavoripratichestandard> lav = getLavoriStandard(p);
         return lav.stream().anyMatch((l) -> (l.getTipolavoro().getIdTipoLavoro().equals(t.getIdTipoLavoro())));
@@ -160,7 +160,7 @@ public class LavoriManagerBean implements Serializable {
         return result;
     }
 
-    public void cancellaTuttiLavoriDiCategoria(List<Lavoripratichestandard> s, List<Lavoripratichecustom> c){
+    public void cancellaTuttiLavoriDiCategoria(List<Lavoripratichestandard> s, List<Lavoripratichecustom> c) {
         s.forEach((lps) -> {
             this.lavoriStandardService.remove(lps);
         });
@@ -168,20 +168,20 @@ public class LavoriManagerBean implements Serializable {
             this.lavoriCustomService.remove(lpc);
         });
     }
-    
+
     private List<Lavoripratichestandard> getLavoriStandard(Pratica p) {
         return this.lavoriStandardService.getLavoriStandardPerPratica(p);
     }
-    
-    public void cancellaLavoroStandard(Lavoripratichestandard s){
+
+    public void cancellaLavoroStandard(Lavoripratichestandard s) {
         this.lavoriStandardService.remove(s);
     }
-    
-    public void cancellaLavoroCustom(Lavoripratichecustom c){
+
+    public void cancellaLavoroCustom(Lavoripratichecustom c) {
         this.lavoriCustomService.remove(c);
     }
-    
-    public void editLavoroCustom(Lavoripratichecustom c){
+
+    public void editLavoroCustom(Lavoripratichecustom c) {
         this.lavoriCustomService.edit(c);
     }
 
@@ -189,10 +189,11 @@ public class LavoriManagerBean implements Serializable {
         Lavoripratichestandard l = new Lavoripratichestandard();
         l.setPratica(selectedPratica);
         l.setTipolavoro(i);
-        this.lavoriStandardService.create(l);       
-        for(Lavoripratichestandard ll : this.lavoriStandardService.getLavoriStandardPerPratica(selectedPratica)){
-            if(ll.getTipolavoro().getIdTipoLavoro().equals(i.getIdTipoLavoro()))
+        this.lavoriStandardService.create(l);
+        for (Lavoripratichestandard ll : this.lavoriStandardService.getLavoriStandardPerPratica(selectedPratica)) {
+            if (ll.getTipolavoro().getIdTipoLavoro().equals(i.getIdTipoLavoro())) {
                 return ll;
+            }
         }
         //It should be never happen...
         return null;
@@ -200,10 +201,24 @@ public class LavoriManagerBean implements Serializable {
 
     public List<Tipolavoro> getLavoriCategoria(Categoriatipolavoro cat) {
         List<Tipolavoro> lavcat = new ArrayList<>();
-        this.lavori.forEach(i->{
-            if(i.getCategoria().getIdCategoriaTipoLavoro().equals(cat.getIdCategoriaTipoLavoro()))
+        this.lavori.forEach(i -> {
+            if (i.getCategoria().getIdCategoriaTipoLavoro().equals(cat.getIdCategoriaTipoLavoro())) {
                 lavcat.add(i);
+            }
         });
         return lavcat;
+    }
+
+    Lavoripratichecustom creaNuovoLavoroCustom(Pratica selectedPratica, Lavoripratichecustom l) {
+        this.lavoriCustomService.create(l);
+        Lavoripratichecustom found = null;
+        List<Lavoripratichecustom> list = this.lavoriCustomService.getLavoriCustomPerPratica(selectedPratica);
+        for(Lavoripratichecustom i : list){
+            if (i.getCategoria().getIdCategoriaTipoLavoro().equals(l.getCategoria().getIdCategoriaTipoLavoro())
+                    && i.getDescrizione().equals(l.getDescrizione())) {
+                return i;
+            }
+        }
+        return null;
     }
 }

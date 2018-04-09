@@ -11,6 +11,6 @@ function searchVeicoli(){
 function addLavoriStandard(sclss){
     $(sclss).click();
 }
-function addLavoriCustom(){
-    $('.selectLavoriCustom').click();
+function addLavoriCustom(sclss){
+    $(sclss).click();
 }

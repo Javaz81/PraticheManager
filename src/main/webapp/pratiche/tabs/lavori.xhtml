@@ -15,22 +15,23 @@
                     <f:facet name="options">
                         <p:menu>
                             <p:submenu label="Gestisci lavori categoria">
-                                <p:menuitem value="aggiungi lavoro da anagrafica" onclick="addLavoriStandard('.selectLavoriStandard_#{categoria.idCategoriaTipoLavoro}')" />
-                                <p:menuitem value="aggiungi lavoro personalizzato" onclick="addLavoriCustom()" />
+                                <p:menuitem value="aggiungi lavoro da anagrafica" onclick="addLavoriStandard('.selectLavoriStandard_#{categoria.idCategoriaTipoLavoro}_#{veicoliSearchView.selectedPratica.idPratica}')" />
+                                <p:menuitem value="aggiungi lavoro personalizzato" onclick="addLavoriCustom('.selectLavoriCustom_#{categoria.idCategoriaTipoLavoro}_#{veicoliSearchView.selectedPratica.idPratica}')" />
                             </p:submenu>
                         </p:menu>                       
-                        <!--                         <p:commandButton  id="selectLavoriCustom" style="display: none"                                          
-                                                                  actionListener="#{veicoliSearchView.chooseLavoriCustom(categoria)}" 
-                                                                  >
-                                                    <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onLavoriCustomChosen}"                                    
-                                                            update="growl pratiche_panel"
-                                                            />                            
-                                                </p:commandButton> -->
+
                     </f:facet>
-                    <p:commandButton  styleClass="selectLavoriStandard_#{categoria.idCategoriaTipoLavoro}" style="display: none"                                           
-                                      actionListener="#{veicoliSearchView.chooseLavoriStandard(categoria)}" 
+                    <p:commandButton styleClass="selectLavoriStandard_#{categoria.idCategoriaTipoLavoro}_#{veicoliSearchView.selectedPratica.idPratica}" 
+                                     style="display: none" actionListener="#{veicoliSearchView.chooseLavoriStandard(categoria)}" 
                                       >
                         <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onLavoriStandardChosen}"                                    
+                                update="growl pratiche_panel"
+                                />                            
+                    </p:commandButton>
+                    <p:commandButton styleClass="selectLavoriCustom_#{categoria.idCategoriaTipoLavoro}_#{veicoliSearchView.selectedPratica.idPratica}"
+                                     style="display: none" actionListener="#{veicoliSearchView.chooseLavoriCustom(categoria)}" 
+                                      >
+                        <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onLavoriCustomChosen}"                                    
                                 update="growl pratiche_panel"
                                 />                            
                     </p:commandButton>
