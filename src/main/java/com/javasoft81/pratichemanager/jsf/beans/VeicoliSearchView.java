@@ -326,7 +326,7 @@ public class VeicoliSearchView implements Serializable {
     }
 
     public void onLavoriStandardChosen(SelectEvent event) {
-        List<Tipolavoro> selezionati = (List<Tipolavoro>) event.getSource();
+        List<Tipolavoro> selezionati = (List<Tipolavoro>) event.getObject();
         //rimuove i lavori deselezionati...
         this.selectedPraticaLavoriStandard.get(this.selectedCategoriaDialog).removeIf((Lavoripratichestandard i) -> {
             if (!selezionati.stream().noneMatch((l) -> (l.getIdTipoLavoro().equals(i.getId())))) {
@@ -349,6 +349,8 @@ public class VeicoliSearchView implements Serializable {
                 VeicoliSearchView.this.selectedPraticaLavoriStandard.get(VeicoliSearchView.this.selectedCategoriaDialog).add(found);
             }
         });
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Lavori aggiornati", "Categoria ".concat(this.selectedCategoriaDialog.getNome()).concat(" aggiornata con successo!"));
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public void onMaterialePraticaEdit(SelectEvent event) {
@@ -367,6 +369,11 @@ public class VeicoliSearchView implements Serializable {
         this.selectedCar = selectedCar;
     }
 
+     public void closeDialogAddLavoriStandardMenu(List<Tipolavoro> selezionati) {
+        RequestContext.getCurrentInstance().closeDialog(selezionati);
+    }
+
+    
     public void closeDialogMenu() {
         RequestContext.getCurrentInstance().closeDialog(null);
     }

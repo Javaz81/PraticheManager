@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -49,7 +50,7 @@ public class LavoriStandardDialog implements Serializable {
             valori.put(i, checked);
             for(Lavoripratichestandard lav : selezionati){
                 if(lav.getTipolavoro().getIdTipoLavoro().equals(i.getIdTipoLavoro())){
-                    checked=true;
+                    checked=true;                    
                     break;
                 }
             }
@@ -99,6 +100,15 @@ public class LavoriStandardDialog implements Serializable {
         this.veicoliSearchView = veicoliSearchView;
     }
     
+    public void closeDialog(){
+        List<Tipolavoro> sels = new ArrayList<>();
+        for(int i = 0 ; i < selezioni.size(); i++){
+            if(this.componentValues.get(i)){
+                sels.add(selezioni.get(i));
+            }
+        }
+        RequestContext.getCurrentInstance().closeDialog(sels);
+    }
     
     
 }
