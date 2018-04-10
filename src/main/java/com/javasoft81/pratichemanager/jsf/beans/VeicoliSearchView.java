@@ -295,7 +295,8 @@ public class VeicoliSearchView implements Serializable {
         this.selectedCategoriaDialog = cat;
         RequestContext.getCurrentInstance().openDialog("lavori/selectionLavoriStandard", options, null);
     }
-     public void chooseLavoriCustom(Categoriatipolavoro cat) {
+
+    public void chooseLavoriCustom(Categoriatipolavoro cat) {
         Map<String, Object> options = new HashMap<>();
         options.put("resizable", false);
         options.put("draggable", true);
@@ -337,16 +338,16 @@ public class VeicoliSearchView implements Serializable {
         List<Lavoripratichecustom> selezionati = (List<Lavoripratichecustom>) event.getObject();
         //aggiunge i lavori selezionati... 
         Lavoripratichecustom temp;
-        List<Lavoripratichecustom> ls =  this.selectedPraticaLavoriCustom.get(selectedCategoriaDialog);
-        for(Lavoripratichecustom lav : selezionati){
-           temp =  this.lavoriManagerBean.creaNuovoLavoroCustom(this.selectedPratica, lav);
-          ls.add(temp);
-        }        
+        List<Lavoripratichecustom> ls = this.selectedPraticaLavoriCustom.get(selectedCategoriaDialog);
+        for (Lavoripratichecustom lav : selezionati) {
+            temp = this.lavoriManagerBean.creaNuovoLavoroCustom(this.selectedPratica, lav);
+            ls.add(temp);
+        }
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Lavori aggiornati",
                 "Categoria ".concat(this.selectedCategoriaDialog.getNome()).concat(" aggiornata con successo!"));
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-    
+
     public void onLavoriStandardChosen(SelectEvent event) {
         List<Tipolavoro> selezionati = (List<Tipolavoro>) event.getObject();
         //rimuove i lavori deselezionati...
@@ -359,14 +360,14 @@ public class VeicoliSearchView implements Serializable {
         });
         //aggiunge i nuovi selezionati
         selezionati.forEach((Tipolavoro i) -> {
-            Lavoripratichestandard found=null;
+            Lavoripratichestandard found = null;
             for (Lavoripratichestandard l : VeicoliSearchView.this.selectedPraticaLavoriStandard.get(VeicoliSearchView.this.selectedCategoriaDialog)) {
-                if(l.getTipolavoro().getIdTipoLavoro().equals(i.getIdTipoLavoro())){
-                    found=l;
+                if (l.getTipolavoro().getIdTipoLavoro().equals(i.getIdTipoLavoro())) {
+                    found = l;
                     break;
                 }
             }
-            if (found==null) {
+            if (found == null) {
                 found = VeicoliSearchView.this.lavoriManagerBean.creaNuovoLavoroStandard(VeicoliSearchView.this.selectedPratica, i);
                 VeicoliSearchView.this.selectedPraticaLavoriStandard.get(VeicoliSearchView.this.selectedCategoriaDialog).add(found);
             }
@@ -391,12 +392,15 @@ public class VeicoliSearchView implements Serializable {
         this.selectedCar = selectedCar;
     }
 
-     public void closeDialogAddLavoriStandardMenu(List<Tipolavoro> selezionati) {
+    public void closeDialogAddLavoriStandardMenu(List<Tipolavoro> selezionati) {
         RequestContext.getCurrentInstance().closeDialog(selezionati);
     }
 
-    
     public void closeDialogMenu() {
+        RequestContext.getCurrentInstance().closeDialog(null);
+    }
+
+    public void closeMenuMaterialeDialog() {
         RequestContext.getCurrentInstance().closeDialog(null);
     }
 
