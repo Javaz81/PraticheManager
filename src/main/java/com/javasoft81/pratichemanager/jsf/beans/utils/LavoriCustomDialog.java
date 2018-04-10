@@ -6,10 +6,10 @@
 package com.javasoft81.pratichemanager.jsf.beans.utils;
 
 import com.javasoft81.pratichemanager.entities.Lavoripratichecustom;
-import com.javasoft81.pratichemanager.entities.Tipolavoro;
 import com.javasoft81.pratichemanager.jsf.beans.VeicoliSearchView;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -20,10 +20,32 @@ import org.primefaces.context.RequestContext;
  * @author andrea
  */
 public class LavoriCustomDialog implements Serializable {
+    
+    private class CustomList extends ArrayList<Lavoripratichecustom> {
+        
+        public CustomList(){  
+            super();                        
+        }
+        
+        public void setList(List<Lavoripratichecustom> arr){
+            super.clear();
+            super.addAll(arr);
+        }
+        
+        @Override
+        public boolean add(Lavoripratichecustom e) {
+            Iterator<Lavoripratichecustom> it = this.iterator();            
+            while(it.hasNext()) {
+                 if(it.next().getDescrizione().equals(e.getDescrizione()))
+                    return false;                 
+            }           
+            return super.add(e);
+        }
+    }
 
     private Lavoripratichecustom lavoro;
 
-    private List<Lavoripratichecustom> lavoriCustom;
+    private CustomList lavoriCustom;
 
     private VeicoliSearchView v;
 
@@ -40,7 +62,7 @@ public class LavoriCustomDialog implements Serializable {
         lavoro = new Lavoripratichecustom();
         lavoro.setPratica(v.getSelectedPratica());
         lavoro.setCategoria(v.getSelectedCategoriaDialog());
-        lavoriCustom = new ArrayList<>();
+        lavoriCustom = new CustomList();
 
     }
 
@@ -70,8 +92,8 @@ public class LavoriCustomDialog implements Serializable {
         return lavoriCustom;
     }
     
-    public void setLavoriCustom(List<Lavoripratichecustom> lavs) {
-        lavoriCustom = lavs;
+    public void setLavoriCustom(List<Lavoripratichecustom> lavs) {        
+        lavoriCustom.setList(lavs);
     }
 
      public void closeDialog(){

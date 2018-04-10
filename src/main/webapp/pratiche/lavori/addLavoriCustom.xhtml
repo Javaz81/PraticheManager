@@ -25,10 +25,10 @@ and open the template in the editor.
                     <p:inputText id="txt_categoria" value="#{lavoriCustomDialog.lavoro.categoria.nome}" disabled="true"/>
 
                     <h:outputLabel value="Descrizione lavoro : *" for="txt_desc"></h:outputLabel>
-                    <p:inputText id="txt_desc" value="#{lavoriCustomDialog.lavoro.descrizione}" required="true"/>
+                    <p:inputText id="txt_desc" value="#{lavoriCustomDialog.lavoro.descrizione}" size="60"   required="true"/>
                     
                     <p:commandButton id="btn_add" value="Aggiungi" update="lavoriCustom" action="#{lavoriCustomDialog.reinit}" >
-                        <p:collector value="#{lavoriCustomDialog.lavoro}" addTo="#{lavoriCustomDialog.lavoriCustom}" unique="false"/>
+                        <p:collector value="#{lavoriCustomDialog.lavoro}" addTo="#{lavoriCustomDialog.lavoriCustom}"  unique="false"/>
                     </p:commandButton>
                     <p:commandButton id="btn_save" value="Salva" actionListener="#{lavoriCustomDialog.closeDialog}"/>                  
                 </h:panelGrid>

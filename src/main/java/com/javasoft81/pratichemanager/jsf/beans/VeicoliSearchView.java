@@ -335,13 +335,13 @@ public class VeicoliSearchView implements Serializable {
 
     public void onLavoriCustomChosen(SelectEvent event) {
         List<Lavoripratichecustom> selezionati = (List<Lavoripratichecustom>) event.getObject();
-        //rimuove i lavori deselezionati...
-        selezionati.forEach(i->{
-           this.selectedPraticaLavoriCustom.get(this.selectedCategoriaDialog)
-                   .add(this.lavoriManagerBean
-                           .creaNuovoLavoroCustom(this.selectedPratica, i)
-                   );
-        });
+        //aggiunge i lavori selezionati... 
+        Lavoripratichecustom temp;
+        List<Lavoripratichecustom> ls =  this.selectedPraticaLavoriCustom.get(selectedCategoriaDialog);
+        for(Lavoripratichecustom lav : selezionati){
+           temp =  this.lavoriManagerBean.creaNuovoLavoroCustom(this.selectedPratica, lav);
+          ls.add(temp);
+        }        
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Lavori aggiornati",
                 "Categoria ".concat(this.selectedCategoriaDialog.getNome()).concat(" aggiornata con successo!"));
         FacesContext.getCurrentInstance().addMessage(null, message);
