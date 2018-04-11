@@ -1,0 +1,29 @@
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <style type="text/css">
+            .ui-widget, .ui-widget .ui-widget {
+                font-size: 78% !important;
+            }
+        </style>
+        <title> Aggingi materiali alla pratica </title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-md-12 ui-lg-12">
+                    <p:commandButton style=" margin-bottom: 3em" value="Salva modifiche" actionListener="#{materialiDialog.closeMaterialiDialog}"/>
+                    <h:outputLabel for="multiple" value="LISTA MATERIALI SELEZIONATI: " />
+                    <p:selectCheckboxMenu id="multiple" value="#{materialiDialog.selectedMateriale}" label="Materiali" multiple="true"
+                                          filter="true" filterMatchMode="startsWith">
+                        <f:selectItems value="#{materialiDialog.materiali}" />
+                    </p:selectCheckboxMenu>
+                    
+                </div>
+            </div>           
+        </h:form>
+    </h:body>
+</html>

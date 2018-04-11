@@ -28,7 +28,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Materialepratica.findAll", query = "SELECT m FROM Materialepratica m")
     , @NamedQuery(name = "Materialepratica.findByPratica", query = "SELECT m FROM Materialepratica m WHERE m.materialepraticaPK.pratica = :pratica")
     , @NamedQuery(name = "Materialepratica.findByArticolo", query = "SELECT m FROM Materialepratica m WHERE m.materialepraticaPK.articolo = :articolo")
-    , @NamedQuery(name = "Materialepratica.findByQuantitaConsumata", query = "SELECT m FROM Materialepratica m WHERE m.quantitaConsumata = :quantitaConsumata")})
+    , @NamedQuery(name = "Materialepratica.findByQuantitaConsumata", query = "SELECT m FROM Materialepratica m WHERE m.quantitaConsumata = :quantitaConsumata")
+    , @NamedQuery(name = "Materialepratica.findByArticoloPratica", query = "SELECT m FROM Materialepratica m WHERE m.articolo1 = :articolo AND m.pratica1 = :pratica")})
 public class Materialepratica implements Serializable {
 
     private static final long serialVersionUID = 1L;

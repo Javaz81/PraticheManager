@@ -163,7 +163,7 @@ public class Articolo implements Serializable {
 
     @Override
     public String toString() {
-        return "com.javasoft81.pratichemanager.entities.Articolo[ idArticolo=" + idArticolo + " ]";
+        return descrizione;
     }
     
 }

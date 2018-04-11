@@ -28,4 +28,10 @@ public class ArticoloFacade extends AbstractFacade<Articolo> {
     public ArticoloFacade() {
         super(Articolo.class);
     }
+
+    public Object findByDescrizione(String value) {
+        return getEntityManager().createNamedQuery("Articolo.findByDescrizione")
+                .setParameter("descrizione", value)
+                .getResultList().get(0);
+    }
 }

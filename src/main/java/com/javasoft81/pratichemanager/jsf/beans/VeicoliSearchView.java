@@ -5,6 +5,7 @@
  */
 package com.javasoft81.pratichemanager.jsf.beans;
 
+import com.javasoft81.pratichemanager.entities.Articolo;
 import com.javasoft81.pratichemanager.entities.Categoriatipolavoro;
 import com.javasoft81.pratichemanager.entities.Lavoripratichecustom;
 import com.javasoft81.pratichemanager.entities.Lavoripratichestandard;
@@ -16,10 +17,13 @@ import com.javasoft81.pratichemanager.entities.Veicolo;
 import com.javasoft81.pratichemanager.entities.beans.PraticaFacade;
 import com.javasoft81.pratichemanager.entities.beans.VeicoloFacade;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -305,13 +309,23 @@ public class VeicoliSearchView implements Serializable {
         RequestContext.getCurrentInstance().openDialog("lavori/addLavoriCustom", options, null);
     }
 
+    public void chooseMaterialePratica() {
+        Map<String, Object> options = new HashMap<>();
+        //options.put("resizable", false);
+        options.put("draggable", true);
+        options.put("modal", false);
+        options.put("contentWidth", 1000);
+        options.put("contentHeight", 380);
+        RequestContext.getCurrentInstance().openDialog("materiale/menuAddMaterialePratica", options, null);
+    }
+
     public void menuMateriale(Materialepratica mat) {
         Map<String, Object> options = new HashMap<>();
         options.put("resizable", false);
         options.put("draggable", true);
         options.put("modal", true);
         this.selectedMaterialePraticaDialog = mat;
-        RequestContext.getCurrentInstance().openDialog("materiale/menuMateriale", options, null);
+        RequestContext.getCurrentInstance().openDialog("materiale/menuEditQuantitaMateriale", options, null);
     }
 
     public void editLavoroCustom(Lavoripratichecustom lav) {
@@ -378,6 +392,44 @@ public class VeicoliSearchView implements Serializable {
 
     public void onMaterialePraticaEdit(SelectEvent event) {
         this.materialiManagerBean.editQty(this.selectedMaterialePraticaDialog);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Materiale modificato", "Id:" + this.selectedMaterialePraticaDialog.getArticolo1().getDescrizione());
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    public void onMaterialePraticaAdd(SelectEvent event) {
+        List<Articolo> selezionati = (List<Articolo>)event.getObject();
+        //rimuove tutti quelli che non fanno parte della selezione
+        this.selectedMaterialePratica.removeIf(new Predicate<Materialepratica>() {
+            @Override
+            public boolean test(Materialepratica i) {
+                if (!selezionati.stream().noneMatch(
+                        (art) -> (
+                                art.equals(i.getArticolo1().getDescrizione())))
+                        ) {
+                    return false;
+                } //se c'è non rimuovere niente.
+                VeicoliSearchView.this.materialiManagerBean.removeMateriale(i);
+                return true;
+            }
+        });
+        selezionati.forEach((Articolo art)->{
+            Articolo temp = null;
+            for (Materialepratica mat : this.selectedMaterialePratica) {
+                if(mat.getArticolo1().getIdArticolo().equals(art.getIdArticolo())){
+                    temp = art;
+                    break;
+                }
+            }
+            if(temp==null){
+                //aggiungi materiale
+                Materialepratica newMat = new Materialepratica();
+                newMat.setArticolo1(art);
+                newMat.setPratica1(this.selectedPratica);
+                newMat.setQuantitaConsumata(BigDecimal.ONE);
+                newMat = this.materialiManagerBean.create(newMat);
+                this.selectedMaterialePratica.add(newMat);
+            }
+        });
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Materiale modificato", "Id:" + this.selectedMaterialePraticaDialog.getArticolo1().getDescrizione());
         FacesContext.getCurrentInstance().addMessage(null, message);
     }

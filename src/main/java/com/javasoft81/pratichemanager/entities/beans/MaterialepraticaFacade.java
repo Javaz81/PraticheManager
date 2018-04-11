@@ -34,4 +34,12 @@ public class MaterialepraticaFacade extends AbstractFacade<Materialepratica> {
         return getEntityManager().createNamedQuery("Materialepratica.findByPratica")
                 .setParameter("pratica", p.getIdPratica()).getResultList();
     }
+
+    public Materialepratica recuperaMaterialePratica(Materialepratica unregisteredMateriale) {
+        this.create(unregisteredMateriale);
+        return (Materialepratica)this.getEntityManager().createNamedQuery("Materialepratica.findByArticoloPratica")
+                .setParameter("articolo", unregisteredMateriale.getArticolo1())
+                .setParameter("pratica", unregisteredMateriale.getPratica1())
+                .getResultList().get(0);
+    }
 }

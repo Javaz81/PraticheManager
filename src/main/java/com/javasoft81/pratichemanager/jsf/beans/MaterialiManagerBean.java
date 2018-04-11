@@ -16,26 +16,31 @@ import javax.ejb.EJB;
  *
  * @author andrea
  */
-public class MaterialiManagerBean implements Serializable{    
-    
+public class MaterialiManagerBean implements Serializable {
+
     @EJB
     private MaterialepraticaFacade materialeService;
-    
+
     /**
      * Creates a new instance of MaterialiManagerBean
      */
     public MaterialiManagerBean() {
     }
-    
-    public List<Materialepratica> getMaterialePratica(Pratica p){
+
+    public List<Materialepratica> getMaterialePratica(Pratica p) {
         return materialeService.findByPratica(p);
     }
-    
-    public void removeMateriale(Materialepratica mat){
+
+    public void removeMateriale(Materialepratica mat) {
         this.materialeService.remove(mat);
     }
 
     void editQty(Materialepratica mat) {
         this.materialeService.edit(mat);
+    }
+
+    public Materialepratica create(Materialepratica unregisteredMateriale) {
+        this.materialeService.create(unregisteredMateriale);
+        return this.materialeService.recuperaMaterialePratica(unregisteredMateriale);
     }
 }

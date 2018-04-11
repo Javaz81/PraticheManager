@@ -10,12 +10,17 @@
                 font-size: 90%;
             }
         </style>
-        <title>#{veicoliSearchView.selectedMaterialePraticaDialog.articolo1.descrizione}</title>
+        <title>
+                [CODICE]: #{veicoliSearchView.selectedMaterialePraticaDialog
+                        .articolo1.idArticolo.toString()} -  
+                #{veicoliSearchView.selectedMaterialePraticaDialog
+                 .articolo1.descrizione}
+             </title>
     </h:head>
     <h:body>
         <h:form>
             <div style="margin: auto !important">
-                <p:outputLabel style="margin:2em" value="Quantità materiale  " for="qty"/>
+                <p:outputLabel style="margin:2em" value="Quantità materiale  " for="qty"/>              
                 <p:inputNumber id="qty" value="#{veicoliSearchView.selectedMaterialePraticaDialog.quantitaConsumata}" minValue="0"/>
                 <p:commandButton style="margin-left: 2em" icon="fa fa-fw fa-edit" 
                                  value="Modifica" 

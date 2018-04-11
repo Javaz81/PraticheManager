@@ -65,4 +65,10 @@
         <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.utils.LavoriCustomDialog</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <description>Bean che gestisce l'aggiunta o la rimozione di materiale associato alla pratica.</description>
+        <managed-bean-name>materialiDialog</managed-bean-name>
+        <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.utils.MaterialiDialog</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
 </faces-config>

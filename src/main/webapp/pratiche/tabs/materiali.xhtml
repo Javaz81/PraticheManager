@@ -9,7 +9,12 @@ and open the template in the editor.
       xmlns:p="http://primefaces.org/ui"          
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <div class="ui-fluid">
-        <ui:repeat value="#{veicoliSearchView.selectedMaterialePratica}" var="mat">
+        <div class="ui-g-12 ui-lg-12 ui-md-12">
+            <p:commandButton value="Aggiungi" icon="fa fa-fw fa-plus" actionListener="#{veicoliSearchView.chooseMaterialePratica}">
+                <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onMaterialePraticaAdd}"/>
+            </p:commandButton>
+        </div>
+        <ui:repeat value="#{veicoliSearchView.selectedMaterialePratica}" var="mat">           
             <div class="ui-g-12 ui-lg-4 ui-md-6">
                 <div class="ui-g">
                     <div class="ui-g-6">
