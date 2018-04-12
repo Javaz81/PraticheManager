@@ -5,17 +5,18 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
       xmlns:p="http://primefaces.org/ui"          
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <p:commandButton value="GESTISCI MATERIALE PRATICA" icon="fa fa-fw fa-edit" actionListener="#{veicoliSearchView.chooseMaterialePratica}">
+        <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onMaterialePraticaAdd}" update="@(.tab_pratiche_panel) growl" />
+    </p:commandButton>
     <div class="ui-fluid">
         <div class="ui-g-12 ui-lg-12 ui-md-12">
-            <p:commandButton value="Aggiungi" icon="fa fa-fw fa-plus" actionListener="#{veicoliSearchView.chooseMaterialePratica}">
-                <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onMaterialePraticaAdd}"/>
-            </p:commandButton>
+
         </div>
         <ui:repeat value="#{veicoliSearchView.selectedMaterialePratica}" var="mat">           
-            <div class="ui-g-12 ui-lg-4 ui-md-6">
+            <div class="ui-g-12 ui-lg-3 ui-md-4">
                 <div class="ui-g">
                     <div class="ui-g-6">
                         #{mat.articolo1.descrizione} &#160; <b>#{mat.quantitaConsumata}</b> &#160; #{mat.articolo1.unitaDiMisura}
@@ -37,4 +38,4 @@ and open the template in the editor.
             </div>
         </ui:repeat>
     </div>
-</html>
+</ui:composition>

@@ -10,6 +10,7 @@ import com.javasoft81.pratichemanager.entities.Categoriatipolavoro;
 import com.javasoft81.pratichemanager.entities.Lavoripratichecustom;
 import com.javasoft81.pratichemanager.entities.Lavoripratichestandard;
 import com.javasoft81.pratichemanager.entities.Materialepratica;
+import com.javasoft81.pratichemanager.entities.MaterialepraticaPK;
 import com.javasoft81.pratichemanager.entities.Pratica;
 import com.javasoft81.pratichemanager.entities.Tipolavoro;
 import com.javasoft81.pratichemanager.jsf.beans.utils.PraticheUtils;
@@ -20,7 +21,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -397,7 +397,7 @@ public class VeicoliSearchView implements Serializable {
     }
 
     public void onMaterialePraticaAdd(SelectEvent event) {
-        List<Articolo> selezionati = (List<Articolo>)event.getObject();
+        List<String> selezionati = (List<String>)event.getObject();
         //rimuove tutti quelli che non fanno parte della selezione
         this.selectedMaterialePratica.removeIf(new Predicate<Materialepratica>() {
             @Override
@@ -412,25 +412,30 @@ public class VeicoliSearchView implements Serializable {
                 return true;
             }
         });
-        selezionati.forEach((Articolo art)->{
+        selezionati.forEach((String art)->{
             Articolo temp = null;
             for (Materialepratica mat : this.selectedMaterialePratica) {
-                if(mat.getArticolo1().getIdArticolo().equals(art.getIdArticolo())){
-                    temp = art;
+                if(mat.getArticolo1().getDescrizione().equals(art)){
+                    temp = mat.getArticolo1();
                     break;
                 }
             }
             if(temp==null){
                 //aggiungi materiale
                 Materialepratica newMat = new Materialepratica();
-                newMat.setArticolo1(art);
-                newMat.setPratica1(this.selectedPratica);
+                MaterialepraticaPK newMatPK = new MaterialepraticaPK();
+                Articolo articolo = this.materialiManagerBean.getArticoloByDescrizione(art);
+                newMatPK.setArticolo(articolo.getIdArticolo());
+                newMatPK.setPratica(this.selectedPratica.getIdPratica());
+                newMat.setArticolo1(articolo);
+                newMat.setMaterialepraticaPK(newMatPK);
+                newMat.setPratica1(this.selectedPratica);               
                 newMat.setQuantitaConsumata(BigDecimal.ONE);
                 newMat = this.materialiManagerBean.create(newMat);
-                this.selectedMaterialePratica.add(newMat);
+                this.selectedMaterialePratica.add(newMat);                
             }
         });
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Materiale modificato", "Id:" + this.selectedMaterialePraticaDialog.getArticolo1().getDescrizione());
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Materiali associati aggiornati","Aggiornamento eseguito con successo!");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 

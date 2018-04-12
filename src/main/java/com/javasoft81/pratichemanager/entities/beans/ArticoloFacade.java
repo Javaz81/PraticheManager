@@ -6,6 +6,7 @@
 package com.javasoft81.pratichemanager.entities.beans;
 
 import com.javasoft81.pratichemanager.entities.Articolo;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -30,8 +31,9 @@ public class ArticoloFacade extends AbstractFacade<Articolo> {
     }
 
     public Object findByDescrizione(String value) {
-        return getEntityManager().createNamedQuery("Articolo.findByDescrizione")
+        List<Articolo> arts = getEntityManager().createNamedQuery("Articolo.findByDescrizione")
                 .setParameter("descrizione", value)
-                .getResultList().get(0);
+                .getResultList();
+        return arts.isEmpty()?null:arts.get(0);
     }
 }

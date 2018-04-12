@@ -5,8 +5,10 @@
  */
 package com.javasoft81.pratichemanager.jsf.beans;
 
+import com.javasoft81.pratichemanager.entities.Articolo;
 import com.javasoft81.pratichemanager.entities.Materialepratica;
 import com.javasoft81.pratichemanager.entities.Pratica;
+import com.javasoft81.pratichemanager.entities.beans.ArticoloFacade;
 import com.javasoft81.pratichemanager.entities.beans.MaterialepraticaFacade;
 import java.io.Serializable;
 import java.util.List;
@@ -20,6 +22,9 @@ public class MaterialiManagerBean implements Serializable {
 
     @EJB
     private MaterialepraticaFacade materialeService;
+    
+    @EJB
+    private ArticoloFacade articoloService;
 
     /**
      * Creates a new instance of MaterialiManagerBean
@@ -42,5 +47,9 @@ public class MaterialiManagerBean implements Serializable {
     public Materialepratica create(Materialepratica unregisteredMateriale) {
         this.materialeService.create(unregisteredMateriale);
         return this.materialeService.recuperaMaterialePratica(unregisteredMateriale);
+    }
+
+    Articolo getArticoloByDescrizione(String art) {
+        return(Articolo) this.articoloService.findByDescrizione(art);
     }
 }

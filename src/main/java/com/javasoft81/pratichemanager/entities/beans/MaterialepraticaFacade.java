@@ -36,7 +36,6 @@ public class MaterialepraticaFacade extends AbstractFacade<Materialepratica> {
     }
 
     public Materialepratica recuperaMaterialePratica(Materialepratica unregisteredMateriale) {
-        this.create(unregisteredMateriale);
         return (Materialepratica)this.getEntityManager().createNamedQuery("Materialepratica.findByArticoloPratica")
                 .setParameter("articolo", unregisteredMateriale.getArticolo1())
                 .setParameter("pratica", unregisteredMateriale.getPratica1())
