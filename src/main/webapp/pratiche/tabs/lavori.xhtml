@@ -1,82 +1,85 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:p="http://primefaces.org/ui"          
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+                xmlns:p="http://primefaces.org/ui"          
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
         <h:outputStylesheet library="css" name="custom.css"/> 
     </h:head>
     <div class="ui-g ui-fluid">
-        <ui:repeat value="#{veicoliSearchView.lavoriManagerBean.categorie}" var="categoria" >
-            <div class="ui-g-12 ui-md-4 ui-lg-4">
-                <p:panel header="#{categoria.nome}" id="panel_#{veicoliSearchView.selectedPratica.idPratica}_#{categoria.idCategoriaTipoLavoro}">
-                    <f:facet name="options">
-                        <p:menu>
-                            <p:submenu label="Gestisci lavori categoria">
-                                <p:menuitem value="aggiungi lavoro da anagrafica" onclick="addLavoriStandard('.selectLavoriStandard_#{categoria.idCategoriaTipoLavoro}_#{veicoliSearchView.selectedPratica.idPratica}')" />
-                                <p:menuitem value="aggiungi lavoro personalizzato" onclick="addLavoriCustom('.selectLavoriCustom_#{categoria.idCategoriaTipoLavoro}_#{veicoliSearchView.selectedPratica.idPratica}')" />
-                            </p:submenu>
-                        </p:menu>                       
+        <h:form>
+            <ui:repeat value="#{veicoliSearchView.lavoriManagerBean.categorie}" var="categoria" >
+                <div class="ui-g-12 ui-md-4 ui-lg-4">
+                    <p:panel header="#{categoria.nome}" id="panel_#{veicoliSearchView.selectedPratica.idPratica}_#{categoria.idCategoriaTipoLavoro}">
+                        <f:facet name="options">
+                            <p:menu>
+                                <p:submenu label="Gestisci lavori categoria">
+                                    <p:menuitem value="aggiungi lavoro da anagrafica" onclick="addLavoriStandard('.selectLavoriStandard_#{categoria.idCategoriaTipoLavoro}_#{veicoliSearchView.selectedPratica.idPratica}')" />
+                                    <p:menuitem value="aggiungi lavoro personalizzato" onclick="addLavoriCustom('.selectLavoriCustom_#{categoria.idCategoriaTipoLavoro}_#{veicoliSearchView.selectedPratica.idPratica}')" />
+                                </p:submenu>
+                            </p:menu>                       
 
-                    </f:facet>
-                    <p:commandButton styleClass="selectLavoriStandard_#{categoria.idCategoriaTipoLavoro}_#{veicoliSearchView.selectedPratica.idPratica}" 
-                                     style="display: none" actionListener="#{veicoliSearchView.chooseLavoriStandard(categoria)}" 
-                                      >
-                        <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onLavoriStandardChosen}"                                    
-                                update="growl pratiche_panel"
-                                />                            
-                    </p:commandButton>
-                    <p:commandButton styleClass="selectLavoriCustom_#{categoria.idCategoriaTipoLavoro}_#{veicoliSearchView.selectedPratica.idPratica}"
-                                     style="display: none" actionListener="#{veicoliSearchView.chooseLavoriCustom(categoria)}" 
-                                      >
-                        <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onLavoriCustomChosen}"                                    
-                                update="growl pratiche_panel"
-                                />                            
-                    </p:commandButton>
-                    <ul>
-                        <ui:repeat value="#{veicoliSearchView.selectedPraticaLavoriStandard.get(categoria)}" var="lav">                     
-                            <li>
-                                <div class="ui-g">
-                                    <div class="ui-g-10">
-                                        #{lav.tipolavoro.descrizione} &nbsp;                                 
+                        </f:facet>
+                        <p:commandButton styleClass="selectLavoriStandard_#{categoria.idCategoriaTipoLavoro}_#{veicoliSearchView.selectedPratica.idPratica}" 
+                                         style="display: none" actionListener="#{veicoliSearchView.chooseLavoriStandard(categoria)}" 
+                                         >
+                            <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onLavoriStandardChosen}"                                    
+                                    update="growl pratiche_panel"
+                                    />                            
+                        </p:commandButton>
+                        <p:commandButton styleClass="selectLavoriCustom_#{categoria.idCategoriaTipoLavoro}_#{veicoliSearchView.selectedPratica.idPratica}"
+                                         style="display: none" actionListener="#{veicoliSearchView.chooseLavoriCustom(categoria)}" 
+                                         >
+                            <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onLavoriCustomChosen}"                                    
+                                    update="growl pratiche_panel"
+                                    />                            
+                        </p:commandButton>
+                        <ul>
+                            <ui:repeat value="#{veicoliSearchView.selectedPraticaLavoriStandard.get(categoria)}" var="lav">                     
+                                <li>
+                                    <div class="ui-g">
+                                        <div class="ui-g-10">
+                                            #{lav.tipolavoro.descrizione} &nbsp;                                 
+                                        </div>
+                                        <div class="ui-g-2">
+                                            <p:commandButton label="Rimuovi" icon="fa fa-fw fa-trash" action="#{veicoliSearchView.removeLavoroStandard(lav)}" update="@(.tab_pratiche_panel) growl">
+                                                <p:confirm header="Conferma rimozione" message="Vuoi rimuovere questo lavoro dalla pratica?" icon="ui-icon-alert" />
+                                            </p:commandButton>
+                                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                                <p:commandButton value="Rimuovi" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                                <p:commandButton value="Annulla" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                            </p:confirmDialog>  
+                                        </div>
                                     </div>
-                                    <div class="ui-g-2">
-                                        <p:commandButton label="Rimuovi" icon="fa fa-fw fa-trash" action="#{veicoliSearchView.removeLavoroStandard(lav)}" update="@(.tab_pratiche_panel) growl">
-                                            <p:confirm header="Conferma rimozione" message="Vuoi rimuovere questo lavoro dalla pratica?" icon="ui-icon-alert" />
-                                        </p:commandButton>
-                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                            <p:commandButton value="Rimuovi" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                            <p:commandButton value="Annulla" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                                        </p:confirmDialog>  
-                                    </div>
-                                </div>
 
-                            </li> 
-                        </ui:repeat> 
-                        <ui:repeat value="#{veicoliSearchView.selectedPraticaLavoriCustom.get(categoria)}" var="lav">
-                            <li>
-                                <div class="ui-g">
-                                    <div class="ui-g-8">
-                                        #{lav.descrizione} &nbsp; 
-                                    </div>
-                                    <div class="ui-g-2">
-                                        <p:commandButton icon="fa fa-fw fa-edit" action="#{veicoliSearchView.editLavoroCustom(lav)}" >
-                                            <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onLavoriCustomEdit}" update="@(.tab_pratiche_panel) growl"/>
-                                        </p:commandButton>
-                                    </div>
-                                    <div class="ui-g-2">
-                                        <p:commandButton icon="fa fa-fw fa-trash" action="#{veicoliSearchView.removeLavoroCustom(lav)}" update="@(.tab_pratiche_panel) growl">
-                                            <p:confirm header="Conferma rimozione" message="Vuoi rimuovere questo lavoro dalla pratica?" icon="ui-icon-alert" />
-                                        </p:commandButton>
-                                    </div>                                   
-                                </div>                                                                                            
-                            </li>                       
-                        </ui:repeat> 
-                    </ul>
-                </p:panel>
-            </div>            
-        </ui:repeat>
+                                </li> 
+                            </ui:repeat> 
+                            <ui:repeat value="#{veicoliSearchView.selectedPraticaLavoriCustom.get(categoria)}" var="lav">
+                                <li>
+                                    <div class="ui-g">
+                                        <div class="ui-g-8">
+                                            #{lav.descrizione} &nbsp; 
+                                        </div>
+                                        <div class="ui-g-2">
+                                            <p:commandButton icon="fa fa-fw fa-edit" action="#{veicoliSearchView.editLavoroCustom(lav)}" >
+                                                <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onLavoriCustomEdit}" update="@(.tab_pratiche_panel) growl"/>
+                                            </p:commandButton>
+                                        </div>
+                                        <div class="ui-g-2">
+                                            <p:commandButton icon="fa fa-fw fa-trash" action="#{veicoliSearchView.removeLavoroCustom(lav)}" update="@(.tab_pratiche_panel) growl">
+                                                <p:confirm header="Conferma rimozione" message="Vuoi rimuovere questo lavoro dalla pratica?" icon="ui-icon-alert" />
+                                            </p:commandButton>
+                                        </div>                                   
+                                    </div>                                                                                            
+                                </li>                       
+                            </ui:repeat> 
+                        </ul>
+
+                    </p:panel>
+                </div>            
+            </ui:repeat>
+        </h:form>      
     </div>
 </ui:composition>

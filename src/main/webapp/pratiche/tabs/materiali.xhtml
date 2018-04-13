@@ -6,36 +6,36 @@ and open the template in the editor.
 -->
 <!DOCTYPE html>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:p="http://primefaces.org/ui"          
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <p:commandButton value="GESTISCI MATERIALE PRATICA" icon="fa fa-fw fa-edit" actionListener="#{veicoliSearchView.chooseMaterialePratica}">
-        <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onMaterialePraticaAdd}" update="@(.tab_pratiche_panel) growl" />
-    </p:commandButton>
-    <div class="ui-fluid">
-        <div class="ui-g-12 ui-lg-12 ui-md-12">
-
-        </div>
-        <ui:repeat value="#{veicoliSearchView.selectedMaterialePratica}" var="mat">           
-            <div class="ui-g-12 ui-lg-3 ui-md-4">
-                <div class="ui-g">
-                    <div class="ui-g-6">
-                        #{mat.articolo1.descrizione} &#160; <b>#{mat.quantitaConsumata}</b> &#160; #{mat.articolo1.unitaDiMisura}
-                    </div>
-                    <div class="ui-g-6">
-                        <p:commandButton icon="fa fa-fw fa-edit"
-                                         action="#{veicoliSearchView.menuMateriale(mat)}">
-                            <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onMaterialePraticaEdit}" update="@(.tab_pratiche_panel) growl" />
-                        </p:commandButton>
-                        <p:commandButton icon="fa fa-fw fa-trash" action="#{veicoliSearchView.removeMateriale(mat)}" update="@(.tab_pratiche_panel) growl">
-                            <p:confirm header="Conferma rimozione" message="Vuoi rimuovere questo materiale dalla pratica?" icon="ui-icon-alert" />
-                        </p:commandButton>
-                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                            <p:commandButton value="Rimuovi" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                            <p:commandButton value="Annulla" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                        </p:confirmDialog>
+                xmlns:p="http://primefaces.org/ui"          
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:form>
+        <p:commandButton value="GESTISCI MATERIALE PRATICA" icon="fa fa-fw fa-edit" actionListener="#{veicoliSearchView.chooseMaterialePratica}">
+            <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onMaterialePraticaAdd}" update="@(.tab_pratiche_panel) growl" />
+        </p:commandButton>
+        <div class="ui-fluid">
+            <ui:repeat value="#{veicoliSearchView.selectedMaterialePratica}" var="mat">           
+                <div class="ui-g-12 ui-md-6 ui-lg-3">
+                    <div class="ui-g">
+                        <div class="ui-g-6">
+                            #{mat.articolo1.descrizione} &#160; <b>#{mat.quantitaConsumata}</b> &#160; #{mat.articolo1.unitaDiMisura}
+                        </div>
+                        <div class="ui-g-6">
+                            <p:commandButton icon="fa fa-fw fa-edit"
+                                             action="#{veicoliSearchView.menuMateriale(mat)}">
+                                <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onMaterialePraticaEdit}" update="@(.tab_pratiche_panel) growl" />
+                            </p:commandButton>
+                            <p:commandButton icon="fa fa-fw fa-trash" action="#{veicoliSearchView.removeMateriale(mat)}" update="@(.tab_pratiche_panel) growl">
+                                <p:confirm header="Conferma rimozione" message="Vuoi rimuovere questo materiale dalla pratica?" icon="ui-icon-alert" />
+                            </p:commandButton>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="Rimuovi" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="Annulla" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </ui:repeat>
-    </div>
+            </ui:repeat>
+        </div>
+    </h:form>    
 </ui:composition>

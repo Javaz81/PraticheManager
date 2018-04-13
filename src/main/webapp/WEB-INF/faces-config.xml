@@ -71,4 +71,10 @@
         <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.utils.MaterialiDialog</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <description>E' il bean che gestisce la modifica ai dati di una pratica.</description>
+        <managed-bean-name>generalePraticaDialog</managed-bean-name>
+        <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.utils.GeneralePraticaDialog</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
 </faces-config>

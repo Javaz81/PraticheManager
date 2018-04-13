@@ -11,6 +11,7 @@ import com.javasoft81.pratichemanager.entities.beans.PraticaFacade;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -22,7 +23,22 @@ import java.util.TimeZone;
 public class PraticheUtils implements Serializable {
     
     public static final int MAX_PRATICHE_ESTRAIBILI=200;
+
+    public static String getFormattedITDate(Date d) {
+        if(d==null)
+            return null;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy",Locale.ITALIAN);
+        return sdf.format(d);
+    }
     
+    public static String getFormattedBoolean(Boolean b){
+        if(b==null)
+            return "NO";
+        if(b)
+            return "SI";
+        else
+            return "NO";
+    }
     private PraticaFacade service;
     
     private Pratica selected;

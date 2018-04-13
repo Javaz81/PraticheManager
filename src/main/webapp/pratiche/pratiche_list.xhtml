@@ -178,6 +178,7 @@
                 </p:confirmDialog>
             </f:facet>
         </p:toolbar>
+    </h:form>
         <p:tabView id="tabview_pratiche" rendered="#{not empty veicoliSearchView.selectedCar}" 
                    var="item" value="#{veicoliSearchView.pratiche}" scrollable="true" 
                    activeIndex="#{veicoliSearchView.activeIndexTab}" 
@@ -190,7 +191,7 @@
                         <ui:include src="/pratiche/tabs/generale.xhtml"/>                  
                     </p:tab>
                     <p:tab title="Lavori">
-                         <ui:include src="/pratiche/tabs/lavori.xhtml"/> 
+                        <ui:include src="/pratiche/tabs/lavori.xhtml"/> 
                     </p:tab>
                     <p:tab title="Materiale">
                         <ui:include src="/pratiche/tabs/materiali.xhtml"/>
@@ -198,5 +199,4 @@
                 </p:accordionPanel> 
             </p:tab>
         </p:tabView>
-    </h:form>
 </html>

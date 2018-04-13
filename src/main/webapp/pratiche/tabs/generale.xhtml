@@ -1,171 +1,167 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
 <!DOCTYPE html>
-<ui:composition 
-    xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      >
-         <p:calendar locale="it" style="width:100% !important" showOn="button" navigator="true" pattern="dd-MM-yyyy" value="#{item.dataArrivo}" />
-        <div class="ui-g ui-fluid">     
-            <div class="ui-g-12 ui-md-12 ui-lg-12">
-                <!-- dati pratica -->
-                <p:panelGrid id="general_grid_dati">                
-                    <f:facet name="header">
-                        <p:row>
-                            <p:column colspan="4">                              
-                                Dati della pratica 
-                            </p:column>
-                        </p:row>
-                    </f:facet>
-                    <p:row>                            
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            N.ARRIVO
-                        </p:column>
-                        <p:column colspan="1">
-                            <p:inputText value="#{item.arrivo}"/>
-                        </p:column>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            DATA ARRIVO
-                        </p:column>
-                        <p:column colspan="1">
-                            <p:calendar locale="it" style="width:100% !important" showOn="button" navigator="true" pattern="dd-MM-yyyy" value="#{item.dataArrivo}" />
-                        </p:column>
-                    </p:row>
-                    <p:row>                            
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            N.USCITA
-                        </p:column>
-                        <p:column colspan="1">
-                            <p:inputText value="#{item.uscita}"/>
-                        </p:column>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            DATA USCITA
-                        </p:column>
-                        <p:column colspan="1">
-                            <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{item.dataUscita}" />
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            N.FATTURA
-                        </p:column>
-                        <p:column colspan="1">
-                            <p:inputText   value="#{item.numeroFattura}"/>
-                        </p:column>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            DATA FATTURA
-                        </p:column>
-                        <p:column colspan="1">
-                            <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{item.dataFattura}"/>
-                        </p:column>
-                    </p:row>
-                    <p:row>                            
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            COLLAUDO USL
-                        </p:column>
-                        <p:column colspan="1"  style="text-align: center" >
-                            <p:selectBooleanCheckbox value="#{item.collaudoUsl}"/>
-                        </p:column>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            DATA COL. USL
-                        </p:column>
-                        <p:column colspan="1">
-                            <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{item.collaudoUslData}"/>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            REGISTRO CONTROLLO
-                        </p:column>
-                        <p:column colspan="1" style="text-align: center">
-                            <p:selectBooleanCheckbox value="#{item.registroDiControllo}"/>
-                        </p:column>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            DATA REG.CONTROLLO
-                        </p:column>
-                        <p:column colspan="1">
-                            <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{item.registroDiControlloData}"/>
-                        </p:column>
-                    </p:row> 
-                    <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            REVISIONE MCTC
-                        </p:column>
-                        <p:column colspan="1" style="text-align: center">
-                            <p:selectBooleanCheckbox value="#{item.revisioneMctc}"/>
-                        </p:column>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            DATA REV. MCTC
-                        </p:column>
-                        <p:column colspan="1">
-                            <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{item.revisioneMctcData}"/>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            PREVENTIVO LAVORI
-                        </p:column>
-                        <p:column colspan="1" style="text-align: center">
-                            <p:selectBooleanCheckbox value="#{item.preventivoLavori}"/>
-                        </p:column>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            DATA PREV. LAVORI
-                        </p:column>
-                        <p:column colspan="1" >
-                            <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{item.preventivoLavoriData}"/>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            KM
-                        </p:column>
-                        <p:column colspan="1">
-                            <p:spinner value="#{item.kilometraggio}" />
-                        </p:column>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            ORE
-                        </p:column>
-                        <p:column colspan="1" >
-                            <p:spinner value="#{item.ore}"/>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            DIFE ?
-                        </p:column>
-                        <p:column colspan="1" style="text-align: center">
-                            <p:selectBooleanCheckbox value="#{item.dife}"/>
-                        </p:column>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            DATA INTERVENTO
-                        </p:column>
-                        <p:column colspan="1" >
-                            <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{item.interventoData}"/>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            LAVORI SEGNALATI ALL'INGRESSO:
-                        </p:column>
-                        <p:column colspan="3" style="text-align: justify !important;">
-                            <p:inputTextarea value="#{item.lavoriSegnalati}" rows="5" cols='82'  autoResize="false"/>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            STATO MACCHINA ALL'ARRIVO
-                        </p:column>
-                        <p:column colspan="3" style="text-align: justify !important;">                       
-                            <p:selectOneMenu value="#{item.statoVeicoloArrivo}" 
-                                             effect="fold" editable="true"
-                                             >
-                                <f:selectItem itemLabel="Select One" itemValue="" />
-                                <f:selectItems value="#{veicoliSearchView.statiArrivo}" />
-                            </p:selectOneMenu>
-                        </p:column>
-                    </p:row>
-                </p:panelGrid>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"          
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <div style="padding-right: 10em; padding-left: 10em">
+        <h:form>
+            <p:commandButton style="margin-bottom:1em; margin-top:1em"
+                             value="MODIFICA DATI" icon="fa fa-fw fa-edit"
+                             actionListener="#{veicoliSearchView.openMenuGenerale}">
+                <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onMenuGenerale}"                         
+                        update="growl pratiche_panel"
+                        />                            
+            </p:commandButton>
+        </h:form>
+        <div class="ui-g ui-fluid ui-widget-content ui-datatable-even" >                        
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+                N.ARRIVO
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style=" font-style: italic;">
+                #{item.arrivo}
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+                DATA ARRIVO
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+                #{veicoliSearchView.format_IT_Date(item.dataArrivo)} 
             </div>
         </div>
+        <div class="ui-g ui-fluid ui-widget-content ui-datatable-odd">                        
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+                N.USCITA
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+                #{item.uscita}
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+                DATA USCITA
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+                #{veicoliSearchView.format_IT_Date(item.dataUscita)} 
+            </div>
+        </div>
+        <div class="ui-g ui-fluid ui-widget-content ui-datatable-even">                        
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+                N.FATTURA
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+                #{item.numeroFattura}
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+                DATA FATTURA
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+                #{veicoliSearchView.format_IT_Date(item.dataFattura)} 
+            </div>
+        </div>
+        <div class="ui-g ui-fluid ui-widget-content ui-datatable-odd">                        
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+                COLLAUDO USL ?
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+                #{veicoliSearchView.format_IT_Boolean(m.collaudoUsl)}
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+                DATA COLL. USL.
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+                #{veicoliSearchView.format_IT_Date(item.collaudoUslData)} 
+            </div>
+        </div>
+        <div class="ui-g ui-fluid ui-widget-content ui-datatable-even">                        
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+                REGISTRO CONTROLLO ?
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+                #{veicoliSearchView.format_IT_Boolean(item.registroDiControllo)}
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+                DATA REG. CONTROLLO
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+                #{veicoliSearchView.format_IT_Date(item.registroDiControlloData)} 
+            </div>
+        </div>
+        <div class="ui-g ui-fluid ui-widget-content ui-datatable-odd">                        
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+                REVISIONE MCTC ?
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+                #{veicoliSearchView.format_IT_Boolean(item.revisioneMctc)}
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+                DATA REV. MCTC
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+                #{veicoliSearchView.format_IT_Date(item.revisioneMctcData)} 
+            </div>
+        </div>
+        <div class="ui-g ui-fluid ui-widget-content ui-datatable-even">                        
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+                PREVENTIVO LAVORI ?
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+                #{veicoliSearchView.format_IT_Boolean(item.preventivoLavori)}
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+                DATA PREV. LAVORI
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+                #{veicoliSearchView.format_IT_Date(item.preventivoLavoriData)} 
+            </div>
+        </div>
+        <div class="ui-g ui-fluid ui-widget-content ui-datatable-odd">                        
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+                KM
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+                #{item.kilometraggio}
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+                ORE
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+                #{item.ore} 
+            </div>
+        </div>
+        <div class="ui-g ui-fluid ui-widget-content ui-datatable-even">                        
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+                DIFE ?
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+                #{veicoliSearchView.format_IT_Boolean(item.dife)}
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+                DATA INTERVENTO
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+                #{veicoliSearchView.format_IT_Date(item.interventoData)} 
+            </div>
+        </div>
+        <div class="ui-g ui-fluid ui-widget-content ui-datatable-odd">                        
+            <div class="ui-g-12 ui-md-4 ui-lg-4"  style="font-weight: bold;">
+                LAVORI SEGNALATI ALL'INGRESSO:
+            </div>
+            <div class="ui-g-12 ui-md-8 ui-lg-8"  style="font-style: italic;">
+                #{empty item.lavoriSegnalati ? "NESSUNA SEGNALAZIONE" : item.lavoriSegnalati}                
+            </div>       
+        </div>
+        <div class="ui-g ui-fluid ui-widget-content ui-datatable-even">                        
+            <div class="ui-g-12 ui-md-4 ui-lg-4"  style="font-weight: bold;">
+                STATO MACCHINA ALL'ARRIVO
+            </div>
+            <div class="ui-g-12 ui-md-8 ui-lg-8"  style="font-style: italic;">
+                #{empty item.statoVeicoloArrivo ? "NESSUNO": item.statoVeicoloArrivo}
+            </div>       
+        </div>
+    </div>
 </ui:composition>

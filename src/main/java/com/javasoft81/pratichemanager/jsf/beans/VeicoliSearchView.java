@@ -20,6 +20,7 @@ import com.javasoft81.pratichemanager.entities.beans.VeicoloFacade;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,8 +38,8 @@ import org.primefaces.event.TabChangeEvent;
  *
  * @author andrea
  */
-public class VeicoliSearchView implements Serializable {
-
+public class VeicoliSearchView implements Serializable {   
+    
     private static final long serialVersionUID = 4798826631018877624L;
 
     @ManagedProperty(value = "lavoriManagerBean")
@@ -215,6 +216,14 @@ public class VeicoliSearchView implements Serializable {
         return PraticheUtils.getDate(p);
     }
 
+    public String format_IT_Date(Date d){
+        return PraticheUtils.getFormattedITDate(d);
+    }
+    
+    public String format_IT_Boolean(Boolean b){
+        return PraticheUtils.getFormattedBoolean(b);
+    }
+    
     public void newPratica() {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica Creata con successo", "Creazione avvenuta");
         FacesContext.getCurrentInstance().addMessage(null, message);
@@ -269,13 +278,13 @@ public class VeicoliSearchView implements Serializable {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Lavoro rimosso correttamente", "Successo");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-
+    /** 
     public void savePratica() {
         this.praticheService.edit(this.selectedPratica);
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica salvata correttamente", "ID pratica:" + selectedPratica.getIdPratica());
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-
+    */
     public void removeMateriale(Materialepratica m) {
         this.materialiManagerBean.removeMateriale(m);
         this.selectedMaterialePratica.remove(m);
@@ -337,6 +346,23 @@ public class VeicoliSearchView implements Serializable {
         RequestContext.getCurrentInstance().openDialog("lavori/menuLavori", options, null);
     }
 
+    public void openMenuGenerale(){
+        Map<String, Object> options = new HashMap<>();
+        options.put("resizable", false);
+        options.put("draggable", true);
+        options.put("modal", true);        
+        RequestContext.getCurrentInstance().openDialog("generale/menuGenerale", options, null);
+    }
+    
+    public void onMenuGenerale(SelectEvent event){
+        //Pratica retPratica = (Pratica) event.getObject();
+        //Trim all blank field and set null
+        nullifyAllBlankField(selectedPratica);
+        this.praticheService.edit(selectedPratica);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica aggiornata", "Successo");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+    
     public void onLavoriCustomEdit(SelectEvent event) {
         this.lavoriManagerBean.editLavoroCustom(this.selectedLavoroCustomDialog);
         this.selectedPraticaLavoriCustom.get(this.selectedLavoroCustomDialog.getCategoria()).forEach((Lavoripratichecustom i) -> {
@@ -494,5 +520,19 @@ public class VeicoliSearchView implements Serializable {
         //closing dialog trigger the <p:ajax> event dialogReturn and its 
         //listener 'onVeicoliChosen'        
         RequestContext.getCurrentInstance().closeDialog(veicolo);
+    }
+
+    private void nullifyAllBlankField(Pratica pratica) {
+        if(pratica.getArrivo() != null && pratica.getArrivo().trim().isEmpty())
+            pratica.setArrivo(null);
+        if(pratica.getUscita() != null && pratica.getUscita().trim().isEmpty())
+            pratica.setUscita(null);
+        if(pratica.getNumeroFattura() != null && pratica.getNumeroFattura().trim().isEmpty())
+            pratica.setNumeroFattura(null);
+        if(pratica.getLavoriSegnalati() != null && pratica.getLavoriSegnalati().trim().isEmpty())
+            pratica.setLavoriSegnalati(null);
+        if(pratica.getStatoVeicoloArrivo() != null && pratica.getStatoVeicoloArrivo().trim().isEmpty())
+            pratica.setStatoVeicoloArrivo(null);
+            
     }
 }
