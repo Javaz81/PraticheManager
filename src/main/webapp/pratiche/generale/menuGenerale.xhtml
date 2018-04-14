@@ -1,170 +1,180 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html>
-<html 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
     xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:p="http://primefaces.org/ui"
-    xmlns:f="http://xmlns.jcp.org/jsf/core"        
+    xmlns:p="http://primefaces.org/ui"          
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
     xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
-        <style type="text/css">
+        <h:outputText>MODIFICA DATI GENERALI DELLA PRATICA</h:outputText>
+        <style>
             .ui-widget, .ui-widget .ui-widget {
-                font-size: 90%;
+                font-size: 97% !important;
+            }
+            div {
+                font-size: 92% !important;
             }
         </style>
-        <title>MODIFICA DATI GENERALI DELLA PRATICA</title>
     </h:head>
-    <h:body>
+    <div>
         <h:form>
-            <p:commandButton style="margin-top: 1em" value="Salva Modifiche" actionListener="#{generalePraticaDialog.closeDialog()}"/>
-                <p:panel style=" margin-top: 1em">
-                   <div class="ui-g ui-fluid " >                            
-                       <div class="ui-g-3 ui-md-3 ui-lg-3"  style="font-weight: bold;">
-                           N.ARRIVO
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3" >
-                           <p:inputText value="#{generalePraticaDialog.p.arrivo}"/>
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3"  style="font-weight: bold;">
-                           DATA ARRIVO
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3" >
-                           <p:calendar locale="it" showOn="button" navigator="true" pattern="dd-MM-yyyy" value="#{generalePraticaDialog.p.dataArrivo}" />
-                       </div>
-                   </div>
-                   <div class="ui-g ui-fluid " >                            
-                       <div class="ui-g-3 ui-md-3 ui-lg-3"  style="font-weight: bold;">
-                           N.USCITA
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3" >
-                           <p:inputText value="#{generalePraticaDialog.p.uscita}"/>
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3"  style="font-weight: bold;">
-                           DATA USCITA
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3" >
-                           <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{generalePraticaDialog.p.dataUscita}" />
-                       </div>
-                   </div>
-                   <div class="ui-g ui-fluid " >
-                       <div class="ui-g-3 ui-md-3 ui-lg-3"  style="font-weight: bold;">
-                           N.FATTURA
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3" >
-                           <p:inputText   value="#{generalePraticaDialog.p.numeroFattura}"/>
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3"  style="font-weight: bold;">
-                           DATA FATTURA
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3" >
-                           <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{generalePraticaDialog.p.dataFattura}"/>
-                       </div>
-                   </div>
-                   <div class="ui-g ui-fluid " >                            
-                       <div class="ui-g-3 ui-md-3 ui-lg-3"  style="font-weight: bold;">
-                           COLLAUDO USL
-                       </div>
-                       <div class="ui-g-3 ui-md-8 ui-lg-8">
-                           <p:selectBooleanCheckbox value="#{generalePraticaDialog.p.collaudoUsl}"/>
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3"  style="font-weight: bold;">
-                           DATA COL. USL
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3" >
-                           <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{generalePraticaDialog.p.collaudoUslData}"/>
-                       </div>
-                   </div>
-                   <div class="ui-g ui-fluid " >
-                       <div class="ui-g-3 ui-md-3 ui-lg-3"  style="font-weight: bold;">
-                           REGISTRO CONTROLLO
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3" >
-                           <p:selectBooleanCheckbox value="#{generalePraticaDialog.p.registroDiControllo}"/>
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3"  style="font-weight: bold;">
-                           DATA REG.CONTROLLO
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3" >
-                           <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{generalePraticaDialog.p.registroDiControlloData}"/>
-                       </div>
-                   </div> 
-                   <div class="ui-g ui-fluid " >
-                       <div class="ui-g-3 ui-md-3 ui-lg-3"  style="font-weight: bold;">
-                           REVISIONE MCTC
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3" >
-                           <p:selectBooleanCheckbox value="#{generalePraticaDialog.p.revisioneMctc}"/>
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3"  style="font-weight: bold;">
-                           DATA REV. MCTC
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3" >
-                           <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{generalePraticaDialog.p.revisioneMctcData}"/>
-                       </div>
-                   </div>
-                   <div class="ui-g ui-fluid " >
-                       <div class="ui-g-3 ui-md-3 ui-lg-3"  style="font-weight: bold;">
-                           PREVENTIVO LAVORI
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3" >
-                           <p:selectBooleanCheckbox value="#{generalePraticaDialog.p.preventivoLavori}"/>
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3"  style="font-weight: bold;">
-                           DATA PREV. LAVORI
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3" >
-                           <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{generalePraticaDialog.p.preventivoLavoriData}"/>
-                       </div>
-                   </div>
-                   <div class="ui-g ui-fluid " >
-                       <div class="ui-g-3 ui-md-3 ui-lg-3"  style="font-weight: bold;">
-                           KM
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3" >
-                           <p:spinner value="#{generalePraticaDialog.p.kilometraggio}" />
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3"  style="font-weight: bold;">
-                           ORE
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3" >
-                           <p:spinner value="#{generalePraticaDialog.p.ore}"/>
-                       </div>
-                   </div>
-                   <div class="ui-g ui-fluid " >
-                       <div class="ui-g-3 ui-md-3 ui-lg-3"  style="font-weight: bold;">
-                           DIFE ?
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3" >
-                           <p:selectBooleanCheckbox value="#{generalePraticaDialog.p.dife}"/>
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3"  style="font-weight: bold;">
-                           DATA INTERVENTO
-                       </div>
-                       <div class="ui-g-3 ui-md-3 ui-lg-3" >
-                           <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{generalePraticaDialog.p.interventoData}"/>
-                       </div>
-                   </div>
-                   <div class="ui-g ui-fluid " >
-                       <div class="ui-g-3 ui-md-3 ui-lg-3"  style="font-weight: bold;">
-                           LAVORI SEGNALATI ALL'INGRESSO:
-                       </div>
-                       <div class="ui-g-3 ui-md-8 ui-lg-8" >
-                           <p:inputTextarea value="#{generalePraticaDialog.p.lavoriSegnalati}" rows="5" cols='82'  autoResize="false"/>
-                       </div>
-                   </div>
-                   <div class="ui-g ui-fluid " >
-                       <div class="ui-g-3 ui-md-4 ui-lg-4"  style="font-weight: bold;">
-                           STATO MACCHINA ALL'ARRIVO
-                       </div>
-                       <div class="ui-g-3 ui-md-8 ui-lg-8" style="text-align: justify !important;">                       
-                           <p:selectOneMenu value="#{generalePraticaDialog.p.statoVeicoloArrivo}" 
-                                            effect="fold" editable="true"
-                                            >
-                               <f:selectItem itemLabel="Select One" itemValue="" />
-                               <f:selectItems value="#{veicoliSearchView.statiArrivo}" />
-                           </p:selectOneMenu>
-                       </div>
-                   </div>
-               </p:panel>
+            <p:commandButton value="Salva Modifiche" actionListener="#{generalePraticaDialog.closeDialog()}"/>
+            <p:panel style=" margin-top: 0.5em">
+                <div class="ui-g ui-fluid " >                            
+                    <div class="ui-g-1 ui-md-1 ui-lg-1"  >
+                        N. ARRIVO
+                    </div>
+                    <div class="ui-g-2 ui-md-2 ui-lg-2" >
+                        <p:inputText value="#{generalePraticaDialog.p.arrivo}"/>
+                    </div>
+                    <div class="ui-g-1 ui-md-1 ui-lg-1"  >
+                        DATA ARRIVO
+                    </div>
+                    <div class="ui-g-2 ui-md-2 ui-lg-2" >
+                        <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{generalePraticaDialog.p.dataArrivo}" />
+                    </div>
+                    <div class="ui-g-1 ui-md-1 ui-lg-1"  >
+                        N. USCITA
+                    </div>
+                    <div class="ui-g-2 ui-md-2 ui-lg-2" >
+                        <p:inputText value="#{generalePraticaDialog.p.uscita}"/>
+                    </div>
+                    <div class="ui-g-1 ui-md-1 ui-lg-1"  >
+                        DATA USCITA
+                    </div>
+                    <div class="ui-g-2 ui-md-2 ui-lg-2" >
+                        <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{generalePraticaDialog.p.dataUscita}" />
+                    </div>
+
+                </div>
+                <div class="ui-g ui-fluid " >
+                    <div class="ui-g-1 ui-md-1 ui-lg-1"  >
+                        N. FATTURA
+                    </div>
+                    <div class="ui-g-2 ui-md-2 ui-lg-2" >
+                        <p:inputText   value="#{generalePraticaDialog.p.numeroFattura}"/>
+                    </div>
+                    <div class="ui-g-1 ui-md-1 ui-lg-1"  >
+                        DATA FATTURA
+                    </div>
+                    <div class="ui-g-2 ui-md-2 ui-lg-2" >
+                        <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{generalePraticaDialog.p.dataFattura}"/>
+                    </div>
+                    <div class="ui-g-1 ui-md-1 ui-lg-1" >
+                        KM:
+                    </div>
+                    <div class="ui-g-2 ui-md-2 ui-lg-2" >
+                        <p:spinner value="#{generalePraticaDialog.p.kilometraggio}" />
+                    </div>
+                    <div class="ui-g-1 ui-md-1 ui-lg-1" >
+                        ORE:
+                    </div>
+                    <div class="ui-g-2 ui-md-2 ui-lg-2"  >
+                        <p:spinner value="#{generalePraticaDialog.p.ore}"/>
+                    </div>
+
+                </div>
+                <div class="ui-g ui-fluid " >                            
+                    <div class="ui-g-2 ui-md-2 ui-lg-2"  >
+                        COLLAUDO USL
+                    </div>
+                    <div class="ui-g-1 ui-md-1 ui-lg-1">
+                        <p:selectBooleanCheckbox value="#{generalePraticaDialog.p.collaudoUsl}"/>
+                    </div>
+                    <div class="ui-g-2 ui-md-2 ui-lg-2"  >
+                        REGISTRO CONTROLLO
+                    </div>
+                    <div class="ui-g-1 ui-md-1 ui-lg-1" >
+                        <p:selectBooleanCheckbox value="#{generalePraticaDialog.p.registroDiControllo}"/>
+                    </div>
+                    <div class="ui-g-2 ui-md-2 ui-lg-2"  >
+                        REVISIONE MCTC
+                    </div>
+                    <div class="ui-g-1 ui-md-1 ui-lg-1" >
+                        <p:selectBooleanCheckbox value="#{generalePraticaDialog.p.revisioneMctc}"/>
+                    </div>
+                    <div class="ui-g-2 ui-md-2 ui-lg-2"  >
+                        PREVENTIVO LAVORI
+                    </div>
+                    <div class="ui-g-1 ui-md-1 ui-lg-1" >
+                        <p:selectBooleanCheckbox value="#{generalePraticaDialog.p.preventivoLavori}"/>
+                    </div>
+                </div>
+                <div class="ui-g ui-fluid " >
+                    <div class="ui-g-1 ui-md-1 ui-lg-1"  >
+                        DATA COL. USL
+                    </div>
+                    <div class="ui-g-2 ui-md-2 ui-lg-2" >
+                        <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{generalePraticaDialog.p.collaudoUslData}"/>
+                    </div>
+                    <div class="ui-g-1 ui-md-1 ui-lg-1"  >
+                        DATA REG. CONTROLLO
+                    </div>
+                    <div class="ui-g-2 ui-md-2 ui-lg-2" >
+                        <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{generalePraticaDialog.p.registroDiControlloData}"/>
+                    </div>
+                    <div class="ui-g-1 ui-md-1 ui-lg-1"  >
+                        DATA REV. MCTC
+                    </div>
+                    <div class="ui-g-2 ui-md-2 ui-lg-2" >
+                        <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{generalePraticaDialog.p.revisioneMctcData}"/>
+                    </div>
+                    <div class="ui-g-1 ui-md-1 ui-lg-1"  >
+                        DATA PREV. LAVORI
+                    </div>
+                    <div class="ui-g-2 ui-md-2 ui-lg-2" >
+                        <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{generalePraticaDialog.p.preventivoLavoriData}"/>
+                    </div>
+                </div>
+                <div class="ui-g ui-fluid " >                    
+                    <div class="ui-g-1 ui-md-1 ui-lg-1"  >
+                        DIFE ?
+                    </div>
+                    <div class="ui-g-1 ui-md-1 ui-lg-1" >
+                        <p:selectBooleanCheckbox value="#{generalePraticaDialog.p.dife}"/>
+                    </div>
+                    <div class="ui-g-1 ui-md-1 ui-lg-1"  >
+                        DATA INTERVENTO
+                    </div>
+                    <div class="ui-g-2 ui-md-2 ui-lg-2" >
+                        <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{generalePraticaDialog.p.interventoData}"/>
+                    </div>
+                    <div class="ui-g-2 ui-md-2 ui-lg-2"  >
+                        STATO MACCHINA ALL'ARRIVO
+                    </div>
+                    <div class="ui-g-5 ui-md-5 ui-lg-5" style="text-align: justify !important;">                       
+                        <p:selectOneMenu value="#{generalePraticaDialog.p.statoVeicoloArrivo}" 
+                                         effect="fold" editable="true"
+                                         >
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItems value="#{veicoliSearchView.statiArrivo}" />
+                        </p:selectOneMenu>
+                    </div>
+                </div>
+                <div class="ui-g ui-fluid " >
+                    <div class="ui-g-3 ui-md-3 ui-lg-3"  >
+                        STATO MACCHINA ALL'ARRIVO
+                    </div>
+                    <div class="ui-g-9 ui-md-9 ui-lg-9" style="text-align: justify !important;">                       
+                        <p:selectOneMenu value="#{generalePraticaDialog.p.statoVeicoloArrivo}" 
+                                         effect="fold" editable="true"
+                                         >
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItems value="#{veicoliSearchView.statiArrivo}" />
+                        </p:selectOneMenu>
+                    </div>
+                </div>
+                <div class="ui-g ui-fluid " >
+                    <div class="ui-g-3 ui-md-3 ui-lg-3"  >
+                        LAVORI SEGNALATI ALL'INGRESSO:
+                    </div>
+                    <div class="ui-g-9 ui-md-9 ui-lg-9" >
+                        <p:inputTextarea value="#{generalePraticaDialog.p.lavoriSegnalati}" autoResize="false" rows="3" cols="70"/>
+                    </div>
+                </div>
+
+            </p:panel>
         </h:form>
-    </h:body>
-</html>
+    </div>
+</ui:composition>

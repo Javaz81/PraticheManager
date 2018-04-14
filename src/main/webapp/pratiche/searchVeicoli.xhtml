@@ -11,8 +11,8 @@ and open the template in the editor.
     xmlns:p="http://primefaces.org/ui">
     <h:head>
         <style type="text/css">
-            .ui-widget {
-                font-size: 90%;
+            .ui-widget, .ui-widget .ui-widget {
+                font-size: 75%;
             }
         </style>
     </h:head>
@@ -20,7 +20,7 @@ and open the template in the editor.
         <h:form>
             <p:dataTable id="searchVeicoliDT" var="veicolo" value="#{veicoliSearchView.veicoli}" paginator="true" 
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"                         
-                         rows="10"
+                         rows="5"
                           >
                 <p:column headerText="Marca">
                     <h:outputText value="#{veicolo.marca}" />

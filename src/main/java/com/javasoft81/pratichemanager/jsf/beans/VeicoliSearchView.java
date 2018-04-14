@@ -350,7 +350,8 @@ public class VeicoliSearchView implements Serializable {
         Map<String, Object> options = new HashMap<>();
         options.put("resizable", false);
         options.put("draggable", true);
-        options.put("modal", true);        
+        options.put("modal", true);
+        options.put("contentWidth", 900);
         RequestContext.getCurrentInstance().openDialog("generale/menuGenerale", options, null);
     }
     

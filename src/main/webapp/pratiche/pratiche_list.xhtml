@@ -5,9 +5,9 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <p:panelGrid layout="grid" columns="1" 
+    <p:panelGrid layout="grid" columns="1" rendered="#{veicoliSearchView.pratiche.size()==0}"
                  style="text-align: center !important; margin: 2em; font-weight: bold; font-size: 1.3em;">
-        <p:outputLabel rendered="#{veicoliSearchView.pratiche.size()==0}">
+        <p:outputLabel >
             Nessuna pratica presente  
         </p:outputLabel>
     </p:panelGrid>
@@ -29,13 +29,13 @@
                         </p:row>
                     </f:facet>
                     <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
+                        <p:column colspan="1" style="font-weight: bold;">
                             MARCA
                         </p:column>
                         <p:column class="col-value" colspan="1">
                             #{veicoliSearchView.selectedCar.marca}
                         </p:column>
-                        <p:column colspan="1"  style="font-weight: bold;">
+                        <p:column colspan="1" style="font-weight: bold;">
                             MODELLO
                         </p:column>
                         <p:column class="col-value" colspan="1">
@@ -43,13 +43,13 @@
                         </p:column>
                     </p:row>
                     <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
+                        <p:column colspan="1" style="font-weight: bold;">
                             ANNO
                         </p:column>
                         <p:column class="col-value" colspan="1">
                             #{veicoliSearchView.selectedCar.anno}
                         </p:column>
-                        <p:column colspan="1"  style="font-weight: bold;">
+                        <p:column colspan="1" style="font-weight: bold;">
                             PORTATA MAX.
                         </p:column>
                         <p:column class="col-value" colspan="1">
@@ -165,8 +165,7 @@
     <h:form>
         <p:toolbar rendered="#{not empty veicoliSearchView.selectedCar}" id="tb_#{item.idPratica}">
             <f:facet name="left">
-                <p:commandButton value="Nuova" title="Nuova Pratica" action="#{veicoliSearchView.newPratica}" icon="ui-icon-document" update=":growl" />
-                <p:commandButton rendered="#{not empty veicoliSearchView.selectedPratica}" value="Salva" title="Salva Pratica" action="#{veicoliSearchView.savePratica}" icon="ui-icon-disk" update=":growl"/>      
+                <p:commandButton value="Nuova" title="Nuova Pratica" action="#{veicoliSearchView.newPratica}" icon="ui-icon-document" update=":growl"/>
             </f:facet>
             <f:facet name="right">
                 <p:commandButton rendered="#{not empty veicoliSearchView.selectedPratica}" value="Cancella" title="Cancella Pratica" action="#{veicoliSearchView.deletePratica}" icon="ui-icon-trash" update=":growl">
