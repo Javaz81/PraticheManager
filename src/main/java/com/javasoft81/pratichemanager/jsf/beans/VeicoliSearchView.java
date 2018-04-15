@@ -20,6 +20,7 @@ import com.javasoft81.pratichemanager.entities.beans.VeicoloFacade;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -38,8 +39,8 @@ import org.primefaces.event.TabChangeEvent;
  *
  * @author andrea
  */
-public class VeicoliSearchView implements Serializable {   
-    
+public class VeicoliSearchView implements Serializable {
+
     private static final long serialVersionUID = 4798826631018877624L;
 
     @ManagedProperty(value = "lavoriManagerBean")
@@ -216,37 +217,36 @@ public class VeicoliSearchView implements Serializable {
         return PraticheUtils.getDate(p);
     }
 
-    public String format_IT_Date(Date d){
+    public String format_IT_Date(Date d) {
         return PraticheUtils.getFormattedITDate(d);
     }
-    
-    public String format_IT_Boolean(Boolean b){
+
+    public String format_IT_Boolean(Boolean b) {
         return PraticheUtils.getFormattedBoolean(b);
     }
-    
+
     public void newPratica() {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica Creata con successo", "Creazione avvenuta");
         FacesContext.getCurrentInstance().addMessage(null, message);
         Pratica p = new Pratica();
-        this.praticheService.create(p);
-        this.pratiche = null; //re-trigger visualization of all tabs        
-        this.pratiche = this.praticheService.findPraticaByVeicolo(selectedCar, PraticheUtils.MAX_PRATICHE_ESTRAIBILI);
-        this.selectedPratica = this.pratiche.isEmpty() ? null : this.pratiche.get(0);
-        if (!this.pratiche.isEmpty()) {
-            for (Categoriatipolavoro cat : this.lavoriManagerBean.getCategorie()) {
-                this.selectedPraticaLavoriStandard.put(cat, null);
-                this.selectedPraticaLavoriCustom.put(cat, null);
-            }
-            if (this.selectedMaterialePratica == null) {
-                this.selectedMaterialePratica = new ArrayList<>();
-            } else {
-                this.selectedMaterialePratica.clear();
-            }
+        if (this.selectedPratica == null) {
+            p.setVeicolo(selectedCar);
+            p.setClienteidCliente(selectedCar.getCliente());
+        } else {
+            p.setVeicolo(this.selectedPratica.getVeicolo());
+            p.setClienteidCliente(this.selectedPratica.getClienteidCliente());
         }
-        /**
-         * ******************* QUI VANNO CREATI ANCHE TUTTI I MATERIALI
-         * ASSOCIATI !!!!! *********************
-         */
+        p.setDataArrivo(Calendar.getInstance().getTime());
+        this.praticheService.create(p);
+        this.pratiche = this.praticheService.findPraticaByVeicolo(selectedCar, PraticheUtils.MAX_PRATICHE_ESTRAIBILI);
+        this.selectedMaterialePratica = new ArrayList<>();
+        this.selectedPraticaLavoriCustom = new HashMap<>();
+        for (Categoriatipolavoro c : this.lavoriManagerBean.getCategorie()) {
+            this.selectedPraticaLavoriCustom.put(c, new ArrayList());
+            this.selectedPraticaLavoriStandard.put(c, new ArrayList<>());
+        }
+        this.selectedPratica = this.pratiche.get(0);
+        this.activeIndexTab = 0;
     }
 
     public void deletePratica() {
@@ -259,6 +259,9 @@ public class VeicoliSearchView implements Serializable {
          * ******************* QUI VANNO CANCELLATI ANCHE TUTTI I MATERIALI
          * ASSOCIATI !!!!! *********************
          */
+        for (Materialepratica mat : this.selectedMaterialePratica) {
+            this.materialiManagerBean.removeMateriale(mat);
+        }
         this.praticheService.remove(this.selectedPratica);
         this.pratiche = null; //re-trigger visualization of all tabs
         this.pratiche = this.praticheService.findPraticaByVeicolo(selectedCar, PraticheUtils.MAX_PRATICHE_ESTRAIBILI);
@@ -278,13 +281,14 @@ public class VeicoliSearchView implements Serializable {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Lavoro rimosso correttamente", "Successo");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-    /** 
-    public void savePratica() {
-        this.praticheService.edit(this.selectedPratica);
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica salvata correttamente", "ID pratica:" + selectedPratica.getIdPratica());
-        FacesContext.getCurrentInstance().addMessage(null, message);
-    }
-    */
+
+    /**
+     * public void savePratica() {
+     * this.praticheService.edit(this.selectedPratica); FacesMessage message =
+     * new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica salvata
+     * correttamente", "ID pratica:" + selectedPratica.getIdPratica());
+     * FacesContext.getCurrentInstance().addMessage(null, message); }
+     */
     public void removeMateriale(Materialepratica m) {
         this.materialiManagerBean.removeMateriale(m);
         this.selectedMaterialePratica.remove(m);
@@ -346,7 +350,7 @@ public class VeicoliSearchView implements Serializable {
         RequestContext.getCurrentInstance().openDialog("lavori/menuLavori", options, null);
     }
 
-    public void openMenuGenerale(){
+    public void openMenuGenerale() {
         Map<String, Object> options = new HashMap<>();
         options.put("resizable", false);
         options.put("draggable", true);
@@ -354,8 +358,8 @@ public class VeicoliSearchView implements Serializable {
         options.put("contentWidth", 900);
         RequestContext.getCurrentInstance().openDialog("generale/menuGenerale", options, null);
     }
-    
-    public void onMenuGenerale(SelectEvent event){
+
+    public void onMenuGenerale(SelectEvent event) {
         //Pratica retPratica = (Pratica) event.getObject();
         //Trim all blank field and set null
         nullifyAllBlankField(selectedPratica);
@@ -363,7 +367,7 @@ public class VeicoliSearchView implements Serializable {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica aggiornata", "Successo");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-    
+
     public void onLavoriCustomEdit(SelectEvent event) {
         this.lavoriManagerBean.editLavoroCustom(this.selectedLavoroCustomDialog);
         this.selectedPraticaLavoriCustom.get(this.selectedLavoroCustomDialog.getCategoria()).forEach((Lavoripratichecustom i) -> {
@@ -424,30 +428,28 @@ public class VeicoliSearchView implements Serializable {
     }
 
     public void onMaterialePraticaAdd(SelectEvent event) {
-        List<String> selezionati = (List<String>)event.getObject();
+        List<String> selezionati = (List<String>) event.getObject();
         //rimuove tutti quelli che non fanno parte della selezione
         this.selectedMaterialePratica.removeIf(new Predicate<Materialepratica>() {
             @Override
             public boolean test(Materialepratica i) {
                 if (!selezionati.stream().noneMatch(
-                        (art) -> (
-                                art.equals(i.getArticolo1().getDescrizione())))
-                        ) {
+                        (art) -> (art.equals(i.getArticolo1().getDescrizione())))) {
                     return false;
                 } //se c'è non rimuovere niente.
                 VeicoliSearchView.this.materialiManagerBean.removeMateriale(i);
                 return true;
             }
         });
-        selezionati.forEach((String art)->{
+        selezionati.forEach((String art) -> {
             Articolo temp = null;
             for (Materialepratica mat : this.selectedMaterialePratica) {
-                if(mat.getArticolo1().getDescrizione().equals(art)){
+                if (mat.getArticolo1().getDescrizione().equals(art)) {
                     temp = mat.getArticolo1();
                     break;
                 }
             }
-            if(temp==null){
+            if (temp == null) {
                 //aggiungi materiale
                 Materialepratica newMat = new Materialepratica();
                 MaterialepraticaPK newMatPK = new MaterialepraticaPK();
@@ -456,13 +458,13 @@ public class VeicoliSearchView implements Serializable {
                 newMatPK.setPratica(this.selectedPratica.getIdPratica());
                 newMat.setArticolo1(articolo);
                 newMat.setMaterialepraticaPK(newMatPK);
-                newMat.setPratica1(this.selectedPratica);               
+                newMat.setPratica1(this.selectedPratica);
                 newMat.setQuantitaConsumata(BigDecimal.ONE);
                 newMat = this.materialiManagerBean.create(newMat);
-                this.selectedMaterialePratica.add(newMat);                
+                this.selectedMaterialePratica.add(newMat);
             }
         });
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Materiali associati aggiornati","Aggiornamento eseguito con successo!");
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Materiali associati aggiornati", "Aggiornamento eseguito con successo!");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
@@ -524,16 +526,21 @@ public class VeicoliSearchView implements Serializable {
     }
 
     private void nullifyAllBlankField(Pratica pratica) {
-        if(pratica.getArrivo() != null && pratica.getArrivo().trim().isEmpty())
+        if (pratica.getArrivo() != null && pratica.getArrivo().trim().isEmpty()) {
             pratica.setArrivo(null);
-        if(pratica.getUscita() != null && pratica.getUscita().trim().isEmpty())
+        }
+        if (pratica.getUscita() != null && pratica.getUscita().trim().isEmpty()) {
             pratica.setUscita(null);
-        if(pratica.getNumeroFattura() != null && pratica.getNumeroFattura().trim().isEmpty())
+        }
+        if (pratica.getNumeroFattura() != null && pratica.getNumeroFattura().trim().isEmpty()) {
             pratica.setNumeroFattura(null);
-        if(pratica.getLavoriSegnalati() != null && pratica.getLavoriSegnalati().trim().isEmpty())
+        }
+        if (pratica.getLavoriSegnalati() != null && pratica.getLavoriSegnalati().trim().isEmpty()) {
             pratica.setLavoriSegnalati(null);
-        if(pratica.getStatoVeicoloArrivo() != null && pratica.getStatoVeicoloArrivo().trim().isEmpty())
+        }
+        if (pratica.getStatoVeicoloArrivo() != null && pratica.getStatoVeicoloArrivo().trim().isEmpty()) {
             pratica.setStatoVeicoloArrivo(null);
-            
+        }
+
     }
 }
