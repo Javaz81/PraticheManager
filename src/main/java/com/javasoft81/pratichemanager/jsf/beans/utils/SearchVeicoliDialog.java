@@ -8,6 +8,7 @@ package com.javasoft81.pratichemanager.jsf.beans.utils;
 import com.javasoft81.pratichemanager.entities.Cliente;
 import com.javasoft81.pratichemanager.entities.Veicolo;
 import com.javasoft81.pratichemanager.jsf.beans.VeicoliSearchView;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
 import javax.annotation.PostConstruct;
@@ -18,7 +19,7 @@ import org.primefaces.context.RequestContext;
  *
  * @author andrea
  */
-public class SearchVeicoliDialog {
+public class SearchVeicoliDialog implements Serializable{
     
     private List<Veicolo> filteredVeicoli;
     

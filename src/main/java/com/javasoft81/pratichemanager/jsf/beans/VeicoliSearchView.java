@@ -488,28 +488,7 @@ public class VeicoliSearchView implements Serializable {
 
     public void onVeicoliChosen(SelectEvent event) {
         Veicolo car = (Veicolo) event.getObject();
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Autoarticolato selezionato", "Id:" + car.getMarca());
-        FacesContext.getCurrentInstance().addMessage(null, message);
-    }
-
-    public void setSelectedCar(Veicolo selectedCar) {
-        this.selectedCar = selectedCar;
-    }
-
-    public void closeDialogAddLavoriStandardMenu(List<Tipolavoro> selezionati) {
-        RequestContext.getCurrentInstance().closeDialog(selezionati);
-    }
-
-    public void closeDialogMenu() {
-        RequestContext.getCurrentInstance().closeDialog(null);
-    }
-
-    public void closeMenuMaterialeDialog() {
-        RequestContext.getCurrentInstance().closeDialog(null);
-    }
-
-    public void selectCarFromDialog(Veicolo veicolo) {
-        this.selectedCar = veicolo;
+        this.selectedCar = car;
         this.pratiche = this.praticheService.findPraticaByVeicolo(selectedCar, PraticheUtils.MAX_PRATICHE_ESTRAIBILI);
         this.selectedPratica = this.pratiche.isEmpty() ? null : this.pratiche.get(0);
         if (this.selectedPraticaLavoriStandard == null) {
@@ -538,9 +517,24 @@ public class VeicoliSearchView implements Serializable {
             }
             this.selectedMaterialePratica = this.materialiManagerBean.getMaterialePratica(selectedPratica);
         }
-        //closing dialog trigger the <p:ajax> event dialogReturn and its 
-        //listener 'onVeicoliChosen'        
-        RequestContext.getCurrentInstance().closeDialog(veicolo);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Autoarticolato selezionato", "Id:" + car.getMarca());
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    public void setSelectedCar(Veicolo selectedCar) {
+        this.selectedCar = selectedCar;
+    }
+
+    public void closeDialogAddLavoriStandardMenu(List<Tipolavoro> selezionati) {
+        RequestContext.getCurrentInstance().closeDialog(selezionati);
+    }
+
+    public void closeDialogMenu() {
+        RequestContext.getCurrentInstance().closeDialog(null);
+    }
+
+    public void closeMenuMaterialeDialog() {
+        RequestContext.getCurrentInstance().closeDialog(null);
     }
 
     private void nullifyAllBlankField(Pratica pratica) {
