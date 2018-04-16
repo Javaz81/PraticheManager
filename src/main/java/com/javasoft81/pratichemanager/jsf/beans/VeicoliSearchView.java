@@ -7,6 +7,7 @@ package com.javasoft81.pratichemanager.jsf.beans;
 
 import com.javasoft81.pratichemanager.entities.Articolo;
 import com.javasoft81.pratichemanager.entities.Categoriatipolavoro;
+import com.javasoft81.pratichemanager.entities.Cliente;
 import com.javasoft81.pratichemanager.entities.Lavoripratichecustom;
 import com.javasoft81.pratichemanager.entities.Lavoripratichestandard;
 import com.javasoft81.pratichemanager.entities.Materialepratica;
@@ -24,6 +25,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
 import javax.annotation.PostConstruct;
@@ -79,6 +81,9 @@ public class VeicoliSearchView implements Serializable {
     private Lavoripratichecustom selectedLavoroCustomDialog;
 
     private Categoriatipolavoro selectedCategoriaDialog;
+    
+    private List<Veicolo> filteredVeicoli;
+
 
     /**
      * Creates a new instance of VeicoliSearchView
@@ -185,6 +190,29 @@ public class VeicoliSearchView implements Serializable {
         return selectedPraticaLavoriCustom;
     }
 
+    public List<Veicolo> getFilteredVeicoli() {
+        return filteredVeicoli;
+    }
+
+    public void setFilteredVeicoli(List<Veicolo> filteredVeicoli) {
+        this.filteredVeicoli = filteredVeicoli;
+    }       
+    
+    public boolean filterVeicoloByCliente(Object value, Object filter, Locale locale) {
+        String filterText = (filter == null) ? null : filter.toString().trim();
+        if(filterText == null||filterText.equals("")) {
+            return true;
+        }         
+        if(value == null) {
+            return false;
+        }
+        String nome = ((Cliente)value).getNome()==null?"":((Cliente)value).getNome();
+        String cognome = ((Cliente)value).getCognome()==null?"":((Cliente)value).getCognome();
+        boolean result;
+        result = (nome.contains(filterText) || cognome.contains(filterText));
+        return result;
+    }
+
     public void onTabChange(TabChangeEvent event) {
         this.selectedPratica = (Pratica) event.getData();
         this.activeIndexTab = this.pratiche.indexOf(this.selectedPratica);
@@ -255,10 +283,6 @@ public class VeicoliSearchView implements Serializable {
         for (Categoriatipolavoro c : this.lavoriManagerBean.getCategorie()) {
             this.lavoriManagerBean.cancellaTuttiLavoriDiCategoria(this.selectedPraticaLavoriStandard.get(c), this.selectedPraticaLavoriCustom.get(c));
         }
-        /**
-         * ******************* QUI VANNO CANCELLATI ANCHE TUTTI I MATERIALI
-         * ASSOCIATI !!!!! *********************
-         */
         for (Materialepratica mat : this.selectedMaterialePratica) {
             this.materialiManagerBean.removeMateriale(mat);
         }
@@ -282,13 +306,7 @@ public class VeicoliSearchView implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
-    /**
-     * public void savePratica() {
-     * this.praticheService.edit(this.selectedPratica); FacesMessage message =
-     * new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica salvata
-     * correttamente", "ID pratica:" + selectedPratica.getIdPratica());
-     * FacesContext.getCurrentInstance().addMessage(null, message); }
-     */
+
     public void removeMateriale(Materialepratica m) {
         this.materialiManagerBean.removeMateriale(m);
         this.selectedMaterialePratica.remove(m);

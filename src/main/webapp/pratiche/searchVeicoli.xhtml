@@ -20,21 +20,21 @@ and open the template in the editor.
         <h:form>
             <p:dataTable id="searchVeicoliDT" var="veicolo" value="#{veicoliSearchView.veicoli}" paginator="true" 
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"                         
-                         rows="5"
+                         rows="5" filteredValue="#{veicoliSearchView.filteredVeicoli}"
                           >
-                <p:column headerText="Marca">
+                <p:column headerText="Marca" filterBy="#{veicolo.marca}" filterMatchMode="contains">
                     <h:outputText value="#{veicolo.marca}" />
                 </p:column>
 
-                <p:column headerText="Modello">
+                <p:column headerText="Modello" filterBy="#{veicolo.marca}" filterMatchMode="contains" >
                     <h:outputText value="#{veicolo.modello}" />
                 </p:column>
 
-                <p:column headerText="Num. Fabbrica/matricola">
+                <p:column headerText="Num. Fabbrica/matricola" filterBy="#{veicolo.marca}" filterMatchMode="contains">
                     <h:outputText value="#{veicolo.matricola}" />
                 </p:column>
 
-                <p:column headerText="Cliente">
+                <p:column headerText="Cliente" filterBy="#{veicolo.cliente}" filterFunction="#{veicoliSearchView.filterVeicoloByCliente}">
                     <h:outputText value="#{veicolo.cliente.nome}" />
                 </p:column>
 
