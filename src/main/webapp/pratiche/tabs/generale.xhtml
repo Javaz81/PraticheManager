@@ -11,9 +11,9 @@ and open the template in the editor.
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-    <div style="padding-right: 10em; padding-left: 10em">
+    <div style="padding-right: 5em; padding-left: 5em">
         <h:form>
-            <p:commandButton style="margin-bottom:1em; margin-top:1em"
+            <p:commandButton style="margin-bottom:0.2em; margin-top:0.2em"
                              value="MODIFICA DATI" icon="fa fa-fw fa-edit"
                              actionListener="#{veicoliSearchView.openMenuGenerale}">
                 <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onMenuGenerale}"                         
@@ -22,136 +22,126 @@ and open the template in the editor.
             </p:commandButton>
         </h:form>
         <div class="ui-g ui-fluid ui-widget-content ui-datatable-even" >                        
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+            <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-weight: bold;">
                 N.ARRIVO
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style=" font-style: italic;">
+            <div class="ui-g-12 ui-md-2 ui-lg-2"  style=" font-style: italic;">
                 #{item.arrivo}
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+            <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-weight: bold;">
                 DATA ARRIVO
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+            <div class="ui-g-12 ui-md-2 ui-lg-2"  style="font-style: italic;">
                 #{veicoliSearchView.format_IT_Date(item.dataArrivo)} 
-            </div>
-        </div>
-        <div class="ui-g ui-fluid ui-widget-content ui-datatable-odd">                        
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+            </div>                  
+            <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-weight: bold;">
                 N.USCITA
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+            <div class="ui-g-12 ui-md-2 ui-lg-2"  style="font-style: italic;">
                 #{item.uscita}
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+            <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-weight: bold;">
                 DATA USCITA
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+            <div class="ui-g-12 ui-md-2 ui-lg-2"  style="font-style: italic;">
                 #{veicoliSearchView.format_IT_Date(item.dataUscita)} 
             </div>
         </div>
         <div class="ui-g ui-fluid ui-widget-content ui-datatable-even">                        
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+            <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-weight: bold;">
                 N.FATTURA
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+            <div class="ui-g-12 ui-md-2 ui-lg-2"  style="font-style: italic;">
                 #{item.numeroFattura}
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+            <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-weight: bold;">
                 DATA FATTURA
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+            <div class="ui-g-12 ui-md-2 ui-lg-2"  style="font-style: italic;">
                 #{veicoliSearchView.format_IT_Date(item.dataFattura)} 
-            </div>
-        </div>
-        <div class="ui-g ui-fluid ui-widget-content ui-datatable-odd">                        
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+            </div>                
+            <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-weight: bold;">
                 COLLAUDO USL ?
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+            <div class="ui-g-12 ui-md-2 ui-lg-2"  style="font-style: italic;">
                 #{veicoliSearchView.format_IT_Boolean(m.collaudoUsl)}
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+            <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-weight: bold;">
                 DATA COLL. USL.
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+            <div class="ui-g-12 ui-md-2 ui-lg-2"  style="font-style: italic;">
                 #{veicoliSearchView.format_IT_Date(item.collaudoUslData)} 
             </div>
         </div>
         <div class="ui-g ui-fluid ui-widget-content ui-datatable-even">                        
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+            <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-weight: bold;">
                 REGISTRO CONTROLLO ?
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+            <div class="ui-g-12 ui-md-2 ui-lg-2"  style="font-style: italic;">
                 #{veicoliSearchView.format_IT_Boolean(item.registroDiControllo)}
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+            <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-weight: bold;">
                 DATA REG. CONTROLLO
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+            <div class="ui-g-12 ui-md-2 ui-lg-2"  style="font-style: italic;">
                 #{veicoliSearchView.format_IT_Date(item.registroDiControlloData)} 
-            </div>
-        </div>
-        <div class="ui-g ui-fluid ui-widget-content ui-datatable-odd">                        
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+            </div>                 
+            <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-weight: bold;">
                 REVISIONE MCTC ?
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+            <div class="ui-g-12 ui-md-2 ui-lg-2"  style="font-style: italic;">
                 #{veicoliSearchView.format_IT_Boolean(item.revisioneMctc)}
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+            <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-weight: bold;">
                 DATA REV. MCTC
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+            <div class="ui-g-12 ui-md-2 ui-lg-2"  style="font-style: italic;">
                 #{veicoliSearchView.format_IT_Date(item.revisioneMctcData)} 
             </div>
         </div>
         <div class="ui-g ui-fluid ui-widget-content ui-datatable-even">                        
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+            <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-weight: bold;">
                 PREVENTIVO LAVORI ?
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+            <div class="ui-g-12 ui-md-2 ui-lg-2"  style="font-style: italic;">
                 #{veicoliSearchView.format_IT_Boolean(item.preventivoLavori)}
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+            <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-weight: bold;">
                 DATA PREV. LAVORI
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+            <div class="ui-g-12 ui-md-2 ui-lg-2"  style="font-style: italic;">
                 #{veicoliSearchView.format_IT_Date(item.preventivoLavoriData)} 
-            </div>
-        </div>
-        <div class="ui-g ui-fluid ui-widget-content ui-datatable-odd">                        
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+            </div>                      
+            <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-weight: bold;">
                 KM
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+            <div class="ui-g-12 ui-md-2 ui-lg-2"  style="font-style: italic;">
                 #{item.kilometraggio}
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+            <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-weight: bold;">
                 ORE
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+            <div class="ui-g-12 ui-md-2 ui-lg-2"  style="font-style: italic;">
                 #{item.ore} 
             </div>
         </div>
         <div class="ui-g ui-fluid ui-widget-content ui-datatable-even">                        
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+            <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-weight: bold;">
                 DIFE ?
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+            <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-style: italic;">
                 #{veicoliSearchView.format_IT_Boolean(item.dife)}
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-weight: bold;">
+            <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-weight: bold;">
                 DATA INTERVENTO
             </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-3"  style="font-style: italic;">
+            <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-style: italic;">
                 #{veicoliSearchView.format_IT_Date(item.interventoData)} 
-            </div>
-        </div>
-        <div class="ui-g ui-fluid ui-widget-content ui-datatable-odd">                        
-            <div class="ui-g-12 ui-md-4 ui-lg-4"  style="font-weight: bold;">
+            </div>                       
+            <div class="ui-g-12 ui-md-2 ui-lg-2"  style="font-weight: bold;">
                 LAVORI SEGNALATI ALL'INGRESSO:
             </div>
-            <div class="ui-g-12 ui-md-8 ui-lg-8"  style="font-style: italic;">
+            <div class="ui-g-12 ui-md-5 ui-lg-5"  style="font-style: italic;">
                 #{empty item.lavoriSegnalati ? "NESSUNA SEGNALAZIONE" : item.lavoriSegnalati}                
             </div>       
         </div>
