@@ -77,4 +77,10 @@
         <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.utils.GeneralePraticaDialog</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <description>E' la dialog per la ricerca dei veicoli</description>
+        <managed-bean-name>searchVeicoliDialog</managed-bean-name>
+        <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.utils.SearchVeicoliDialog</managed-bean-class>
+    
+        <managed-bean-scope>view</managed-bean-scope></managed-bean>
 </faces-config>

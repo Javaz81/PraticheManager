@@ -18,9 +18,9 @@ and open the template in the editor.
     </h:head>
     <h:body style="margin:auto">
         <h:form>
-            <p:dataTable id="searchVeicoliDT" var="veicolo" value="#{veicoliSearchView.veicoli}" paginator="true" 
+            <p:dataTable id="searchVeicoliDT" var="veicolo" value="#{searchVeicoliDialog.veicoli}" paginator="true" 
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"                         
-                         rows="5" filteredValue="#{veicoliSearchView.filteredVeicoli}"
+                         rows="5" filteredValue="#{searchVeicoliDialog.filteredVeicoli}"
                           >
                 <p:column headerText="Marca" filterBy="#{veicolo.marca}" filterMatchMode="contains">
                     <h:outputText value="#{veicolo.marca}" />
@@ -34,12 +34,12 @@ and open the template in the editor.
                     <h:outputText value="#{veicolo.matricola}" />
                 </p:column>
 
-                <p:column headerText="Cliente" filterBy="#{veicolo.cliente}" filterFunction="#{veicoliSearchView.filterVeicoloByCliente}">
+                <p:column headerText="Cliente" filterBy="#{veicolo.cliente}" filterFunction="#{searchVeicoliDialog.filterVeicoloByCliente}">
                     <h:outputText value="#{veicolo.cliente.nome}" />
                 </p:column>
 
                 <p:column style="width:32px;text-align: center">
-                    <p:commandButton icon="ui-icon-search" actionListener="#{veicoliSearchView.selectCarFromDialog(veicolo)}" />
+                    <p:commandButton icon="ui-icon-search" actionListener="#{searchVeicoliDialog.selectCarFromDialog(veicolo)}" />
                 </p:column>
             </p:dataTable>
         </h:form>
