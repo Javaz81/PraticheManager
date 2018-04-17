@@ -16,6 +16,7 @@ import com.javasoft81.pratichemanager.entities.Pratica;
 import com.javasoft81.pratichemanager.entities.Tipolavoro;
 import com.javasoft81.pratichemanager.jsf.beans.utils.PraticheUtils;
 import com.javasoft81.pratichemanager.entities.Veicolo;
+import com.javasoft81.pratichemanager.entities.beans.ClienteFacade;
 import com.javasoft81.pratichemanager.entities.beans.PraticaFacade;
 import com.javasoft81.pratichemanager.entities.beans.VeicoloFacade;
 import java.io.Serializable;
@@ -50,6 +51,9 @@ public class VeicoliSearchView implements Serializable {
 
     @ManagedProperty(value = "materialiManagerBean")
     private MaterialiManagerBean materialiManagerBean;
+    
+    @EJB
+    private ClienteFacade clienteService;
 
     @EJB
     private VeicoloFacade veicoliService;
@@ -61,6 +65,8 @@ public class VeicoliSearchView implements Serializable {
     private List<Veicolo> veicoli;
 
     private List<Pratica> pratiche;
+    
+    private List<Cliente> clienti;
 
     private Veicolo selectedCar;
 
@@ -96,6 +102,16 @@ public class VeicoliSearchView implements Serializable {
     public void init() {
         veicoli = veicoliService.findAll();
         selectedCar = null;
+        clienti = clienteService.findAll();
+    }
+
+    public List<Cliente> getClienti() {
+        clienti = clienteService.findAll();
+        return clienti;
+    }
+
+    public void setClienti(List<Cliente> clienti) {
+        this.clienti = clienti;
     }
 
     public LavoriManagerBean getLavoriManagerBean() {
@@ -259,11 +275,11 @@ public class VeicoliSearchView implements Serializable {
         Pratica p = new Pratica();
         if (this.selectedPratica == null) {
             p.setVeicolo(selectedCar);
-            p.setClienteidCliente(selectedCar.getCliente());
         } else {
             p.setVeicolo(this.selectedPratica.getVeicolo());
-            p.setClienteidCliente(this.selectedPratica.getClienteidCliente());
         }
+        //seleziona l'attuale cliente del veicolo.
+        p.setClienteidCliente(selectedCar.getCliente());
         p.setDataArrivo(Calendar.getInstance().getTime());
         this.praticheService.create(p);
         this.pratiche = this.praticheService.findPraticaByVeicolo(selectedCar, PraticheUtils.MAX_PRATICHE_ESTRAIBILI);
@@ -319,6 +335,7 @@ public class VeicoliSearchView implements Serializable {
         options.put("resizable", false);
         options.put("draggable", true);
         options.put("modal", true);
+        options.put("contentWidth",800);
         RequestContext.getCurrentInstance().openDialog("searchVeicoli", options, null);
     }
 
@@ -368,7 +385,23 @@ public class VeicoliSearchView implements Serializable {
         this.selectedLavoroCustomDialog = lav;
         RequestContext.getCurrentInstance().openDialog("lavori/menuLavori", options, null);
     }
-
+    
+    public void editDatiVeicolo(){
+        Map<String, Object> options = new HashMap<>();
+        options.put("resizable", false);
+        options.put("draggable", true);
+        options.put("modal", true);
+        RequestContext.getCurrentInstance().openDialog("gestione_veicolo/menuEditVeicolo", options, null);
+    }
+    
+    public void editDatiCliente(){
+        Map<String, Object> options = new HashMap<>();
+        options.put("resizable", false);
+        options.put("draggable", true);
+        options.put("modal", true);
+        RequestContext.getCurrentInstance().openDialog("gestione_veicolo/menuEditCliente", options, null);
+    }
+    
     public void openMenuGenerale() {
         Map<String, Object> options = new HashMap<>();
         options.put("resizable", false);
@@ -386,7 +419,21 @@ public class VeicoliSearchView implements Serializable {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica aggiornata", "Successo");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-
+    
+    public void onEditVeicolo(SelectEvent event){
+        Veicolo retVeicolo = (Veicolo) event.getObject();
+        this.veicoliService.edit(retVeicolo);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica aggiornata", "Successo");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+    
+    public void onEditCliente(SelectEvent event){
+        Cliente retCliente = (Cliente) event.getObject();
+        this.clienteService.edit(retCliente);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica aggiornata", "Successo");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+    
     public void onLavoriCustomEdit(SelectEvent event) {
         this.lavoriManagerBean.editLavoroCustom(this.selectedLavoroCustomDialog);
         this.selectedPraticaLavoriCustom.get(this.selectedLavoroCustomDialog.getCategoria()).forEach((Lavoripratichecustom i) -> {

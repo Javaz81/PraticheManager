@@ -80,7 +80,18 @@
     <managed-bean>
         <description>E' la dialog per la ricerca dei veicoli</description>
         <managed-bean-name>searchVeicoliDialog</managed-bean-name>
-        <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.utils.SearchVeicoliDialog</managed-bean-class>
-    
+        <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.utils.SearchVeicoliDialog</managed-bean-class>    
         <managed-bean-scope>view</managed-bean-scope></managed-bean>
+    <managed-bean>
+        <description>Bean per l'editing dei valori del veicolo</description>
+        <managed-bean-name>veicoloEditDialog</managed-bean-name>
+        <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.utils.VeicoloEditDialog</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>Bean che modifica i dati del cliente associati alla pratica.</description>
+        <managed-bean-name>clienteEditDialog</managed-bean-name>
+        <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.utils.ClienteEditDialog</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
 </faces-config>

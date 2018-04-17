@@ -14,6 +14,9 @@ and open the template in the editor.
             .ui-widget, .ui-widget .ui-widget {
                 font-size: 75%;
             }
+            .ui-panel {
+                font-size: 75%;
+            }
         </style>
     </h:head>
     <h:body style="margin:auto">
@@ -30,7 +33,7 @@ and open the template in the editor.
                     <h:outputText value="#{veicolo.modello}" />
                 </p:column>
 
-                <p:column headerText="Num. Fabbrica/matricola" filterBy="#{veicolo.marca}" filterMatchMode="contains">
+                <p:column headerText="Num. Fabbrica / Matricola" filterBy="#{veicolo.marca}" filterMatchMode="contains">
                     <h:outputText value="#{veicolo.matricola}" />
                 </p:column>
 

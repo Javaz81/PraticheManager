@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"          
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <style type="text/css">
+            .ui-widget, .ui-widget .ui-widget {
+                font-size: 83%;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:commandButton 
+                style=" margin-bottom: 1em;" value="APPLICA MODIFICHE" 
+                actionListener="#{veicoloEditDialog.endEditDialog}"
+                />
+            <p:panelGrid> 
+                <p:row>
+                    <p:column colspan="1" style="font-weight: bold;">
+                        MARCA
+                    </p:column>
+                    <p:column class="col-value" colspan="1">
+                        <p:inputText value="#{veicoloEditDialog.veicolo.marca}"/>
+                    </p:column>
+                    <p:column colspan="1" style="font-weight: bold;">
+                        MODELLO
+                    </p:column>
+                    <p:column class="col-value" colspan="1">
+                        <p:inputText value="#{veicoloEditDialog.veicolo.modello}" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="1" style="font-weight: bold;">
+                        ANNO
+                    </p:column>
+                    <p:column class="col-value" colspan="1">
+                        <p:inputText value="#{veicoloEditDialog.veicolo.anno}" />
+                    </p:column>
+                    <p:column colspan="1" style="font-weight: bold;">
+                        PORTATA MAX.
+                    </p:column>
+                    <p:column class="col-value" colspan="1">
+                        <p:inputText value="#{veicoloEditDialog.veicolo.portataMax}" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="1"  style="font-weight: bold;">
+                        MATRICOLA / N.FABBRICA
+                    </p:column>
+                    <p:column class="col-value" colspan="1">
+                        <p:inputText value="#{veicoloEditDialog.veicolo.matricola}" />
+                    </p:column>
+                    <p:column colspan="1"  style="font-weight: bold;">
+                        TIPO
+                    </p:column>
+                    <p:column class="col-value" colspan="1">
+                        <p:selectOneMenu value="#{veicoloEditDialog.veicolo.tipo}"
+                                         effect="fold" editable="true"
+                                         >
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItems value="#{veicoloEditDialog.tipiVeicolo}" />
+                        </p:selectOneMenu>                    
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="1"  style="font-weight: bold;">
+                        TARGA
+                    </p:column>
+                    <p:column class="col-value" colspan="1">
+                        <p:inputText value="#{veicoloEditDialog.veicolo.targa}"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+        </h:form>        
+    </h:body>
+</html>

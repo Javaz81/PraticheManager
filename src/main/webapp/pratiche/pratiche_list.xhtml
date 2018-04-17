@@ -13,14 +13,16 @@
     </p:panelGrid>
 
     <p:outputPanel rendered="#{not empty veicoliSearchView.selectedCar}" >
-        <p:panelGrid columns="3" layout="grid">
+        <p:panelGrid columns="3" layout="tabular">
             <p:panelGrid id="general_grid_veicolo">       
                 <f:facet name="header">
                     <p:row>
                         <p:column colspan="4">
                             <h:form>                                   
                                 Dati Piattaforma/auto-articolato
-                                <p:commandButton id="buttonVeicolo" icon="fa fa-edit"  />
+                                <p:commandButton id="buttonVeicolo" icon="fa fa-edit" actionListener="#{veicoliSearchView.editDatiVeicolo}">
+                                    <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onEditVeicolo}" update="general_grid_veicolo :growl"/>
+                                </p:commandButton>
                                 <p:tooltip id="toolTip" for="buttonVeicolo" position="top" 
                                            value="Modifica dati della piattaforma/auto-articolato" />
                             </h:form>
@@ -78,65 +80,70 @@
                     </p:column>
                 </p:row>
             </p:panelGrid>
-            <div>
-                <p:panelGrid id="general_grid_cliente">       
-                    <f:facet name="header">
-                        <p:row>
-                            <p:column colspan="2">
-                                <h:form>
-                                    Cliente possessore attuale del Veicolo.
-                                    <p:commandButton id="buttonCliente" icon="fa fa-edit"  />
-                                    <p:tooltip id="toolTip" for="buttonCliente" position="top" 
-                                               value="Modifica dati del cliente" />
-                                </h:form>
-                            </p:column>
-                        </p:row>
-                    </f:facet>
+            <p:panelGrid id="general_grid_cliente">       
+                <f:facet name="header">
                     <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            NOME/RAGIONE SOCIALE
-                        </p:column>
-                        <p:column colspan="1">                            
-                            #{veicoliSearchView.selectedPratica.clienteidCliente.nome}
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            COGNOME
-                        </p:column>
-                        <p:column colspan="1">
-                            #{veicoliSearchView.selectedPratica.clienteidCliente.cognome}
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            INDIRIZZO/LOCALITA'
-                        </p:column>
-                        <p:column colspan="1">
-                            #{veicoliSearchView.selectedPratica.clienteidCliente.localita}
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            RIFERIMENTO/TEL/CELLULARE
-                        </p:column>
-                        <p:column colspan="1">
-                            #{veicoliSearchView.selectedPratica.clienteidCliente.cellulare}
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="2" style="font-weight: bolder;" >
-                            <p:outputLabel value="ATTENZIONE"/>
-                            <p style=" font-style: italic"> 
-                                Questi dati sono relativi al cliente del veicolo 
-                                registrato con questa pratica. 
+                        <p:column colspan="4">
+                            <h:form>
+                                Cliente del veicolo al momento della pratica
+                                <p:commandButton id="buttonCliente" icon="fa fa-edit" actionListener="#{veicoliSearchView.editDatiCliente}" >
+                                    <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onEditCliente}" update="general_grid_cliente :growl" />
+                                </p:commandButton>
+                                <p:tooltip id="toolTip" for="buttonCliente" position="top" 
+                                           value="Modifica dati del cliente" />
+                                <p:commandButton id="changeClienteBtn" icon="fa fa-fw fa-refresh" />
+                                <p:overlayPanel id="changeClientePanel" for="changeClienteBtn" hideEffect="fade" dynamic="true" style="width:600px">
+                                    <p:dataTable var="cliente" value="#{veicoliSearchView.clienti}" rows="5" paginator="true">
+                                        <p:column headerText="Nome Rag. Sociale">
+                                            <h:outputText value="#{cliente.nome}" />
+                                        </p:column>
 
-                            </p>
+                                        <p:column headerText="Cognome">
+                                            <h:outputText value="#{cliente.cognome}" />
+                                        </p:column>
+
+                                        <p:column headerText="Localita / Indirizzo">
+                                            <h:outputText value="#{cliente.localita}" />
+                                        </p:column>
+
+                                        <p:column headerText="Tel. / Cellulare">
+                                            <h:outputText value="#{cliente.cellulare}" />
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:overlayPanel>
+                            </h:form>
                         </p:column>
                     </p:row>
-                </p:panelGrid>
-            </div>
-
+                </f:facet>
+                <p:row>
+                    <p:column colspan="1"  style="font-weight: bold;">
+                        NOME/RAGIONE SOCIALE
+                    </p:column>
+                    <p:column colspan="1">                            
+                        #{veicoliSearchView.selectedPratica.clienteidCliente.nome}
+                    </p:column>
+                    <p:column colspan="1"  style="font-weight: bold;">
+                        COGNOME
+                    </p:column>
+                    <p:column colspan="1">
+                        #{veicoliSearchView.selectedPratica.clienteidCliente.cognome}
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="1"  style="font-weight: bold;">
+                        INDIRIZZO/LOCALITA'
+                    </p:column>
+                    <p:column colspan="1">
+                        #{veicoliSearchView.selectedPratica.clienteidCliente.localita}
+                    </p:column>
+                    <p:column colspan="1"  style="font-weight: bold;">
+                        RIFERIMENTO/TEL/CELLULARE
+                    </p:column>
+                    <p:column colspan="1">
+                        #{veicoliSearchView.selectedPratica.clienteidCliente.cellulare}
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
             <p:panelGrid id="general_grid_dati_temp">       
                 <f:facet name="header">
                     <p:row>
@@ -174,11 +181,11 @@
             <f:facet name="left">
                 <p:commandButton value="Nuova" title="Nuova Pratica" action="#{veicoliSearchView.newPratica}" 
                                  icon="ui-icon-document"
-                                 update="tabview_pratiche :growl"/>
+                                 update="tabview_pratiche :growl :general_grid_cliente"/>
             </f:facet>
             <f:facet name="right">
                 <p:commandButton rendered="#{not empty veicoliSearchView.selectedPratica}" value="Cancella" title="Cancella Pratica" 
-                                 action="#{veicoliSearchView.deletePratica}" icon="ui-icon-trash" update="tabview_pratiche :growl">
+                                 action="#{veicoliSearchView.deletePratica}" icon="ui-icon-trash" update="tabview_pratiche :growl :general_grid_cliente">
                     <p:confirm header="Conferma" message="Vuoi cancellare questa pratica?" icon="ui-icon-alert" />
                 </p:commandButton>
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -192,7 +199,7 @@
                var="item" value="#{veicoliSearchView.pratiche}" scrollable="true" 
                activeIndex="#{veicoliSearchView.activeIndexTab}" 
                dynamic="true" cache="false">
-        <p:ajax event="tabChange" listener="#{veicoliSearchView.onTabChange}" update="@(.tab_pratiche_panel)"/>
+        <p:ajax event="tabChange" listener="#{veicoliSearchView.onTabChange}" update="@(.tab_pratiche_panel) :general_grid_cliente"/>
         <p:tab title="#{veicoliSearchView.getDate(item)}">                
             <p:separator style=" size: 0.2em"/>
             <p:accordionPanel styleClass="tab_pratiche_panel">                

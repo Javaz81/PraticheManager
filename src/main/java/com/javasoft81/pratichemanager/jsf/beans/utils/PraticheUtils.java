@@ -22,7 +22,12 @@ import java.util.TimeZone;
  */
 public class PraticheUtils implements Serializable {
     
-    public static final int MAX_PRATICHE_ESTRAIBILI=200;
+    public static final int MAX_PRATICHE_ESTRAIBILI=20;
+    
+    public static final String[] TIPI_VEICOLO = new String[]{
+        "PLE", "PV", "AUTOGRU", "CARICATORE", "SCARRABILE", "COMPATTATORE",
+        "CARICATORE FISSO", "CARICATORE SCARRABILE", "RIMORCHIO"
+    };
 
     public static String getFormattedITDate(Date d) {
         if(d==null)
