@@ -327,6 +327,7 @@ public class VeicoliSearchView implements Serializable {
         options.put("resizable", false);
         options.put("draggable", true);
         options.put("modal", true);
+        options.put("contentWidth",900);
         this.selectedCategoriaDialog = cat;
         RequestContext.getCurrentInstance().openDialog("lavori/selectionLavoriStandard", options, null);
     }

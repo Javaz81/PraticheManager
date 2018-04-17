@@ -20,7 +20,7 @@ and open the template in the editor.
         <h:form>
             <p:commandButton value="APPLICA MODIFICHE" actionListener="#{lavoriStandardDialog.closeDialog}"
                              style="margin-bottom: 0.2em"/> 
-            <p:panelGrid columns="4" layout="grid">
+            <p:panelGrid columns="2" layout="tabular">
                 <p:repeat value="#{lavoriStandardDialog.selezioni}" var="lav" varStatus="status">
                      <p:selectBooleanCheckbox itemLabel="#{lav.descrizione}" 
                                                  value="#{lavoriStandardDialog.componentValues[status.index]}"/>       
