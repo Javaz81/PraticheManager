@@ -12,81 +12,79 @@
         </p:outputLabel>
     </p:panelGrid>
 
-    <p:outputPanel rendered="#{not empty veicoliSearchView.selectedCar}">
-        <div class="ui-g">
-            <div class="ui-g-12 ui-md-4 ui-lg-4">
-                <p:panelGrid id="general_grid_veicolo">       
-                    <f:facet name="header">
-                        <p:row>
-                            <p:column colspan="4">
-                                <h:form>                                   
-                                    Dati Piattaforma/auto-articolato
-                                    <p:commandButton id="buttonVeicolo" icon="fa fa-edit"  />
-                                    <p:tooltip id="toolTip" for="buttonVeicolo" position="top" 
-                                               value="Modifica dati della piattaforma/auto-articolato" />
-                                </h:form>
-                            </p:column>
-                        </p:row>
-                    </f:facet>
+    <p:outputPanel rendered="#{not empty veicoliSearchView.selectedCar}" >
+        <p:panelGrid columns="3" layout="grid">
+            <p:panelGrid id="general_grid_veicolo">       
+                <f:facet name="header">
                     <p:row>
-                        <p:column colspan="1" style="font-weight: bold;">
-                            MARCA
-                        </p:column>
-                        <p:column class="col-value" colspan="1">
-                            #{veicoliSearchView.selectedCar.marca}
-                        </p:column>
-                        <p:column colspan="1" style="font-weight: bold;">
-                            MODELLO
-                        </p:column>
-                        <p:column class="col-value" colspan="1">
-                            #{veicoliSearchView.selectedCar.modello}
+                        <p:column colspan="4">
+                            <h:form>                                   
+                                Dati Piattaforma/auto-articolato
+                                <p:commandButton id="buttonVeicolo" icon="fa fa-edit"  />
+                                <p:tooltip id="toolTip" for="buttonVeicolo" position="top" 
+                                           value="Modifica dati della piattaforma/auto-articolato" />
+                            </h:form>
                         </p:column>
                     </p:row>
-                    <p:row>
-                        <p:column colspan="1" style="font-weight: bold;">
-                            ANNO
-                        </p:column>
-                        <p:column class="col-value" colspan="1">
-                            #{veicoliSearchView.selectedCar.anno}
-                        </p:column>
-                        <p:column colspan="1" style="font-weight: bold;">
-                            PORTATA MAX.
-                        </p:column>
-                        <p:column class="col-value" colspan="1">
-                            #{veicoliSearchView.selectedCar.portataMax}
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            MATRICOLA / N.FABBRICA
-                        </p:column>
-                        <p:column class="col-value" colspan="1">
-                            #{veicoliSearchView.selectedCar.matricola}
-                        </p:column>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            TIPO
-                        </p:column>
-                        <p:column class="col-value" colspan="1">
-                            #{veicoliSearchView.selectedCar.tipo}
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            TARGA
-                        </p:column>
-                        <p:column class="col-value" colspan="1">
-                            #{veicoliSearchView.selectedCar.targa}
-                        </p:column>
-                    </p:row>
-                </p:panelGrid>
-            </div>
-            <div class="ui-g-12 ui-md-4 ui-lg-4">
+                </f:facet>
+                <p:row>
+                    <p:column colspan="1" style="font-weight: bold;">
+                        MARCA
+                    </p:column>
+                    <p:column class="col-value" colspan="1">
+                        #{veicoliSearchView.selectedCar.marca}
+                    </p:column>
+                    <p:column colspan="1" style="font-weight: bold;">
+                        MODELLO
+                    </p:column>
+                    <p:column class="col-value" colspan="1">
+                        #{veicoliSearchView.selectedCar.modello}
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="1" style="font-weight: bold;">
+                        ANNO
+                    </p:column>
+                    <p:column class="col-value" colspan="1">
+                        #{veicoliSearchView.selectedCar.anno}
+                    </p:column>
+                    <p:column colspan="1" style="font-weight: bold;">
+                        PORTATA MAX.
+                    </p:column>
+                    <p:column class="col-value" colspan="1">
+                        #{veicoliSearchView.selectedCar.portataMax}
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="1"  style="font-weight: bold;">
+                        MATRICOLA / N.FABBRICA
+                    </p:column>
+                    <p:column class="col-value" colspan="1">
+                        #{veicoliSearchView.selectedCar.matricola}
+                    </p:column>
+                    <p:column colspan="1"  style="font-weight: bold;">
+                        TIPO
+                    </p:column>
+                    <p:column class="col-value" colspan="1">
+                        #{veicoliSearchView.selectedCar.tipo}
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="1"  style="font-weight: bold;">
+                        TARGA
+                    </p:column>
+                    <p:column class="col-value" colspan="1">
+                        #{veicoliSearchView.selectedCar.targa}
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <div>
                 <p:panelGrid id="general_grid_cliente">       
                     <f:facet name="header">
                         <p:row>
                             <p:column colspan="2">
                                 <h:form>
-                                    Dati Cliente Attuale
+                                    Cliente possessore attuale del Veicolo.
                                     <p:commandButton id="buttonCliente" icon="fa fa-edit"  />
                                     <p:tooltip id="toolTip" for="buttonCliente" position="top" 
                                                value="Modifica dati del cliente" />
@@ -125,42 +123,51 @@
                         <p:column colspan="1">
                             #{veicoliSearchView.selectedPratica.clienteidCliente.cellulare}
                         </p:column>
-                    </p:row>      
-                </p:panelGrid>
-            </div>
-            <div class="ui-g-12 ui-md-4 ui-lg-4">
-                <p:panelGrid id="general_grid_dati_temp">       
-                    <f:facet name="header">
-                        <p:row>
-                            <p:column colspan="2">
-                                <h:form>
-                                    Dati da creazione temporanea pratica 
-                                    <p:commandButton id="buttonDatiTemp" icon="fa fa-trash"  />
-                                    <p:tooltip id="toolTip" for="buttonDatiTemp" position="top" 
-                                               value="Ripulisce i dati temporanei della pratica" />
-                                </h:form>
-                            </p:column>
-                        </p:row>
-                    </f:facet>
-                    <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            DATI CLIENTE
-                        </p:column>
-                        <p:column colspan="1">
-                            #{veicoliSearchView.selectedPratica.clienteTemporaneo}
-                        </p:column>
                     </p:row>
                     <p:row>
-                        <p:column colspan="1"  style="font-weight: bold;">
-                            DATI PIATTAFORMA / AUTOARTICOLATO
+                        <p:column colspan="2" style="font-weight: bolder;" >
+                            <p:outputLabel value="ATTENZIONE"/>
+                            <p style=" font-style: italic"> 
+                                Questi dati sono relativi al cliente del veicolo 
+                                registrato con questa pratica. 
+
+                            </p>
                         </p:column>
-                        <p:column colspan="1">
-                            #{veicoliSearchView.selectedPratica.veicoloTemporaneo}
-                        </p:column>
-                    </p:row>                                       
+                    </p:row>
                 </p:panelGrid>
             </div>
-        </div>
+
+            <p:panelGrid id="general_grid_dati_temp">       
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="2">
+                            <h:form>
+                                Dati da creazione temporanea pratica 
+                                <p:commandButton id="buttonDatiTemp" icon="fa fa-trash"  />
+                                <p:tooltip id="toolTip" for="buttonDatiTemp" position="top" 
+                                           value="Ripulisce i dati temporanei della pratica" />
+                            </h:form>
+                        </p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column colspan="1"  style="font-weight: bold;">
+                        DATI CLIENTE
+                    </p:column>
+                    <p:column colspan="1">
+                        #{veicoliSearchView.selectedPratica.clienteTemporaneo}
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="1"  style="font-weight: bold;">
+                        DATI PIATTAFORMA / AUTOARTICOLATO
+                    </p:column>
+                    <p:column colspan="1">
+                        #{veicoliSearchView.selectedPratica.veicoloTemporaneo}
+                    </p:column>
+                </p:row>                                       
+            </p:panelGrid>
+        </p:panelGrid>
     </p:outputPanel>
     <h:form>
         <p:toolbar rendered="#{not empty veicoliSearchView.selectedCar}" id="tb_#{item.idPratica}">
@@ -181,24 +188,24 @@
             </f:facet>
         </p:toolbar>
     </h:form>
-        <p:tabView id="tabview_pratiche" rendered="#{not empty veicoliSearchView.selectedCar}" 
-                   var="item" value="#{veicoliSearchView.pratiche}" scrollable="true" 
-                   activeIndex="#{veicoliSearchView.activeIndexTab}" 
-                   dynamic="true" cache="false">
-            <p:ajax event="tabChange" listener="#{veicoliSearchView.onTabChange}" update="@(.tab_pratiche_panel)"/>
-            <p:tab title="#{veicoliSearchView.getDate(item)}">                
-                <p:separator style=" size: 0.2em"/>
-                <p:accordionPanel styleClass="tab_pratiche_panel">                
-                    <p:tab title="Generale" >
-                        <ui:include src="/pratiche/tabs/generale.xhtml"/>                  
-                    </p:tab>
-                    <p:tab title="Lavori">
-                        <ui:include src="/pratiche/tabs/lavori.xhtml"/> 
-                    </p:tab>
-                    <p:tab title="Materiale">
-                        <ui:include src="/pratiche/tabs/materiali.xhtml"/>
-                    </p:tab>
-                </p:accordionPanel> 
-            </p:tab>
-        </p:tabView>
+    <p:tabView id="tabview_pratiche" rendered="#{not empty veicoliSearchView.selectedCar}" 
+               var="item" value="#{veicoliSearchView.pratiche}" scrollable="true" 
+               activeIndex="#{veicoliSearchView.activeIndexTab}" 
+               dynamic="true" cache="false">
+        <p:ajax event="tabChange" listener="#{veicoliSearchView.onTabChange}" update="@(.tab_pratiche_panel)"/>
+        <p:tab title="#{veicoliSearchView.getDate(item)}">                
+            <p:separator style=" size: 0.2em"/>
+            <p:accordionPanel styleClass="tab_pratiche_panel">                
+                <p:tab title="Generale" >
+                    <ui:include src="/pratiche/tabs/generale.xhtml"/>                  
+                </p:tab>
+                <p:tab title="Lavori">
+                    <ui:include src="/pratiche/tabs/lavori.xhtml"/> 
+                </p:tab>
+                <p:tab title="Materiale">
+                    <ui:include src="/pratiche/tabs/materiali.xhtml"/>
+                </p:tab>
+            </p:accordionPanel> 
+        </p:tab>
+    </p:tabView>
 </html>
