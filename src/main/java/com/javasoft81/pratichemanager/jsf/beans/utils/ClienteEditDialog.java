@@ -32,8 +32,10 @@ public class ClienteEditDialog implements Serializable{
     public void init(){
         FacesContext context = FacesContext.getCurrentInstance();     
         v = context.getApplication().evaluateExpressionGet(context, "#{veicoliSearchView}", VeicoliSearchView.class);
-        cliente = v.getSelectedPratica().getClienteidCliente();
-        System.out.println(cliente);
+        if(v.getSelectedPratica()!=null)
+            cliente = v.getSelectedPratica().getClienteidCliente();
+        else
+            cliente = v.getSelectedCar().getCliente();
     }
 
     public Cliente getCliente() {
