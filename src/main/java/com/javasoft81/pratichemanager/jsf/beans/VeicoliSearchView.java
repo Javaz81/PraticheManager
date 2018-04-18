@@ -356,6 +356,19 @@ public class VeicoliSearchView implements Serializable {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Materiale rimosso", "Rimozione materiale processata con successo.");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
+    
+    public void createVeicolo(){
+        Map<String, Object> options = new HashMap<>();
+        options.put("resizable", false);
+        options.put("draggable", true);
+        options.put("modal", true);
+        options.put("contentWidth",900);
+        RequestContext.getCurrentInstance().openDialog("gestione_veicolo/menuNewVeicolo", options, null);
+    }
+    
+    public void onVeicoloCreated(SelectEvent event){
+        System.out.println("veicolo creato");
+    }
 
     public void chooseVeicoli() {
         Map<String, Object> options = new HashMap<>();

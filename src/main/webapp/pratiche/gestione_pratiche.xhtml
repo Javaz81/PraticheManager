@@ -39,7 +39,7 @@
                 <p:menubar>
                     <p:submenu label="Auto-Articolati" icon="ui-icon-home">
                         <p:menuitem id="aa_search"  value="Cerca..." icon="ui-icon-search" onclick="searchVeicoli()"/>
-                        <p:menuitem id="aa_manage" value="Registra nuova . . ." icon="ui-icon-plusthick"/>
+                        <p:menuitem id="aa_manage" value="Registra nuova . . ." icon="ui-icon-plusthick" onclick="createVeicolo()"/>
                     </p:submenu>                                       
                     <f:facet name="options">                       
                         <!-- ACTION BUTTONS -->
@@ -48,6 +48,14 @@
                                           actionListener="#{veicoliSearchView.chooseVeicoli}" 
                                           >
                             <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onVeicoliChosen}"                                    
+                                    update="growl pratiche_panel"
+                                    />                            
+                        </p:commandButton>
+                         <p:commandButton  id="createVeicolo" style="display: none"
+                                          styleClass="createVeicolo" 
+                                          actionListener="#{veicoliSearchView.createVeicolo}" 
+                                          >
+                            <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onVeicoloCreated}"                                    
                                     update="growl pratiche_panel"
                                     />                            
                         </p:commandButton>  

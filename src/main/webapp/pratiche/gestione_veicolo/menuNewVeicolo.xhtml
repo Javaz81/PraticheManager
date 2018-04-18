@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"          
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <style type="text/css">
+            .ui-widget, .ui-widget .ui-widget {
+                font-size: 83%;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <h:form id='createVeicoloForm'>
+            <p:commandButton 
+                style=" margin-bottom: 1em;" value="APPLICA MODIFICHE" 
+                actionListener="#{veicoloNewDialog.endEditDialog}"
+                />        
+            <p:panelGrid layout="grid" columns="2">
+                <p:panelGrid> 
+                    <p:row>
+                        <p:column colspan="1" style="font-weight: bold;">
+                            MARCA
+                        </p:column>
+                        <p:column class="col-value" colspan="1">
+                            <p:inputText value="#{veicoloNewDialog.veicolo.marca}"/>
+                        </p:column>
+                        <p:column colspan="1" style="font-weight: bold;">
+                            MODELLO
+                        </p:column>
+                        <p:column class="col-value" colspan="1">
+                            <p:inputText value="#{veicoloNewDialog.veicolo.modello}" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="1" style="font-weight: bold;">
+                            ANNO
+                        </p:column>
+                        <p:column class="col-value" colspan="1">
+                            <p:inputText value="#{veicoloNewDialog.veicolo.anno}" />
+                        </p:column>
+                        <p:column colspan="1" style="font-weight: bold;">
+                            PORTATA MAX.
+                        </p:column>
+                        <p:column class="col-value" colspan="1">
+                            <p:inputText value="#{veicoloNewDialog.veicolo.portataMax}" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            MATRICOLA / N.FABBRICA
+                        </p:column>
+                        <p:column class="col-value" colspan="1">
+                            <p:inputText value="#{veicoloNewDialog.veicolo.matricola}" />
+                        </p:column>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            TIPO
+                        </p:column>
+                        <p:column class="col-value" colspan="1">
+                            <p:selectOneMenu value="#{veicoloNewDialog.veicolo.tipo}"
+                                             effect="fold" editable="true"
+                                             >
+                                <f:selectItem itemLabel="Select One" itemValue="" />
+                                <f:selectItems value="#{veicoloNewDialog.tipiVeicolo}" />
+                            </p:selectOneMenu>                    
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            TARGA
+                        </p:column>
+                        <p:column class="col-value" colspan="1">
+                            <p:inputText value="#{veicoloNewDialog.veicolo.targa}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <p:panelGrid>
+                    <p:row>
+                        <p:column colspan="1">
+                            <p:commandButton 
+                                style=" margin-bottom: 1em;" value="ASSEGNA DA LISTA CLIENTI" 
+                                onclick="PF('clienteSelection').show()"
+                                />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            NOME/RAGIONE SOCIALE
+                        </p:column>
+                        <p:column colspan="1">                            
+                            <p:inputText value="#{veicoloNewDialog.cliente.nome}" size="50" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            COGNOME
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:inputText value="#{veicoloNewDialog.cliente.cognome}" size="50" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            INDIRIZZO/LOCALITA'
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:inputText value="#{veicoloNewDialog.cliente.localita}" size="50" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="1"  style="font-weight: bold;">
+                            RIFERIMENTO/TEL/CELLULARE
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:inputText value="#{veicoloNewDialog.cliente.cellulare}" size="50" />
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:panelGrid>
+        </h:form>
+        <p:dialog modal="false" widgetVar="clienteSelection" id="clienteSelection">
+            <h:form>
+                <p:dataTable var="cli" value="#{veicoloNewDialog.clienti}" filteredValue="#{veicoloNewDialog.filteredListChangingCliente}"  rows="5" paginator="true">
+                    <p:column headerText="Nome Rag. Sociale" filterBy="#{cli.nome}" filterMatchMode="contains" >
+                        <h:outputText value="#{cli.nome}" />
+                    </p:column>
+
+                    <p:column headerText="Cognome"  filterBy="#{cli.cognome}" filterMatchMode="contains" >
+                        <h:outputText value="#{cli.cognome}" />
+                    </p:column>
+
+                    <p:column headerText="Localita / Indirizzo"  filterBy="#{cli.localita}" filterMatchMode="contains" >
+                        <h:outputText value="#{cli.localita}" />
+                    </p:column>
+
+                    <p:column headerText="Tel. / Cellulare"  filterBy="#{cli.cellulare}" filterMatchMode="contains" >
+                        <h:outputText value="#{cli.cellulare}" />
+                    </p:column>
+
+                    <p:column headerText="Seleziona">
+                        <p:commandButton icon="fa fa-fw fa-search" actionListener="#{veicoloNewDialog.assignCliente(cli)}" update="createVeicoloForm"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+
+        </p:dialog>
+    </h:body>
+</html>

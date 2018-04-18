@@ -94,4 +94,10 @@
         <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.utils.ClienteEditDialog</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <description>Bean per la dialog con cui si crea un nuovo veicolo</description>
+        <managed-bean-name>veicoloNewDialog</managed-bean-name>
+        <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.utils.VeicoloNewDialog</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
 </faces-config>

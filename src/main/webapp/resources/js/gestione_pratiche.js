@@ -8,6 +8,11 @@
 function searchVeicoli(){
     $('.commandButton').click();
 }
+
+function createVeicolo(){
+    $('.createVeicolo').click();
+}
+
 function addLavoriStandard(sclss){
     $(sclss).click();
 }
