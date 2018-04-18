@@ -92,24 +92,30 @@
                                 <p:tooltip id="toolTip" for="buttonCliente" position="top" 
                                            value="Modifica dati del cliente" />
                                 <p:commandButton id="changeClienteBtn" icon="fa fa-fw fa-refresh" />
-                                <p:overlayPanel id="changeClientePanel" for="changeClienteBtn" hideEffect="fade" dynamic="true" style="width:600px">
-                                    <p:dataTable var="cliente" value="#{veicoliSearchView.clienti}" rows="5" paginator="true">
-                                        <p:column headerText="Nome Rag. Sociale">
+                                <p:overlayPanel id="changeClientePanel" for="changeClienteBtn" hideEffect="fade" dynamic="true" style="width:700px">
+                                    
+                                    <p:dataTable var="cliente" value="#{veicoliSearchView.clienti}" filteredValue="#{veicoliSearchView.filteredListChangingCliente}"  rows="5" paginator="true">
+                                        <p:column headerText="Nome Rag. Sociale" filterBy="#{cliente.nome}" filterMatchMode="contains" >
                                             <h:outputText value="#{cliente.nome}" />
                                         </p:column>
 
-                                        <p:column headerText="Cognome">
+                                        <p:column headerText="Cognome"  filterBy="#{cliente.cognome}" filterMatchMode="contains" >
                                             <h:outputText value="#{cliente.cognome}" />
                                         </p:column>
 
-                                        <p:column headerText="Localita / Indirizzo">
+                                        <p:column headerText="Localita / Indirizzo"  filterBy="#{cliente.localita}" filterMatchMode="contains" >
                                             <h:outputText value="#{cliente.localita}" />
                                         </p:column>
 
-                                        <p:column headerText="Tel. / Cellulare">
+                                        <p:column headerText="Tel. / Cellulare"  filterBy="#{cliente.cellulare}" filterMatchMode="contains" >
                                             <h:outputText value="#{cliente.cellulare}" />
                                         </p:column>
+                                        
+                                        <p:column headerText="Seleziona">
+                                            <p:commandButton icon="fa fa-fw fa-search" actionListener="#{veicoliSearchView.changeCliente(cliente)}" update="general_grid_cliente :growl"/>
+                                        </p:column>
                                     </p:dataTable>
+                                
                                 </p:overlayPanel>
                             </h:form>
                         </p:column>
@@ -120,13 +126,13 @@
                         NOME/RAGIONE SOCIALE
                     </p:column>
                     <p:column colspan="1">                            
-                        #{veicoliSearchView.selectedPratica.clienteidCliente.nome}
+                        #{empty veicoliSearchView.selectedPratica ? veicoliSearchView.selectedCar.cliente.nome: veicoliSearchView.selectedPratica.clienteidCliente.nome}
                     </p:column>
                     <p:column colspan="1"  style="font-weight: bold;">
                         COGNOME
                     </p:column>
                     <p:column colspan="1">
-                        #{veicoliSearchView.selectedPratica.clienteidCliente.cognome}
+                         #{empty veicoliSearchView.selectedPratica ? veicoliSearchView.selectedCar.cliente.cognome :veicoliSearchView.selectedPratica.clienteidCliente.cognome}
                     </p:column>
                 </p:row>
                 <p:row>
@@ -134,13 +140,13 @@
                         INDIRIZZO/LOCALITA'
                     </p:column>
                     <p:column colspan="1">
-                        #{veicoliSearchView.selectedPratica.clienteidCliente.localita}
+                        #{empty veicoliSearchView.selectedPratica ? veicoliSearchView.selectedCar.cliente.localita : veicoliSearchView.selectedPratica.clienteidCliente.localita}
                     </p:column>
                     <p:column colspan="1"  style="font-weight: bold;">
                         RIFERIMENTO/TEL/CELLULARE
                     </p:column>
                     <p:column colspan="1">
-                        #{veicoliSearchView.selectedPratica.clienteidCliente.cellulare}
+                        #{empty veicoliSearchView.selectedPratica ? veicoliSearchView.selectedCar.cliente.cellulare : veicoliSearchView.selectedPratica.clienteidCliente.cellulare}
                     </p:column>
                 </p:row>
             </p:panelGrid>

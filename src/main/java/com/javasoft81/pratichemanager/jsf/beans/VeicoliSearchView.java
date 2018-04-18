@@ -68,6 +68,8 @@ public class VeicoliSearchView implements Serializable {
     
     private List<Cliente> clienti;
 
+    private List<Cliente>  filteredListChangingCliente;
+    
     private Veicolo selectedCar;
 
     private Pratica selectedPratica;
@@ -113,6 +115,15 @@ public class VeicoliSearchView implements Serializable {
     public void setClienti(List<Cliente> clienti) {
         this.clienti = clienti;
     }
+
+    public List<Cliente> getFilteredListChangingCliente() {
+        return filteredListChangingCliente;
+    }
+
+    public void setFilteredListChangingCliente(List<Cliente> filteredListChangingCliente) {
+        this.filteredListChangingCliente = filteredListChangingCliente;
+    }
+        
 
     public LavoriManagerBean getLavoriManagerBean() {
         return lavoriManagerBean;
@@ -269,8 +280,23 @@ public class VeicoliSearchView implements Serializable {
         return PraticheUtils.getFormattedBoolean(b);
     }
 
+    public void changeCliente(Cliente cliente){
+        String messaggio;
+        if(this.selectedPratica == null){
+            this.selectedCar.setCliente(cliente);
+            this.veicoliService.edit(selectedCar);
+            messaggio = "Cliente del Veicolo cambiato"; 
+        } else {
+            this.selectedPratica.setClienteidCliente(cliente);
+            this.praticheService.edit(selectedPratica);
+            messaggio = "Cliente della Pratica cambiato";
+        }
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, messaggio, "Creazione avvenuta");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+    
     public void newPratica() {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica Creata con successo", "Creazione avvenuta");
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica creata con successo", "Creazione avvenuta");
         FacesContext.getCurrentInstance().addMessage(null, message);
         Pratica p = new Pratica();
         if (this.selectedPratica == null) {
@@ -407,13 +433,11 @@ public class VeicoliSearchView implements Serializable {
         options.put("resizable", false);
         options.put("draggable", true);
         options.put("modal", true);
-        options.put("contentWidth", 900);
+        options.put("contentWidth", 800);
         RequestContext.getCurrentInstance().openDialog("generale/menuGenerale", options, null);
     }
 
     public void onMenuGenerale(SelectEvent event) {
-        //Pratica retPratica = (Pratica) event.getObject();
-        //Trim all blank field and set null
         nullifyAllBlankField(selectedPratica);
         this.praticheService.edit(selectedPratica);
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica aggiornata", "Successo");
