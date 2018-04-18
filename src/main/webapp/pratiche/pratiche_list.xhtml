@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
@@ -92,6 +92,7 @@
                                 <p:tooltip id="toolTip" for="buttonCliente" position="top" 
                                            value="Modifica dati del cliente" />
                                 <p:commandButton id="changeClienteBtn" icon="fa fa-fw fa-refresh" />
+                                <p:tooltip id="toolTip2" for="changeClienteBtn" position="top" value="Cambia cliente assegnato a questa pratica/piattaforma"/>
                                 <p:overlayPanel id="changeClientePanel" for="changeClienteBtn" hideEffect="fade" dynamic="true" style="width:700px">
                                     
                                     <p:dataTable var="cliente" value="#{veicoliSearchView.clienti}" filteredValue="#{veicoliSearchView.filteredListChangingCliente}"  rows="5" paginator="true">
@@ -221,4 +222,4 @@
             </p:accordionPanel> 
         </p:tab>
     </p:tabView>
-</html>
+</ui:composition>

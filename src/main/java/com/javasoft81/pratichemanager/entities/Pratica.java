@@ -60,7 +60,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Pratica.findByVeicoloTemporaneo", query = "SELECT p FROM Pratica p WHERE p.veicoloTemporaneo = :veicoloTemporaneo")
     , @NamedQuery(name = "Pratica.findByDife", query = "SELECT p FROM Pratica p WHERE p.dife = :dife")
     , @NamedQuery(name = "Pratica.findByInterventoData", query = "SELECT p FROM Pratica p WHERE p.interventoData = :interventoData")
-    , @NamedQuery(name = "Pratica.findByVeicolo", query = "SELECT p FROM Pratica p WHERE p.veicolo = :veicolo ORDER BY p.arrivo ASC")
+    , @NamedQuery(name = "Pratica.findByVeicolo", query = "SELECT p FROM Pratica p WHERE p.veicolo = :veicolo ORDER BY p.dataArrivo DESC")
     , @NamedQuery(name = "Pratica.countByVeicolo", query = "SELECT count(p) FROM Pratica p WHERE p.veicolo = :veicolo")})
 public class Pratica implements Serializable {
     public static final List<String> STATO_ARRIVO_VEICOLO=new ArrayList<String>();

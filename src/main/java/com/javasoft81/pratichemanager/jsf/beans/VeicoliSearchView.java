@@ -308,6 +308,7 @@ public class VeicoliSearchView implements Serializable {
         p.setClienteidCliente(selectedCar.getCliente());
         p.setDataArrivo(Calendar.getInstance().getTime());
         this.praticheService.create(p);
+        this.pratiche.clear();
         this.pratiche = this.praticheService.findPraticaByVeicolo(selectedCar, PraticheUtils.MAX_PRATICHE_ESTRAIBILI);
         this.selectedMaterialePratica = new ArrayList<>();
         this.selectedPraticaLavoriCustom = new HashMap<>();
@@ -440,6 +441,34 @@ public class VeicoliSearchView implements Serializable {
     public void onMenuGenerale(SelectEvent event) {
         nullifyAllBlankField(selectedPratica);
         this.praticheService.edit(selectedPratica);
+        //Se la pratica ha cambiato data di arrivo è sempre bene rinfrescare 
+        //le pratiche
+        this.pratiche.clear();
+        this.pratiche = this.praticheService.findPraticaByVeicolo(selectedCar, PraticheUtils.MAX_PRATICHE_ESTRAIBILI);
+        this.selectedPratica = this.pratiche.get(0);
+        this.activeIndexTab = this.pratiche.indexOf(this.selectedPratica);
+        if (this.selectedPraticaLavoriStandard == null) {
+            this.selectedPraticaLavoriStandard = new HashMap<>();
+        } else {
+            this.selectedPraticaLavoriStandard.clear();
+        }
+        if (this.selectedPraticaLavoriCustom == null) {
+            this.selectedPraticaLavoriCustom = new HashMap<>();
+        } else {
+            this.selectedPraticaLavoriCustom.clear();
+        }
+        if (this.selectedMaterialePratica == null) {
+            this.selectedMaterialePratica = new ArrayList<>();
+        } else {
+            this.selectedMaterialePratica.clear();
+        }
+        if (!this.pratiche.isEmpty()) {
+            for (Categoriatipolavoro cat : this.lavoriManagerBean.getCategorie()) {
+                this.selectedPraticaLavoriStandard.put(cat, this.lavoriManagerBean.getLavoriStandardByCategoria(cat, selectedPratica));
+                this.selectedPraticaLavoriCustom.put(cat, this.lavoriManagerBean.getLavoriCustomByCategoria(cat, selectedPratica));
+            }
+            this.selectedMaterialePratica = this.materialiManagerBean.getMaterialePratica(selectedPratica);
+        }
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica aggiornata", "Successo");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
