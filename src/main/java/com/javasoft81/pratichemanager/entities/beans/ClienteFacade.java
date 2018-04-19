@@ -28,5 +28,13 @@ public class ClienteFacade extends AbstractFacade<Cliente> {
     public ClienteFacade() {
         super(Cliente.class);
     }
+
+    public Cliente findCliente(Cliente c) {
+        return (Cliente)this.getEntityManager().createNamedQuery("Cliente.findByCliente")
+                .setParameter("nome", c.getNome())
+                .setParameter("cognome", c.getCognome())
+                .setParameter("localita", c.getLocalita())
+                .setParameter("cellulare",c.getCellulare()).getResultList().get(0);
+    }
     
 }

@@ -28,5 +28,17 @@ public class VeicoloFacade extends AbstractFacade<Veicolo> {
     public VeicoloFacade() {
         super(Veicolo.class);
     }
+
+    public Veicolo findByVeicolo(Veicolo v) {
+        return (Veicolo)this.getEntityManager().createNamedQuery("Veicolo.findByVeicolo")
+                .setParameter("marca", v.getMarca() )
+                .setParameter("modello", v.getModello())
+                .setParameter("matricola", v.getMatricola())
+                .setParameter("anno", v.getAnno())
+                .setParameter("portataMax", v.getPortataMax())
+                .setParameter("targa", v.getTarga())
+                .setParameter("tipo", v.getTipo())
+                .getResultList().get(0);
+    }
     
 }

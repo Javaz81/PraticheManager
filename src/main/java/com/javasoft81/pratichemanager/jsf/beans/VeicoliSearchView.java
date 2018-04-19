@@ -19,6 +19,7 @@ import com.javasoft81.pratichemanager.entities.Veicolo;
 import com.javasoft81.pratichemanager.entities.beans.ClienteFacade;
 import com.javasoft81.pratichemanager.entities.beans.PraticaFacade;
 import com.javasoft81.pratichemanager.entities.beans.VeicoloFacade;
+import com.javasoft81.pratichemanager.jsf.beans.utils.VeicoloNewDialog;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -367,7 +369,31 @@ public class VeicoliSearchView implements Serializable {
     }
     
     public void onVeicoloCreated(SelectEvent event){
-        System.out.println("veicolo creato");
+        HashMap<String,Object> response = (HashMap<String,Object>)event.getObject();        
+        Veicolo v = (Veicolo)response.get(VeicoloNewDialog.ResponseParameter.VEICOLO.toString());
+        Cliente c = (Cliente)response.get(VeicoloNewDialog.ResponseParameter.CLIENTE_ASSEGNATO.toString());
+        if(c==null){
+            c = (Cliente)response.get(VeicoloNewDialog.ResponseParameter.CLIENTE_MODIFICATO.toString());
+            if(c == null){
+                c = (Cliente)response.get(VeicoloNewDialog.ResponseParameter.CLIENTE_NUOVO.toString());
+                if(c==null)
+                    throw new IllegalArgumentException();
+                else{
+                    this.clienteService.create(c);
+                    c = this.clienteService.findCliente(c);
+                }
+            }else{
+                this.clienteService.edit(c);
+            }
+        }
+        v.setCliente(c);
+        this.veicoliService.create(v);
+        v = this.veicoliService.findByVeicolo(v);
+        this.selectedCar = v;
+        this.newPratica();
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "SUCCESSO", "Veicolo creato e aggiornato");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+        
     }
 
     public void chooseVeicoli() {

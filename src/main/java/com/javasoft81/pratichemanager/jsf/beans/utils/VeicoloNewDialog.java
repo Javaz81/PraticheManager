@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
-import javax.ejb.EJBException;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
@@ -52,6 +51,7 @@ public class VeicoloNewDialog implements Serializable {
     private String cognome;
     private String localita;
     private String cellulare;
+    private final String ANNO_DEFAULT = "1900";
 
     /**
      * Creates a new instance of VeicoloNewDialog
@@ -64,7 +64,7 @@ public class VeicoloNewDialog implements Serializable {
         CLIENTE_MODIFICATO("modificato"),
         CLIENTE_NUOVO("nuovo"),
         VEICOLO("veicolo");
-        
+
         private String parName;
 
         ResponseParameter(String pN) {
@@ -214,53 +214,104 @@ public class VeicoloNewDialog implements Serializable {
         this.cellulare = c.getCellulare();
     }
 
+    private void emptyNullField() {
+        //cliente...
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new NullPointerException();
+        }
+        if (cognome == null) {
+            cognome = "";
+        }
+        if (localita == null) {
+            localita = "";
+        }
+        if (cellulare == null) {
+            cellulare = "";
+        }
+        //veicolo...
+        if (marca == null || marca.trim().isEmpty()) {
+            throw new NullPointerException();
+        }
+        if (modello == null) {
+            modello = "";
+        }
+        if (matricola == null) {
+            matricola = "";
+        }
+        if (anno == null) {
+            anno = ANNO_DEFAULT;
+        }
+        if (targa == null) {
+            targa = "";
+        }
+        if (portataMax == null) {
+            portataMax = 0;
+        }
+        if (tipo == null) {
+            tipo = this.tipiVeicolo[0];
+        }
+    }
+
     public void endEditDialog() {
         //Validate veicolo and client
         boolean validate = false;
         HashMap<String, Object> response = new HashMap<>();
         //Vediamo se il cliente è stato scelto dalla lista
         boolean edit = false;
-        if (cliente != null) {
-            //se è stato modificato, allora modificalo
-            if(!cliente.getNome().equals(nome)){
-                cliente.setNome(nome);
-                edit = true;
-            }
-            if(!cliente.getCognome().equals(cognome)){
-                cliente.setCognome(cognome);
-                edit=true;
-            }
-            if(!cliente.getLocalita().equals(localita)){
-                cliente.setLocalita(localita);
-                edit=true;
-            }
-            if(!cliente.getCellulare().equals(cellulare)){
+        try {
+            emptyNullField();
+            if (cliente != null) {
+                //se è stato modificato, allora modificalo
+                if (!cliente.getNome().equals(nome)) {
+                    cliente.setNome(nome);
+                    edit = true;
+                }                
+                if (!cliente.getCognome().equals(cognome)) {
+                    cliente.setCognome(cognome);
+                    edit = true;
+                }
+                if (!cliente.getLocalita().equals(localita)) {
+                    cliente.setLocalita(localita);
+                    edit = true;
+                }
+                if (!cliente.getCellulare().equals(cellulare)) {
+                    cliente.setCellulare(cellulare);
+                    edit = true;
+                }
+                if (edit) {
+                    response.put(ResponseParameter.CLIENTE_MODIFICATO.toString(), cliente);
+                } else {
+                    response.put(ResponseParameter.CLIENTE_ASSEGNATO.toString(), cliente);
+                }
+            } else {
+                //cliente nuovo,
+                cliente = new Cliente();
                 cliente.setCellulare(cellulare);
-                edit=true;
+                cliente.setCognome(cognome);
+                cliente.setLocalita(localita);
+                cliente.setNome(nome);
+                response.put(ResponseParameter.CLIENTE_NUOVO.toString(), cliente);
             }
-           if(edit)
-               response.put(ResponseParameter.CLIENTE_MODIFICATO.toString(), cliente);
-           else
-               response.put(ResponseParameter.CLIENTE_ASSEGNATO.toString(), cliente);           
-        }else{
-            //cliente nuovo,
-            cliente = new Cliente();
-            cliente.setCellulare(cellulare);
-            cliente.setCognome(cognome);
-            cliente.setLocalita(localita);
-            cliente.setNome(nome);            
-            response.put(ResponseParameter.CLIENTE_NUOVO.toString(), cliente);
+        } catch (NullPointerException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Errore!", "Manca qualcosa nel cliente"
+                    + " o nel veicolo! La marca del e il nome del cliente sono obbligatori. La matricola deve essere univoca tra tutte le altre piattaforme/autoarticolati!"));
+            return;
         }
-        this.veicolo = new Veicolo();
-        veicolo.setAnno(Integer.parseInt(anno));
-        this.veicolo.setMarca(marca);
-        this.veicolo.setMatricola(matricola);
-        this.veicolo.setPortataMax(portataMax);
-        this.veicolo.setModello(modello);
-        this.veicolo.setTipo(tipo);
-        this.veicolo.setTarga(targa);
-        //il cliente del veicolo lo setterà durante la persistenza in modo tale che se c'è un errore di persistenza stesso, non venga
-        //creato niente . . . 
-        RequestContext.getCurrentInstance().closeDialog(veicolo);
+        try {
+            this.veicolo = new Veicolo();
+            veicolo.setAnno(Integer.parseInt(anno));
+            this.veicolo.setMarca(marca);
+            this.veicolo.setMatricola(matricola);
+            this.veicolo.setPortataMax(portataMax);
+            this.veicolo.setModello(modello);
+            this.veicolo.setTipo(tipo);
+            this.veicolo.setTarga(targa);
+            response.put(ResponseParameter.VEICOLO.toString(), veicolo);
+            //il cliente del veicolo lo setterà durante la persistenza in modo tale che se c'è un errore di persistenza stesso, non venga
+            //creato niente . . . 
+            RequestContext.getCurrentInstance().closeDialog(response);
+        } catch (NullPointerException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Errore!", "Manca qualcosa!Ricorda che la matricola è obbligatoria.!"));
+        }
     }
 }
