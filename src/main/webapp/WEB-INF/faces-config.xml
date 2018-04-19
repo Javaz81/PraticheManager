@@ -100,4 +100,10 @@
         <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.utils.VeicoloNewDialog</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <description>Bean che gestisce l'assegnamento del cliente già presente in anagrafica e lo pone nel bean che gestisce la creazione del veicolo.</description>
+        <managed-bean-name>clienteAssignDialog</managed-bean-name>
+        <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.utils.ClienteAssignDialog</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
 </faces-config>
