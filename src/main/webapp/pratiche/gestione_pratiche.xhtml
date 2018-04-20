@@ -13,9 +13,10 @@
     </h:head>
 
     <p:growl id="growl" life="3000" showSummary="true" showDetail="true"/>
+    
     <p:layout fullPage="true">
         <p:layoutUnit id="north" position="north">
-            <h:form>               
+            <h:form>           
                 <p:panelGrid columns="3" style="padding-left: 1em;vertical-align: auto;">
                     <p:outputLabel for="themebasic" value="Tema: " />
                     <p:themeSwitcher  effectSpeed="normal" effect="fade" 
@@ -35,7 +36,8 @@
             </h:form>
         </p:layoutUnit>
         <p:layoutUnit id="main_layout" position="center"  header="#{bundle.MainGestionePraticheTitle}">               
-            <h:form id="mainMenuForm">                          
+            <h:form id="mainMenuForm">
+                <p:messages id="messages" showDetail="true" closable="true" autoUpdate="true"/>
                 <p:menubar>
                     <p:submenu label="Auto-Articolati" icon="ui-icon-home">
                         <p:menuitem id="aa_search"  value="Cerca..." icon="ui-icon-search" onclick="searchVeicoli()"/>

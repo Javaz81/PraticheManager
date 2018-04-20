@@ -33,6 +33,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
@@ -53,7 +54,7 @@ public class VeicoliSearchView implements Serializable {
 
     @ManagedProperty(value = "materialiManagerBean")
     private MaterialiManagerBean materialiManagerBean;
-    
+
     @EJB
     private ClienteFacade clienteService;
 
@@ -67,11 +68,11 @@ public class VeicoliSearchView implements Serializable {
     private List<Veicolo> veicoli;
 
     private List<Pratica> pratiche;
-    
+
     private List<Cliente> clienti;
 
-    private List<Cliente>  filteredListChangingCliente;
-    
+    private List<Cliente> filteredListChangingCliente;
+
     private Veicolo selectedCar;
 
     private Pratica selectedPratica;
@@ -91,9 +92,8 @@ public class VeicoliSearchView implements Serializable {
     private Lavoripratichecustom selectedLavoroCustomDialog;
 
     private Categoriatipolavoro selectedCategoriaDialog;
-    
-    private List<Veicolo> filteredVeicoli;
 
+    private List<Veicolo> filteredVeicoli;
 
     /**
      * Creates a new instance of VeicoliSearchView
@@ -125,7 +125,6 @@ public class VeicoliSearchView implements Serializable {
     public void setFilteredListChangingCliente(List<Cliente> filteredListChangingCliente) {
         this.filteredListChangingCliente = filteredListChangingCliente;
     }
-        
 
     public LavoriManagerBean getLavoriManagerBean() {
         return lavoriManagerBean;
@@ -225,18 +224,18 @@ public class VeicoliSearchView implements Serializable {
 
     public void setFilteredVeicoli(List<Veicolo> filteredVeicoli) {
         this.filteredVeicoli = filteredVeicoli;
-    }       
-    
+    }
+
     public boolean filterVeicoloByCliente(Object value, Object filter, Locale locale) {
         String filterText = (filter == null) ? null : filter.toString().trim();
-        if(filterText == null||filterText.equals("")) {
+        if (filterText == null || filterText.equals("")) {
             return true;
-        }         
-        if(value == null) {
+        }
+        if (value == null) {
             return false;
         }
-        String nome = ((Cliente)value).getNome()==null?"":((Cliente)value).getNome();
-        String cognome = ((Cliente)value).getCognome()==null?"":((Cliente)value).getCognome();
+        String nome = ((Cliente) value).getNome() == null ? "" : ((Cliente) value).getNome();
+        String cognome = ((Cliente) value).getCognome() == null ? "" : ((Cliente) value).getCognome();
         boolean result;
         result = (nome.contains(filterText) || cognome.contains(filterText));
         return result;
@@ -282,12 +281,12 @@ public class VeicoliSearchView implements Serializable {
         return PraticheUtils.getFormattedBoolean(b);
     }
 
-    public void changeCliente(Cliente cliente){
+    public void changeCliente(Cliente cliente) {
         String messaggio;
-        if(this.selectedPratica == null){
+        if (this.selectedPratica == null) {
             this.selectedCar.setCliente(cliente);
             this.veicoliService.edit(selectedCar);
-            messaggio = "Cliente del Veicolo cambiato"; 
+            messaggio = "Cliente del Veicolo cambiato";
         } else {
             this.selectedPratica.setClienteidCliente(cliente);
             this.praticheService.edit(selectedPratica);
@@ -296,7 +295,7 @@ public class VeicoliSearchView implements Serializable {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, messaggio, "Creazione avvenuta");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-    
+
     public void newPratica() {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica creata con successo", "Creazione avvenuta");
         FacesContext.getCurrentInstance().addMessage(null, message);
@@ -351,49 +350,65 @@ public class VeicoliSearchView implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
-
     public void removeMateriale(Materialepratica m) {
         this.materialiManagerBean.removeMateriale(m);
         this.selectedMaterialePratica.remove(m);
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Materiale rimosso", "Rimozione materiale processata con successo.");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-    
-    public void createVeicolo(){
+
+    public void createVeicolo() {
         Map<String, Object> options = new HashMap<>();
         options.put("resizable", false);
         options.put("draggable", true);
         options.put("modal", true);
-        options.put("contentWidth",900);
+        options.put("contentWidth", 900);
         RequestContext.getCurrentInstance().openDialog("gestione_veicolo/menuNewVeicolo", options, null);
     }
-    
-    public void onVeicoloCreated(SelectEvent event){
-        HashMap<String,Object> response = (HashMap<String,Object>)event.getObject();        
-        Veicolo v = (Veicolo)response.get(VeicoloNewDialog.ResponseParameter.VEICOLO.toString());
-        Cliente c = (Cliente)response.get(VeicoloNewDialog.ResponseParameter.CLIENTE_ASSEGNATO.toString());
-        if(c==null){
-            c = (Cliente)response.get(VeicoloNewDialog.ResponseParameter.CLIENTE_MODIFICATO.toString());
-            if(c == null){
-                c = (Cliente)response.get(VeicoloNewDialog.ResponseParameter.CLIENTE_NUOVO.toString());
-                if(c==null)
+
+    public void onVeicoloCreated(SelectEvent event) {
+        HashMap<String, Object> response = (HashMap<String, Object>) event.getObject();
+        Veicolo v = (Veicolo) response.get(VeicoloNewDialog.ResponseParameter.VEICOLO.toString());
+        Cliente c = (Cliente) response.get(VeicoloNewDialog.ResponseParameter.CLIENTE_ASSEGNATO.toString());
+        if (c == null) {
+            c = (Cliente) response.get(VeicoloNewDialog.ResponseParameter.CLIENTE_MODIFICATO.toString());
+            if (c == null) {
+                c = (Cliente) response.get(VeicoloNewDialog.ResponseParameter.CLIENTE_NUOVO.toString());
+                if (c == null) {
                     throw new IllegalArgumentException();
-                else{
-                    this.clienteService.create(c);
-                    c = this.clienteService.findCliente(c);
+                } else {
+                    try {
+                        this.clienteService.create(c);
+                        c = this.clienteService.findCliente(c);
+                    } catch (EJBException ex) {
+                        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERRORE", "Il cliente è stato registrato con campi non validi.");
+                        FacesContext.getCurrentInstance().addMessage(null, message);
+                        return;
+                    }
                 }
-            }else{
-                this.clienteService.edit(c);
+            } else {
+                try{
+                    this.clienteService.edit(c);
+                }catch(EJBException ex){
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERRORE", "Il cliente è stato modificato male, riprovare!");
+                    FacesContext.getCurrentInstance().addMessage(null, message);
+                    return;
+                }
             }
         }
         v.setCliente(c);
+        try{
         this.veicoliService.create(v);
-        v = this.veicoliService.findByVeicolo(v);
+            v = this.veicoliService.findByVeicolo(v);
+        }catch(EJBException ex){
+             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERRORE", "La piattaforma/autorarticolato presenta parametri errati, riprovare prego!");
+                    FacesContext.getCurrentInstance().addMessage(null, message);
+                    return;
+        }
         this.selectedCar = v;
         this.newPratica();
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "SUCCESSO", "Veicolo creato e aggiornato");
         FacesContext.getCurrentInstance().addMessage(null, message);
-        
     }
 
     public void chooseVeicoli() {
@@ -401,7 +416,7 @@ public class VeicoliSearchView implements Serializable {
         options.put("resizable", false);
         options.put("draggable", true);
         options.put("modal", true);
-        options.put("contentWidth",800);
+        options.put("contentWidth", 800);
         RequestContext.getCurrentInstance().openDialog("searchVeicoli", options, null);
     }
 
@@ -410,7 +425,7 @@ public class VeicoliSearchView implements Serializable {
         options.put("resizable", false);
         options.put("draggable", true);
         options.put("modal", true);
-        options.put("contentWidth",900);
+        options.put("contentWidth", 900);
         this.selectedCategoriaDialog = cat;
         RequestContext.getCurrentInstance().openDialog("lavori/selectionLavoriStandard", options, null);
     }
@@ -451,23 +466,23 @@ public class VeicoliSearchView implements Serializable {
         this.selectedLavoroCustomDialog = lav;
         RequestContext.getCurrentInstance().openDialog("lavori/menuLavori", options, null);
     }
-    
-    public void editDatiVeicolo(){
+
+    public void editDatiVeicolo() {
         Map<String, Object> options = new HashMap<>();
         options.put("resizable", false);
         options.put("draggable", true);
         options.put("modal", true);
         RequestContext.getCurrentInstance().openDialog("gestione_veicolo/menuEditVeicolo", options, null);
     }
-    
-    public void editDatiCliente(){
+
+    public void editDatiCliente() {
         Map<String, Object> options = new HashMap<>();
         options.put("resizable", false);
         options.put("draggable", true);
         options.put("modal", true);
         RequestContext.getCurrentInstance().openDialog("gestione_veicolo/menuEditCliente", options, null);
     }
-    
+
     public void openMenuGenerale() {
         Map<String, Object> options = new HashMap<>();
         options.put("resizable", false);
@@ -511,21 +526,21 @@ public class VeicoliSearchView implements Serializable {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica aggiornata", "Successo");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-    
-    public void onEditVeicolo(SelectEvent event){
+
+    public void onEditVeicolo(SelectEvent event) {
         Veicolo retVeicolo = (Veicolo) event.getObject();
         this.veicoliService.edit(retVeicolo);
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica aggiornata", "Successo");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-    
-    public void onEditCliente(SelectEvent event){
+
+    public void onEditCliente(SelectEvent event) {
         Cliente retCliente = (Cliente) event.getObject();
         this.clienteService.edit(retCliente);
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica aggiornata", "Successo");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-    
+
     public void onLavoriCustomEdit(SelectEvent event) {
         this.lavoriManagerBean.editLavoroCustom(this.selectedLavoroCustomDialog);
         this.selectedPraticaLavoriCustom.get(this.selectedLavoroCustomDialog.getCategoria()).forEach((Lavoripratichecustom i) -> {

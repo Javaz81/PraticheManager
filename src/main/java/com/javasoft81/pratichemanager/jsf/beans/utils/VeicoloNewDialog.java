@@ -215,7 +215,7 @@ public class VeicoloNewDialog implements Serializable {
     }
 
     private void emptyNullField() {
-        //cliente...
+        //cliente...        
         if (nome == null || nome.trim().isEmpty()) {
             throw new NullPointerException();
         }
@@ -252,36 +252,93 @@ public class VeicoloNewDialog implements Serializable {
         }
     }
 
+    public void assingNoCliente() {
+        for (Cliente c : clienti) {
+            if (c.getIdCliente().equals(1)) {
+                cliente = c;
+                nome= c.getNome();
+                cognome = c.getCognome();
+                localita = c.getLocalita();
+                cellulare = c.getCellulare();
+                break;
+            }
+        }
+    }
+
     public void endEditDialog() {
         //Validate veicolo and client
         boolean validate = false;
         HashMap<String, Object> response = new HashMap<>();
-        //Vediamo se il cliente è stato scelto dalla lista
+        //Vediamo se il cliente è stato scelto dalla lista, è nullo, è stato assegnato da lista oppure assegnato e modificato.
+        //Il cliente con ID = 1 è il cliente nullo e non è modificabile.
         boolean edit = false;
         try {
-            emptyNullField();
+            //Se il cliente è stato preso da un assegnamento da lista...
             if (cliente != null) {
-                //se è stato modificato, allora modificalo
-                if (!cliente.getNome().equals(nome)) {
-                    cliente.setNome(nome);
-                    edit = true;
-                }                
-                if (!cliente.getCognome().equals(cognome)) {
-                    cliente.setCognome(cognome);
-                    edit = true;
-                }
-                if (!cliente.getLocalita().equals(localita)) {
-                    cliente.setLocalita(localita);
-                    edit = true;
-                }
-                if (!cliente.getCellulare().equals(cellulare)) {
-                    cliente.setCellulare(cellulare);
-                    edit = true;
-                }
-                if (edit) {
-                    response.put(ResponseParameter.CLIENTE_MODIFICATO.toString(), cliente);
-                } else {
+                //Se id=1 (NN) non è modificabile  e si passa come assegnato...          
+                if (cliente.getIdCliente() != null && cliente.getIdCliente().equals(1)) {
                     response.put(ResponseParameter.CLIENTE_ASSEGNATO.toString(), cliente);
+                } else {
+                    emptyNullField();
+                    //se è stato modificato, allora modificalo...
+                    if (cliente.getNome() == null) {
+                        if (nome == null) {
+                            throw new NullPointerException();
+                        } else {
+                            if (nome.trim().isEmpty()) {
+                                throw new NullPointerException();
+                            } else {
+                                cliente.setNome(nome);
+                                edit = true;
+                            }
+                        }
+                    } else {
+                        if (!cliente.getNome().equals(nome)) {
+                            cliente.setNome(nome);
+                            edit = true;
+                        }
+                    }
+
+                    if (cliente.getCognome() == null) {
+                        if (cognome != null) {
+                            cliente.setCognome(cognome);
+                            edit = true;
+                        }
+                    } else {
+                        if (!cliente.getCognome().equals(cognome)) {
+                            cliente.setCognome(cognome);
+                            edit = true;
+                        }
+                    }
+
+                    if (cliente.getLocalita() == null) {
+                        if (localita != null) {
+                            cliente.setLocalita(localita);
+                            edit = true;
+                        }
+                    } else {
+                        if (!cliente.getLocalita().equals(localita)) {
+                            cliente.setLocalita(localita);
+                            edit = true;
+                        }
+                    }
+                    if (cliente.getCellulare() == null) {
+                        if (cellulare != null) {
+                            cliente.setCellulare(cellulare);
+                            edit = true;
+                        }
+                    } else {
+                        if (!cliente.getCellulare().equals(cellulare)) {
+                            cliente.setCellulare(cellulare);
+                            edit = true;
+                        }
+                    }
+
+                    if (edit) {
+                        response.put(ResponseParameter.CLIENTE_MODIFICATO.toString(), cliente);
+                    } else {
+                        response.put(ResponseParameter.CLIENTE_ASSEGNATO.toString(), cliente);
+                    }
                 }
             } else {
                 //cliente nuovo,
@@ -294,14 +351,28 @@ public class VeicoloNewDialog implements Serializable {
             }
         } catch (NullPointerException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Errore!", "Manca qualcosa nel cliente"
-                    + " o nel veicolo! La marca del e il nome del cliente sono obbligatori. La matricola deve essere univoca tra tutte le altre piattaforme/autoarticolati!"));
+                    + " o nel veicolo! La MARCA del veicolo e il NOME/RAG. SOCIALE del cliente sono obbligatori!. La matricola deve essere univoca tra tutte le altre piattaforme/autoarticolati!"));
             return;
         }
         try {
             this.veicolo = new Veicolo();
-            veicolo.setAnno(Integer.parseInt(anno));
+            if (anno != null) {
+                try {
+                    this.veicolo.setAnno(Integer.parseInt(anno));
+                } catch (java.lang.NumberFormatException ex) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Errore!", "ANNO deve essere valorizzato correttamente!"));
+                    return;
+                }
+            }
+            //se siamo qui, allora matricola arriva già non nulla...il controllo di univocità lo farà la persistenza nel metodo di ritorno in VeicoliSearchView...
             this.veicolo.setMarca(marca);
-            this.veicolo.setMatricola(matricola);
+
+            if (matricola != null) {
+                this.veicolo.setMatricola(matricola);
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Errore!", "La matricola deve essere valorizzata e deve essere univoca rispetto a tutti gli altri veicoli!"));
+                return;
+            }
             this.veicolo.setPortataMax(portataMax);
             this.veicolo.setModello(modello);
             this.veicolo.setTipo(tipo);

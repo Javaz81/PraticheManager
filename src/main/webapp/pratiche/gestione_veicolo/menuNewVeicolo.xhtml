@@ -86,6 +86,9 @@ and open the template in the editor.
                             <p:ajax event="dialogReturn" listener="#{veicoloNewDialog.onClienteAssigned}" update="@all"/>
                         </p:commandButton>
                     </p:column>
+                    <p:column colspan="1">
+                        <p:commandButton  style=" margin-bottom: 1em;" value="NON ASSEGNARE CLIENTE" actionListener="#{veicoloNewDialog.assingNoCliente()}" update="@all"/>
+                    </p:column>
                 </p:row>
                 <p:row>
                     <p:column colspan="1"  style="font-weight: bold;">
