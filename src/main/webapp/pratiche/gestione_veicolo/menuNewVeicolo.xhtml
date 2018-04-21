@@ -19,7 +19,7 @@ and open the template in the editor.
     </h:head>
     <h:body>
         <h:form id='createVeicoloForm'>
-            <p:messages id="messages" showDetail="true" closable="true" autoUpdate="true">
+            <p:messages id="messages" showSummary="false" showDetail="true" closable="true" autoUpdate="true">
             </p:messages>
             <p:commandButton style=" margin-bottom: 1em;" value="APPLICA MODIFICHE"  actionListener="#{veicoloNewDialog.endEditDialog}"/> 
             <p:panelGrid> 
@@ -28,13 +28,13 @@ and open the template in the editor.
                         MARCA
                     </p:column>
                     <p:column class="col-value" colspan="1">
-                        <p:inputText value="#{veicoloNewDialog.marca}"/>
+                        <p:inputText value="#{veicoloNewDialog.marca}" required="true" requiredMessage="La MARCA è obbligatoria"/>
                     </p:column>
                     <p:column colspan="1" style="font-weight: bold;">
                         MODELLO
                     </p:column>
                     <p:column class="col-value" colspan="1">
-                        <p:inputText value="#{veicoloNewDialog.modello}" />
+                        <p:inputText value="#{veicoloNewDialog.modello}" />                        
                     </p:column>
                 </p:row>
                 <p:row>
@@ -42,13 +42,13 @@ and open the template in the editor.
                         ANNO
                     </p:column>
                     <p:column class="col-value" colspan="1">
-                        <p:inputNumber value="#{veicoloNewDialog.anno}" size="8" minValue="0" maxValue="3000" />
+                        <p:inputNumber value="#{veicoloNewDialog.anno}" size="8" minValue="0" decimalPlaces="0" maxValue="3000" />
                     </p:column>
                     <p:column colspan="1" style="font-weight: bold;">
-                        PORTATA MAX.
+                        PORTATA MAX. (Kg)
                     </p:column>
                     <p:column class="col-value" colspan="1">
-                        <p:inputNumber value="#{veicoloNewDialog.portataMax}"  />
+                        <p:inputNumber value="#{veicoloNewDialog.portataMax}" decimalPlaces="0" />
                     </p:column>
                 </p:row>
                 <p:row>
@@ -56,7 +56,8 @@ and open the template in the editor.
                         MATRICOLA / N.FABBRICA
                     </p:column>
                     <p:column class="col-value" colspan="1">
-                        <p:inputText value="#{veicoloNewDialog.matricola}"/>                       
+                        <p:inputText value="#{veicoloNewDialog.matricola}" maxlength="30" size="30" 
+                                     required="true" requiredMessage="La MATRICOLA è obbligatoria (basta un carattere qualsiasi)."/>                       
                     </p:column>
                     <p:column colspan="1"  style="font-weight: bold;">
                         TIPO
@@ -75,11 +76,21 @@ and open the template in the editor.
                         TARGA
                     </p:column>
                     <p:column class="col-value" colspan="1">
-                        <p:inputText value="#{veicoloNewDialog.targa}"/>
+                        <div class="ui-g">                            
+                            <div class="ui-g-10 ui-md-10 ui-lg-10">
+                                <p:inputText id="targaInput" value="#{veicoloNewDialog.targa}"/>
+                            </div>
+                            <div class="ui-g-2 ui-md-2 ui-lg-2">
+                                <p:commandButton icon="fa fa-fw fa-refresh" 
+                                                 actionListener="#{veicoloNewDialog.generateTarga()}"                                                
+                                                 title="Genera una targa nuova e univoca"
+                                                 update="targaInput" />
+                            </div>
+                        </div>                                              
                     </p:column>
                 </p:row>
             </p:panelGrid> 
-            <p:panelGrid id="assignedClientGrid">
+            <p:panelGrid id="assignedClientGrid" style="margin-top: 1em">
                 <p:row>
                     <p:column colspan="1">
                         <p:commandButton  style=" margin-bottom: 1em;" value="ASSEGNA DA LISTA CLIENTI" actionListener="#{veicoloNewDialog.openClienteDialog()}">
@@ -87,7 +98,7 @@ and open the template in the editor.
                         </p:commandButton>
                     </p:column>
                     <p:column colspan="1">
-                        <p:commandButton  style=" margin-bottom: 1em;" value="NON ASSEGNARE CLIENTE" actionListener="#{veicoloNewDialog.assingNoCliente()}" update="@all"/>
+                        <p:commandButton  style=" margin-bottom: 1em;" value="ASSEGNA CLIENTE NULLO" actionListener="#{veicoloNewDialog.assingNoCliente()}" update="@all"/>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -95,7 +106,7 @@ and open the template in the editor.
                         NOME/RAGIONE SOCIALE
                     </p:column>
                     <p:column colspan="1">                            
-                        <p:inputText value="#{veicoloNewDialog.nome}" size="50" />
+                        <p:inputText value="#{veicoloNewDialog.nome}" size="50" required="true" requiredMessage="Il NOME / RAG.SOCIALE è obbligatorio. Se NON è necessaria la presenza di un cliente allora assegna pure il CLIENTE NULLO" />
                     </p:column>
                 </p:row>
                 <p:row>

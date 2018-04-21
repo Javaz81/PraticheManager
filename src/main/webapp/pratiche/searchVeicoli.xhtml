@@ -29,16 +29,16 @@ and open the template in the editor.
                     <h:outputText value="#{veicolo.marca}" />
                 </p:column>
 
-                <p:column headerText="Modello" filterBy="#{veicolo.marca}" filterMatchMode="contains" >
+                <p:column headerText="Modello" filterBy="#{veicolo.modello}" filterMatchMode="contains" >
                     <h:outputText value="#{veicolo.modello}" />
                 </p:column>
 
-                <p:column headerText="Num. Fabbrica / Matricola" filterBy="#{veicolo.marca}" filterMatchMode="contains">
+                <p:column headerText="Num. Fabbrica / Matricola" filterBy="#{veicolo.matricola}" filterMatchMode="contains">
                     <h:outputText value="#{veicolo.matricola}" />
                 </p:column>
 
                 <p:column headerText="Cliente" filterBy="#{veicolo.cliente}" filterFunction="#{searchVeicoliDialog.filterVeicoloByCliente}">
-                    <h:outputText value="#{veicolo.cliente.nome}" />
+                    <h:outputText value="#{veicolo.cliente.nome} #{veicolo.cliente.cognome}" />
                 </p:column>
 
                 <p:column style="width:32px;text-align: center">

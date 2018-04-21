@@ -106,4 +106,17 @@
         <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.utils.ClienteAssignDialog</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <description>Bean con ambito application che racchiude alcune proprietà e metodi trasversali 
+a tutta l'applicazione.</description>
+        <managed-bean-name>appContextBean</managed-bean-name>
+        <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.AppContextBean</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>Bean per la gestione dati temporanei della pratica.</description>
+        <managed-bean-name>temporaneiEditDialog</managed-bean-name>
+        <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.utils.TemporaneiEditDialog</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
 </faces-config>

@@ -40,7 +40,10 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Veicolo.findByAnno", query = "SELECT v FROM Veicolo v WHERE v.anno = :anno")
     , @NamedQuery(name = "Veicolo.findByTipo", query = "SELECT v FROM Veicolo v WHERE v.tipo = :tipo")
     , @NamedQuery(name = "Veicolo.findByMatricola", query = "SELECT v FROM Veicolo v WHERE v.matricola = :matricola")
-    , @NamedQuery(name = "Veicolo.findByPortataMax", query = "SELECT v FROM Veicolo v WHERE v.portataMax = :portataMax")})
+    , @NamedQuery(name = "Veicolo.findByPortataMax", query = "SELECT v FROM Veicolo v WHERE v.portataMax = :portataMax")
+    , @NamedQuery(name = "Veicolo.findByVeicolo",query="SELECT v FROM Veicolo v WHERE v.anno = :anno AND v.marca = :marca "
+            + "AND v.matricola = :matricola AND v.modello = :modello AND v.portataMax = :portataMax AND v.targa = :targa "
+            + "AND v.tipo = :tipo")})
 public class Veicolo implements Serializable {
 
     private static final long serialVersionUID = 1L;

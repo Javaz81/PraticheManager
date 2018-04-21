@@ -29,7 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -179,6 +178,7 @@ public class VeicoliSearchView implements Serializable {
     }
 
     public List<Veicolo> getVeicoli() {
+        veicoli = this.veicoliService.findAll();
         return veicoli;
     }
 
@@ -309,10 +309,13 @@ public class VeicoliSearchView implements Serializable {
         p.setClienteidCliente(selectedCar.getCliente());
         p.setDataArrivo(Calendar.getInstance().getTime());
         this.praticheService.create(p);
-        this.pratiche.clear();
+        if (this.pratiche != null) {
+            this.pratiche.clear();
+        }
         this.pratiche = this.praticheService.findPraticaByVeicolo(selectedCar, PraticheUtils.MAX_PRATICHE_ESTRAIBILI);
         this.selectedMaterialePratica = new ArrayList<>();
         this.selectedPraticaLavoriCustom = new HashMap<>();
+        this.selectedPraticaLavoriStandard = new HashMap<>();
         for (Categoriatipolavoro c : this.lavoriManagerBean.getCategorie()) {
             this.selectedPraticaLavoriCustom.put(c, new ArrayList());
             this.selectedPraticaLavoriStandard.put(c, new ArrayList<>());
@@ -322,6 +325,11 @@ public class VeicoliSearchView implements Serializable {
     }
 
     public void deletePratica() {
+        if (this.pratiche == null || this.pratiche.isEmpty()) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERRORE!", "Nessuna pratica da cancellare");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return;
+        }
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica cancellata!", "ID pratica:" + selectedPratica.getIdPratica());
         FacesContext.getCurrentInstance().addMessage(null, message);
         for (Categoriatipolavoro c : this.lavoriManagerBean.getCategorie()) {
@@ -379,7 +387,6 @@ public class VeicoliSearchView implements Serializable {
                 } else {
                     try {
                         this.clienteService.create(c);
-                        c = this.clienteService.findCliente(c);
                     } catch (EJBException ex) {
                         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERRORE", "Il cliente è stato registrato con campi non validi.");
                         FacesContext.getCurrentInstance().addMessage(null, message);
@@ -387,9 +394,9 @@ public class VeicoliSearchView implements Serializable {
                     }
                 }
             } else {
-                try{
+                try {
                     this.clienteService.edit(c);
-                }catch(EJBException ex){
+                } catch (EJBException ex) {
                     FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERRORE", "Il cliente è stato modificato male, riprovare!");
                     FacesContext.getCurrentInstance().addMessage(null, message);
                     return;
@@ -397,15 +404,15 @@ public class VeicoliSearchView implements Serializable {
             }
         }
         v.setCliente(c);
-        try{
-        this.veicoliService.create(v);
-            v = this.veicoliService.findByVeicolo(v);
-        }catch(EJBException ex){
-             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERRORE", "La piattaforma/autorarticolato presenta parametri errati, riprovare prego!");
-                    FacesContext.getCurrentInstance().addMessage(null, message);
-                    return;
+        try {
+            this.veicoliService.create(v);
+        } catch (EJBException ex) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERRORE", "La piattaforma/autorarticolato presenta parametri errati, riprovare prego!");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return;
         }
         this.selectedCar = v;
+        this.selectedPratica = null;
         this.newPratica();
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "SUCCESSO", "Veicolo creato e aggiornato");
         FacesContext.getCurrentInstance().addMessage(null, message);
@@ -418,6 +425,20 @@ public class VeicoliSearchView implements Serializable {
         options.put("modal", true);
         options.put("contentWidth", 800);
         RequestContext.getCurrentInstance().openDialog("searchVeicoli", options, null);
+    }
+
+    public void openEditTemporaneiDialog() {
+        if(this.selectedPratica==null){
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERRORE",
+            "I dati temporanei sono associati alla pratica corrente, ma non è presente nessuna pratica selezionata al momento.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return;
+        }
+        Map<String, Object> options = new HashMap<>();
+        options.put("resizable", false);
+        options.put("draggable", true);
+        options.put("modal", true);
+        RequestContext.getCurrentInstance().openDialog("gestione_veicolo/menuEditTemporanei", options, null);
     }
 
     public void chooseLavoriStandard(Categoriatipolavoro cat) {
@@ -476,6 +497,21 @@ public class VeicoliSearchView implements Serializable {
     }
 
     public void editDatiCliente() {
+        if (this.selectedPratica != null) {
+            if (this.selectedPratica.getClienteidCliente().getIdCliente().equals(1)) {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERRORE",
+                        "E' vietato modificare il cliente nullo. Assegnane uno già in anagrafica.");
+                FacesContext.getCurrentInstance().addMessage(null, message);
+                return;
+            }
+        }else{
+            if (this.selectedCar.getCliente().getIdCliente().equals(1)){
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERRORE",
+                        "E' vietato modificare il cliente nullo. Assegnane uno già in anagrafica.");
+                FacesContext.getCurrentInstance().addMessage(null, message);
+                return;
+            }
+        }
         Map<String, Object> options = new HashMap<>();
         options.put("resizable", false);
         options.put("draggable", true);
@@ -524,6 +560,12 @@ public class VeicoliSearchView implements Serializable {
             this.selectedMaterialePratica = this.materialiManagerBean.getMaterialePratica(selectedPratica);
         }
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica aggiornata", "Successo");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    public void onEditTemporanei(SelectEvent event) {        
+        this.praticheService.edit(this.selectedPratica);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "AGGIORNAMENTO", "Dati temporanei aggiornati con successo.");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 

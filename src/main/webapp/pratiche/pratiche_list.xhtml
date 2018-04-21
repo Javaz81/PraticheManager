@@ -157,7 +157,9 @@
                         <p:column colspan="2">
                             <h:form>
                                 Dati da creazione temporanea pratica 
-                                <p:commandButton id="buttonDatiTemp" icon="fa fa-trash"  />
+                                <p:commandButton id="buttonDatiTemp" icon="fa fa-edit" actionListener="#{veicoliSearchView.openEditTemporaneiDialog}">
+                                    <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onEditTemporanei}" update="general_grid_dati_temp"/>
+                                </p:commandButton>
                                 <p:tooltip id="toolTip" for="buttonDatiTemp" position="top" 
                                            value="Ripulisce i dati temporanei della pratica" />
                             </h:form>
@@ -188,11 +190,11 @@
             <f:facet name="left">
                 <p:commandButton value="Nuova" title="Nuova Pratica" action="#{veicoliSearchView.newPratica}" 
                                  icon="ui-icon-document"
-                                 update="tabview_pratiche :growl :general_grid_cliente"/>
+                                 update="tabview_pratiche :growl :general_grid_cliente :general_grid_dati_temp"/>
             </f:facet>
             <f:facet name="right">
                 <p:commandButton rendered="#{not empty veicoliSearchView.selectedPratica}" value="Cancella" title="Cancella Pratica" 
-                                 action="#{veicoliSearchView.deletePratica}" icon="ui-icon-trash" update="tabview_pratiche :growl :general_grid_cliente">
+                                 action="#{veicoliSearchView.deletePratica}" icon="ui-icon-trash" update="tabview_pratiche :growl :general_grid_cliente :general_grid_dati_temp">
                     <p:confirm header="Conferma" message="Vuoi cancellare questa pratica?" icon="ui-icon-alert" />
                 </p:commandButton>
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -206,7 +208,7 @@
                var="item" value="#{veicoliSearchView.pratiche}" scrollable="true" 
                activeIndex="#{veicoliSearchView.activeIndexTab}" 
                dynamic="true" cache="false">
-        <p:ajax event="tabChange" listener="#{veicoliSearchView.onTabChange}" update="@(.tab_pratiche_panel) :general_grid_cliente"/>
+        <p:ajax event="tabChange" listener="#{veicoliSearchView.onTabChange}" update="@(.tab_pratiche_panel) :general_grid_cliente :general_grid_dati_temp"/>
         <p:tab title="#{veicoliSearchView.getDate(item)}">                
             <p:separator style=" size: 0.2em"/>
             <p:accordionPanel styleClass="tab_pratiche_panel">                

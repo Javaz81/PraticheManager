@@ -7,6 +7,8 @@ package com.javasoft81.pratichemanager.jsf.beans.utils;
 
 import com.javasoft81.pratichemanager.entities.Cliente;
 import com.javasoft81.pratichemanager.entities.Veicolo;
+import com.javasoft81.pratichemanager.entities.beans.ForbiddenOperationException;
+import com.javasoft81.pratichemanager.jsf.beans.AppContextBean;
 import com.javasoft81.pratichemanager.jsf.beans.VeicoliSearchView;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -52,6 +54,9 @@ public class VeicoloNewDialog implements Serializable {
     private String localita;
     private String cellulare;
     private final String ANNO_DEFAULT = "1900";
+    
+    private AppContextBean appVars;
+    private boolean targaGenerated = false;
 
     /**
      * Creates a new instance of VeicoloNewDialog
@@ -81,6 +86,7 @@ public class VeicoloNewDialog implements Serializable {
     public void init() {
         FacesContext context = FacesContext.getCurrentInstance();
         v = context.getApplication().evaluateExpressionGet(context, "#{veicoliSearchView}", VeicoliSearchView.class);
+        appVars = context.getApplication().evaluateExpressionGet(context, "#{appContextBean}", AppContextBean.class);
         veicolo = new Veicolo();
         cliente = new Cliente();
         clienti = v.getClienti();
@@ -232,18 +238,17 @@ public class VeicoloNewDialog implements Serializable {
         if (marca == null || marca.trim().isEmpty()) {
             throw new NullPointerException();
         }
-        if (modello == null) {
-            modello = "";
-        }
         if (matricola == null) {
             matricola = "";
         }
         if (anno == null) {
             anno = ANNO_DEFAULT;
         }
-        if (targa == null) {
-            targa = "";
+        if (targa == null || targa.trim().isEmpty()) {
+            //può essere nulla, ma se valorizzata deve essere unique.     
+            targa = null;
         }
+        
         if (portataMax == null) {
             portataMax = 0;
         }
@@ -252,6 +257,13 @@ public class VeicoloNewDialog implements Serializable {
         }
     }
 
+    public void generateTarga(){
+        if(!this.targaGenerated){
+            this.targa = appVars.getNextTarga();
+            this.targaGenerated = true;                    
+        }
+    }
+    
     public void assingNoCliente() {
         for (Cliente c : clienti) {
             if (c.getIdCliente().equals(1)) {
@@ -351,7 +363,7 @@ public class VeicoloNewDialog implements Serializable {
             }
         } catch (NullPointerException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Errore!", "Manca qualcosa nel cliente"
-                    + " o nel veicolo! La MARCA del veicolo e il NOME/RAG. SOCIALE del cliente sono obbligatori!. La matricola deve essere univoca tra tutte le altre piattaforme/autoarticolati!"));
+                    + " o nel veicolo! La MARCA del veicolo e il NOME/RAG. SOCIALE del cliente sono obbligatori!. La targa deve essere univoca (se valorizzata) tra tutte le altre piattaforme/autoarticolati!"));
             return;
         }
         try {
@@ -370,19 +382,30 @@ public class VeicoloNewDialog implements Serializable {
             if (matricola != null) {
                 this.veicolo.setMatricola(matricola);
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Errore!", "La matricola deve essere valorizzata e deve essere univoca rispetto a tutti gli altri veicoli!"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Errore!", "La matricola deve essere valorizzata!"));
                 return;
             }
             this.veicolo.setPortataMax(portataMax);
             this.veicolo.setModello(modello);
             this.veicolo.setTipo(tipo);
-            this.veicolo.setTarga(targa);
+            if(targa!=null){
+                //controlla se la targa è unica...
+                if(v.getVeicoli().stream().anyMatch(i->{return i.getTarga()==null?false:i.getTarga().equalsIgnoreCase(targa);})){
+                    throw new ForbiddenOperationException("La TARGA deve essere UNIVOCA (cioè non ci devono essere altre piattaforme,autoarticolati etc... che hanno questa targa). Controlla che non sia già presente per un'altro veicolo, oppure generane una fittizzia con l'apposito pulsante.");
+                }else{
+                    this.veicolo.setTarga(targa);
+                }
+            }else{
+                this.veicolo.setTarga(targa);
+            }
             response.put(ResponseParameter.VEICOLO.toString(), veicolo);
             //il cliente del veicolo lo setterà durante la persistenza in modo tale che se c'è un errore di persistenza stesso, non venga
             //creato niente . . . 
             RequestContext.getCurrentInstance().closeDialog(response);
         } catch (NullPointerException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Errore!", "Manca qualcosa!Ricorda che la matricola è obbligatoria.!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Errore!", "Manca qualcosa!Ricorda che la targa è obbligatoria.!"));
+        } catch (ForbiddenOperationException foe){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Errore!", foe.getMessage()));
         }
     }
 }
