@@ -7,13 +7,12 @@ package com.javasoft81.pratichemanager.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,13 +21,11 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -60,9 +57,20 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Pratica.findByVeicoloTemporaneo", query = "SELECT p FROM Pratica p WHERE p.veicoloTemporaneo = :veicoloTemporaneo")
     , @NamedQuery(name = "Pratica.findByDife", query = "SELECT p FROM Pratica p WHERE p.dife = :dife")
     , @NamedQuery(name = "Pratica.findByInterventoData", query = "SELECT p FROM Pratica p WHERE p.interventoData = :interventoData")
+    , @NamedQuery(name = "Pratica.findByStatoVeicoloArrivo", query = "SELECT p FROM Pratica p WHERE p.statoVeicoloArrivo = :statoVeicoloArrivo")
     , @NamedQuery(name = "Pratica.findByVeicolo", query = "SELECT p FROM Pratica p WHERE p.veicolo = :veicolo ORDER BY p.dataArrivo DESC")
-    , @NamedQuery(name = "Pratica.countByVeicolo", query = "SELECT count(p) FROM Pratica p WHERE p.veicolo = :veicolo")})
+    , @NamedQuery(name = "Pratica.countByVeicolo", query = "SELECT count(p) FROM Pratica p WHERE p.veicolo = :veicolo")
+    , @NamedQuery(name = "Pratica.findByTempoPartenzaSede", query = "SELECT p FROM Pratica p WHERE p.tempoPartenzaSede = :tempoPartenzaSede")
+    , @NamedQuery(name = "Pratica.findByTempoInizioLavoro", query = "SELECT p FROM Pratica p WHERE p.tempoInizioLavoro = :tempoInizioLavoro")
+    , @NamedQuery(name = "Pratica.findByTempoFineLavoro", query = "SELECT p FROM Pratica p WHERE p.tempoFineLavoro = :tempoFineLavoro")
+    , @NamedQuery(name = "Pratica.findByTempoRientroSede", query = "SELECT p FROM Pratica p WHERE p.tempoRientroSede = :tempoRientroSede")
+    , @NamedQuery(name = "Pratica.findByTotKmAndRit", query = "SELECT p FROM Pratica p WHERE p.totKmAndRit = :totKmAndRit")
+    , @NamedQuery(name = "Pratica.findByTotOreLavoro", query = "SELECT p FROM Pratica p WHERE p.totOreLavoro = :totOreLavoro")
+    , @NamedQuery(name = "Pratica.findByTotOreViaggio", query = "SELECT p FROM Pratica p WHERE p.totOreViaggio = :totOreViaggio")})
 public class Pratica implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    
     public static final List<String> STATO_ARRIVO_VEICOLO=new ArrayList<String>();
     static{
         STATO_ARRIVO_VEICOLO.add("FUNZIONANTE MA NON OTTIMALE");
@@ -81,7 +89,7 @@ public class Pratica implements Serializable {
         STATO_ARRIVO_VEICOLO.add("BLOCCO PER MANOVRA ERRATA");
         STATO_ARRIVO_VEICOLO.add("ALTRO");
     }
-    private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -106,9 +114,6 @@ public class Pratica implements Serializable {
     @Size(max = 45)
     @Column(name = "numero_fattura")
     private String numeroFattura;
-    @Size(max = 45)
-    @Column(name = "stato_veicolo_arrivo")
-    private String statoVeicoloArrivo;
     @Column(name = "data_fattura")
     @Temporal(TemporalType.DATE)
     private Date dataFattura;
@@ -147,20 +152,33 @@ public class Pratica implements Serializable {
     @Column(name = "intervento_data")
     @Temporal(TemporalType.DATE)
     private Date interventoData;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pratica")
-    private Collection<Lavoripratichestandard> lavoripratichestandardCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pratica1")
-    private Collection<Materialepratica> materialepraticaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pratica")
-    private Collection<Orelavorate> orelavorateCollection;
+    @Size(max = 45)
+    @Column(name = "stato_veicolo_arrivo")
+    private String statoVeicoloArrivo;
+    @Column(name = "tempoPartenzaSede")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date tempoPartenzaSede;
+    @Column(name = "tempoInizioLavoro")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date tempoInizioLavoro;
+    @Column(name = "tempoFineLavoro")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date tempoFineLavoro;
+    @Column(name = "tempoRientroSede")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date tempoRientroSede;
+    @Column(name = "totKmAndRit")
+    private Integer totKmAndRit;
+    @Column(name = "totOreLavoro")
+    private Integer totOreLavoro;
+    @Column(name = "totOreViaggio")
+    private Integer totOreViaggio;
     @JoinColumn(name = "Cliente_idCliente", referencedColumnName = "idCliente")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Cliente clienteidCliente;
     @JoinColumn(name = "Veicolo", referencedColumnName = "idVeicolo")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Veicolo veicolo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pratica")
-    private Collection<Lavoripratichecustom> lavoripratichecustomCollection;
 
     public Pratica() {
     }
@@ -231,14 +249,6 @@ public class Pratica implements Serializable {
 
     public void setDataFattura(Date dataFattura) {
         this.dataFattura = dataFattura;
-    }
-
-    public String getStatoVeicoloArrivo() {
-        return statoVeicoloArrivo;
-    }
-
-    public void setStatoVeicoloArrivo(String statoVeicoloArrivo) {
-        this.statoVeicoloArrivo = statoVeicoloArrivo;
     }
 
     public Boolean getPreventivoLavori() {
@@ -353,31 +363,68 @@ public class Pratica implements Serializable {
         this.interventoData = interventoData;
     }
 
-    @XmlTransient
-    public Collection<Lavoripratichestandard> getLavoripratichestandardCollection() {
-        return lavoripratichestandardCollection;
+    public String getStatoVeicoloArrivo() {
+        return statoVeicoloArrivo;
     }
 
-    public void setLavoripratichestandardCollection(Collection<Lavoripratichestandard> lavoripratichestandardCollection) {
-        this.lavoripratichestandardCollection = lavoripratichestandardCollection;
+    public void setStatoVeicoloArrivo(String statoVeicoloArrivo) {
+        this.statoVeicoloArrivo = statoVeicoloArrivo;
     }
 
-    @XmlTransient
-    public Collection<Materialepratica> getMaterialepraticaCollection() {
-        return materialepraticaCollection;
+    public Date getTempoPartenzaSede() {
+        return tempoPartenzaSede;
     }
 
-    public void setMaterialepraticaCollection(Collection<Materialepratica> materialepraticaCollection) {
-        this.materialepraticaCollection = materialepraticaCollection;
+    public void setTempoPartenzaSede(Date tempoPartenzaSede) {
+        this.tempoPartenzaSede = tempoPartenzaSede;
     }
 
-    @XmlTransient
-    public Collection<Orelavorate> getOrelavorateCollection() {
-        return orelavorateCollection;
+    public Date getTempoInizioLavoro() {
+        return tempoInizioLavoro;
     }
 
-    public void setOrelavorateCollection(Collection<Orelavorate> orelavorateCollection) {
-        this.orelavorateCollection = orelavorateCollection;
+    public void setTempoInizioLavoro(Date tempoInizioLavoro) {
+        this.tempoInizioLavoro = tempoInizioLavoro;
+    }
+
+    public Date getTempoFineLavoro() {
+        return tempoFineLavoro;
+    }
+
+    public void setTempoFineLavoro(Date tempoFineLavoro) {
+        this.tempoFineLavoro = tempoFineLavoro;
+    }
+
+    public Date getTempoRientroSede() {
+        return tempoRientroSede;
+    }
+
+    public void setTempoRientroSede(Date tempoRientroSede) {
+        this.tempoRientroSede = tempoRientroSede;
+    }
+
+    public Integer getTotKmAndRit() {
+        return totKmAndRit;
+    }
+
+    public void setTotKmAndRit(Integer totKmAndRit) {
+        this.totKmAndRit = totKmAndRit;
+    }
+
+    public Integer getTotOreLavoro() {
+        return totOreLavoro;
+    }
+
+    public void setTotOreLavoro(Integer totOreLavoro) {
+        this.totOreLavoro = totOreLavoro;
+    }
+
+    public Integer getTotOreViaggio() {
+        return totOreViaggio;
+    }
+
+    public void setTotOreViaggio(Integer totOreViaggio) {
+        this.totOreViaggio = totOreViaggio;
     }
 
     public Cliente getClienteidCliente() {
@@ -394,15 +441,6 @@ public class Pratica implements Serializable {
 
     public void setVeicolo(Veicolo veicolo) {
         this.veicolo = veicolo;
-    }
-
-    @XmlTransient
-    public Collection<Lavoripratichecustom> getLavoripratichecustomCollection() {
-        return lavoripratichecustomCollection;
-    }
-
-    public void setLavoripratichecustomCollection(Collection<Lavoripratichecustom> lavoripratichecustomCollection) {
-        this.lavoripratichecustomCollection = lavoripratichecustomCollection;
     }
 
     @Override
