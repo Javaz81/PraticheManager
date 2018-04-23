@@ -291,7 +291,7 @@ public class VeicoliSearchView implements Serializable {
             this.selectedPratica.setClienteidCliente(cliente);
             this.praticheService.edit(selectedPratica);
             messaggio = "Cliente della Pratica cambiato";
-        }
+        } 
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, messaggio, "Creazione avvenuta");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
@@ -438,6 +438,7 @@ public class VeicoliSearchView implements Serializable {
         options.put("resizable", false);
         options.put("draggable", true);
         options.put("modal", true);
+        options.put("contentWidth", 800);
         RequestContext.getCurrentInstance().openDialog("gestione_veicolo/menuEditTemporanei", options, null);
     }
 
