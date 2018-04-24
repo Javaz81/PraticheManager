@@ -276,7 +276,11 @@ public class VeicoliSearchView implements Serializable {
     public String format_IT_Date(Date d) {
         return PraticheUtils.getFormattedITDate(d);
     }
-
+    
+    public String format_IT_DateTime(Date d){
+        return PraticheUtils.getFormattedITDateTime(d);
+    }
+        
     public String format_IT_Boolean(Boolean b) {
         return PraticheUtils.getFormattedBoolean(b);
     }
@@ -525,7 +529,7 @@ public class VeicoliSearchView implements Serializable {
         options.put("resizable", false);
         options.put("draggable", true);
         options.put("modal", true);
-        options.put("contentWidth", 800);
+        options.put("contentWidth", 900);
         RequestContext.getCurrentInstance().openDialog("generale/menuGenerale", options, null);
     }
 

@@ -36,6 +36,13 @@ public class PraticheUtils implements Serializable {
         return sdf.format(d);
     }
     
+    public static  String getFormattedITDateTime(Date d){
+        if(d==null)
+            return null;
+         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm",Locale.ITALIAN);
+         return sdf.format(d);
+    }
+    
     public static String getFormattedBoolean(Boolean b){
         if(b==null)
             return "NO";

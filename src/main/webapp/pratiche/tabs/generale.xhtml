@@ -21,7 +21,7 @@ and open the template in the editor.
                         />                            
             </p:commandButton>
         </h:form>
-        <div class="ui-g ui-fluid ui-widget-content ui-datatable-even" >                        
+        <div class="ui-g ui-fluid ui-widget-content ui-datatable-odd" >                        
             <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-weight: bold;">
                 N.ARRIVO
             </div>
@@ -73,7 +73,7 @@ and open the template in the editor.
                 #{veicoliSearchView.format_IT_Date(item.collaudoUslData)} 
             </div>
         </div>
-        <div class="ui-g ui-fluid ui-widget-content ui-datatable-even">                        
+        <div class="ui-g ui-fluid ui-widget-content ui-datatable-odd">                        
             <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-weight: bold;">
                 REGISTRO CONTROLLO ?
             </div>
@@ -125,7 +125,53 @@ and open the template in the editor.
                 #{item.ore} 
             </div>
         </div>
+        <div class="ui-g ui-fluid ui-widget-content ui-datatable-odd">                        
+            <div class="ui-g-12 ui-md-2 ui-lg-2"  style="font-weight: bold;">
+                PARTENZA SEDE ORE :
+            </div>
+            <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-style: italic;">
+                #{veicoliSearchView.format_IT_DateTime(item.tempoPartenzaSede)}
+            </div>
+            <div class="ui-g-12 ui-md-2 ui-lg-2"  style="font-weight: bold;">
+                INIZIO LAVORO ORE:
+            </div>
+            <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-style: italic;">
+                #{veicoliSearchView.format_IT_DateTime(item.tempoInizioLavoro)} 
+            </div>                       
+            <div class="ui-g-12 ui-md-2 ui-lg-2"  style="font-weight: bold;">
+                FINE LAVORI ORE :
+            </div>
+            <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-style: italic;">
+                #{veicoliSearchView.format_IT_DateTime(item.tempoFineLavoro)}
+            </div>
+            <div class="ui-g-12 ui-md-2 ui-lg-2"  style="font-weight: bold;">
+                RIENTRO SEDE ORE:
+            </div>
+            <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-style: italic;">
+                #{veicoliSearchView.format_IT_DateTime(item.tempoRientroSede)} 
+            </div> 
+        </div>
         <div class="ui-g ui-fluid ui-widget-content ui-datatable-even">                        
+            <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-weight: bold;">
+                TOT. KM A/R:
+            </div>
+            <div class="ui-g-12 ui-md-2 ui-lg-2"  style="font-style: italic;">
+                #{item.totKmAndRit}
+            </div>
+             <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-weight: bold;">
+                TOT. ORE LAVORO:
+            </div>
+            <div class="ui-g-12 ui-md-2 ui-lg-2"  style="font-style: italic;">
+                #{item.totOreLavoro} 
+            </div>
+             <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-weight: bold;">
+                TOT. ORE VIAGGIO:
+            </div>
+            <div class="ui-g-12 ui-md-2 ui-lg-2"  style="font-style: italic;">
+                #{item.totOreViaggio} 
+            </div>
+        </div>
+        <div class="ui-g ui-fluid ui-widget-content ui-datatable-odd">                        
             <div class="ui-g-12 ui-md-1 ui-lg-1"  style="font-weight: bold;">
                 DIFE ?
             </div>

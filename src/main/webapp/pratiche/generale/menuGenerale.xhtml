@@ -127,6 +127,53 @@
                         <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{generalePraticaDialog.p.preventivoLavoriData}"/>
                     </div>
                 </div>
+                
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-1 ui-md-1 ui-lg-1"  >
+                        PARTENZA SEDE ORE:
+                    </div>
+                    <div class="ui-g-2 ui-md-2 ui-lg-2" >
+                        <p:calendar locale="it" pattern="dd-MM-yyyy HH:mm" navigator="true" showButtonPanel="true"  value="#{generalePraticaDialog.p.tempoPartenzaSede}"/>
+                    </div>
+                     <div class="ui-g-1 ui-md-1 ui-lg-1"  >
+                        INIZIO LAVORI ORE:
+                    </div>
+                    <div class="ui-g-2 ui-md-2 ui-lg-2" >
+                        <p:calendar locale="it" pattern="dd-MM-yyyy HH:mm" navigator="true" showButtonPanel="true" value="#{generalePraticaDialog.p.tempoInizioLavoro}"/>
+                    </div>
+                     <div class="ui-g-1 ui-md-1 ui-lg-1"  >
+                        FINE LAVORI ORE:
+                    </div>
+                    <div class="ui-g-2 ui-md-2 ui-lg-2" >
+                        <p:calendar locale="it" pattern="dd-MM-yyyy HH:mm" navigator="true" showButtonPanel="true"  value="#{generalePraticaDialog.p.tempoFineLavoro}"/>
+                    </div>
+                     <div class="ui-g-1 ui-md-1 ui-lg-1"  >
+                        RIENTRO SEDE ORE:
+                    </div>
+                    <div class="ui-g-2 ui-md-2 ui-lg-2" >
+                        <p:calendar locale="it" pattern="dd-MM-yyyy HH:mm" navigator="true" showButtonPanel="true" value="#{generalePraticaDialog.p.tempoRientroSede}"/>
+                    </div>
+                </div>
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-2 ui-md-2 ui-lg-2"  >
+                        TOT. KM. A/R:
+                    </div>
+                    <div class="ui-g-2 ui-md-2 ui-lg-2" >
+                        <p:inputNumber decimalPlaces="0" value="#{generalePraticaDialog.p.totKmAndRit}"/>
+                    </div>
+                     <div class="ui-g-2 ui-md-2 ui-lg-2"  >
+                        TOT. ORE LAVORO:
+                    </div>
+                    <div class="ui-g-2 ui-md-2 ui-lg-2" >
+                        <p:inputNumber decimalPlaces="0" value="#{generalePraticaDialog.p.totOreLavoro}"/>
+                    </div>
+                     <div class="ui-g-2 ui-md-2 ui-lg-2"  >
+                        TOT. ORE VIAGGIO:
+                    </div>
+                    <div class="ui-g-2 ui-md-2 ui-lg-2" >
+                        <p:inputNumber decimalPlaces="0" value="#{generalePraticaDialog.p.totOreViaggio}"/>
+                    </div>
+                </div>
                 <div class="ui-g ui-fluid " >                    
                     <div class="ui-g-1 ui-md-1 ui-lg-1"  >
                         DIFE ?
@@ -135,7 +182,7 @@
                         <p:selectBooleanCheckbox value="#{generalePraticaDialog.p.dife}"/>
                     </div>
                     <div class="ui-g-1 ui-md-1 ui-lg-1"  >
-                        DATA INTERVENTO
+                        DATA INTERV.
                     </div>
                     <div class="ui-g-2 ui-md-2 ui-lg-2" >
                         <p:calendar locale="it" navigator="true" pattern="dd-MM-yyyy" value="#{generalePraticaDialog.p.interventoData}"/>
@@ -157,10 +204,9 @@
                         LAVORI SEGNALATI ALL'INGRESSO:
                     </div>
                     <div class="ui-g-9 ui-md-9 ui-lg-9" >
-                        <p:inputTextarea value="#{generalePraticaDialog.p.lavoriSegnalati}" autoResize="false" rows="3" cols="70"/>
+                        <p:inputTextarea value="#{generalePraticaDialog.p.lavoriSegnalati}" autoResize="false" rows="2" cols="70"/>
                     </div>
                 </div>
-
             </p:panel>
         </h:form>
     </div>
