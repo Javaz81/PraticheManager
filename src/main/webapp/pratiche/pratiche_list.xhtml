@@ -191,9 +191,12 @@
                 <p:commandButton value="Nuova" title="Nuova Pratica" action="#{veicoliSearchView.newPratica}" 
                                  icon="ui-icon-document"
                                  update="tabview_pratiche :growl :general_grid_cliente :general_grid_dati_temp"/>
+                <p:commandButton value="Stampa" title="Stampa pratica" ajax="false">
+                    <p:fileDownload value="#{veicoliSearchView.printedPratica}"/>
+                </p:commandButton>
             </f:facet>
             <f:facet name="right">
-                <p:commandButton rendered="#{not empty veicoliSearchView.selectedPratica}" value="Cancella" title="Cancella Pratica" 
+                <p:commandButton rendered="#{not empty veicoliSearchView.selectedPratica}" value="Cancella"  title="Cancella Pratica" 
                                  action="#{veicoliSearchView.deletePratica}" icon="ui-icon-trash" update="tabview_pratiche :growl :general_grid_cliente :general_grid_dati_temp">
                     <p:confirm header="Conferma" message="Vuoi cancellare questa pratica?" icon="ui-icon-alert" />
                 </p:commandButton>

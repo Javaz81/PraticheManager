@@ -20,6 +20,11 @@ import com.javasoft81.pratichemanager.entities.beans.ClienteFacade;
 import com.javasoft81.pratichemanager.entities.beans.PraticaFacade;
 import com.javasoft81.pratichemanager.entities.beans.VeicoloFacade;
 import com.javasoft81.pratichemanager.jsf.beans.utils.VeicoloNewDialog;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -30,15 +35,27 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TabChangeEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -93,6 +110,8 @@ public class VeicoliSearchView implements Serializable {
     private Categoriatipolavoro selectedCategoriaDialog;
 
     private List<Veicolo> filteredVeicoli;
+
+    private StreamedContent printedPratica;
 
     /**
      * Creates a new instance of VeicoliSearchView
@@ -226,6 +245,48 @@ public class VeicoliSearchView implements Serializable {
         this.filteredVeicoli = filteredVeicoli;
     }
 
+    /**
+     * Stampa una stringa vuota se l'oggetto è nullo.
+     *
+     * @param o l'oggetto da stampare
+     * @return il metodo toString() su o se non null, stringa vuota altrimenti.
+     */
+    String eStr(Object o) {
+        if (o != null) {
+            return o.toString();
+        } else {
+            return ("");
+        }
+    }    
+
+    public StreamedContent getPrintedPratica() {
+        try {
+            //ripulisci tutti i file piu vecchi di 2 giorni nella cartella predefinita di stampa
+            // . . . 
+            //genera il file e fallo scaricare...
+            String rep = null;
+            XWPFDocument doc = new XWPFDocument(OPCPackage.open(System.getProperty("user.home").concat(System.getProperty("file.separator")).concat("TEMPLATES").concat(System.getProperty("file.separator")).concat("SUPER_ASSISSTENZA _TEMPLATE.docx")));
+            for (XWPFTable t : doc.getTables()) {
+                for (XWPFTableRow row : t.getRows()) {
+                    for (XWPFTableCell cell : row.getTableCells()) {
+                        writeTemplateMarker(cell);
+                    }
+                }
+            }
+            doc.write(
+                    new FileOutputStream(
+                            eStr(System.getProperty("user.home").concat(System.getProperty("file.separator")).concat("TEMPLATES").concat(System.getProperty("file.separator")).concat(eStr(this.selectedPratica.getIdPratica())).concat("_").concat("_pratica.docx")
+                            )
+                    )
+            );
+            InputStream stream = new FileInputStream(System.getProperty("user.home").concat(System.getProperty("file.separator")).concat("TEMPLATES").concat(System.getProperty("file.separator")).concat(eStr(this.selectedPratica.getIdPratica())).concat("_").concat("_pratica.docx"));
+            return new DefaultStreamedContent(stream, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", System.getProperty("user.home").concat(System.getProperty("file.separator")).concat("TEMPLATES").concat(System.getProperty("file.separator")).concat(eStr(this.selectedPratica.getIdPratica())).concat("_").concat("_pratica.docx"));
+        } catch (Exception ex) {
+            Logger.getLogger(VeicoliSearchView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     public boolean filterVeicoloByCliente(Object value, Object filter, Locale locale) {
         String filterText = (filter == null) ? null : filter.toString().trim();
         if (filterText == null || filterText.equals("")) {
@@ -276,11 +337,11 @@ public class VeicoliSearchView implements Serializable {
     public String format_IT_Date(Date d) {
         return PraticheUtils.getFormattedITDate(d);
     }
-    
-    public String format_IT_DateTime(Date d){
+
+    public String format_IT_DateTime(Date d) {
         return PraticheUtils.getFormattedITDateTime(d);
     }
-        
+
     public String format_IT_Boolean(Boolean b) {
         return PraticheUtils.getFormattedBoolean(b);
     }
@@ -295,7 +356,7 @@ public class VeicoliSearchView implements Serializable {
             this.selectedPratica.setClienteidCliente(cliente);
             this.praticheService.edit(selectedPratica);
             messaggio = "Cliente della Pratica cambiato";
-        } 
+        }
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, messaggio, "Creazione avvenuta");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
@@ -432,9 +493,9 @@ public class VeicoliSearchView implements Serializable {
     }
 
     public void openEditTemporaneiDialog() {
-        if(this.selectedPratica==null){
+        if (this.selectedPratica == null) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERRORE",
-            "I dati temporanei sono associati alla pratica corrente, ma non è presente nessuna pratica selezionata al momento.");
+                    "I dati temporanei sono associati alla pratica corrente, ma non è presente nessuna pratica selezionata al momento.");
             FacesContext.getCurrentInstance().addMessage(null, message);
             return;
         }
@@ -509,8 +570,8 @@ public class VeicoliSearchView implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(null, message);
                 return;
             }
-        }else{
-            if (this.selectedCar.getCliente().getIdCliente().equals(1)){
+        } else {
+            if (this.selectedCar.getCliente().getIdCliente().equals(1)) {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERRORE",
                         "E' vietato modificare il cliente nullo. Assegnane uno già in anagrafica.");
                 FacesContext.getCurrentInstance().addMessage(null, message);
@@ -568,7 +629,7 @@ public class VeicoliSearchView implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
-    public void onEditTemporanei(SelectEvent event) {        
+    public void onEditTemporanei(SelectEvent event) {
         this.praticheService.edit(this.selectedPratica);
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "AGGIORNAMENTO", "Dati temporanei aggiornati con successo.");
         FacesContext.getCurrentInstance().addMessage(null, message);
@@ -757,4 +818,103 @@ public class VeicoliSearchView implements Serializable {
         }
 
     }
+    
+    private void writeTemplateMarker(XWPFTableCell cell) {
+        String text = cell.getText();
+        String rep = null;
+        if (text != null) {
+            if (text.contains("[marca]")) {
+                rep = text.replace("[marca]", eStr(this.selectedPratica.getVeicolo().getMarca()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[modello]")){
+                rep = text.replace("[modello]", eStr(this.selectedPratica.getVeicolo().getModello()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[anno]")){
+                rep = text.replace("[anno]", eStr(this.selectedPratica.getVeicolo().getAnno()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[portataMax]")){
+                rep = text.replace("[portataMax]", eStr(this.selectedPratica.getVeicolo().getPortataMax()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[matricola]")){
+                rep = text.replace("[matricola]", eStr(this.selectedPratica.getVeicolo().getMatricola()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[tipo]")){
+                rep = text.replace("[tipo]", eStr(this.selectedPratica.getVeicolo().getTipo()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[targa]")){
+                rep = text.replace("[targa]", eStr(this.selectedPratica.getVeicolo().getTarga()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[nome]")){
+                rep = text.replace("[nome]", eStr(this.selectedPratica.getClienteidCliente().getNome()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[cognome]")){
+                rep = text.replace("[cognome]", eStr(this.selectedPratica.getClienteidCliente().getCognome()));
+                cell.removeParagraph(0);
+                cell.setText(rep);                
+            }else if( text.contains("[localita]")){
+                rep = text.replace("[localita]", eStr(this.selectedPratica.getClienteidCliente().getLocalita()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[cellulare]")){
+                rep = text.replace("[cellulare]", eStr(this.selectedPratica.getClienteidCliente().getCellulare()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[arrivo]")){
+                rep = text.replace("[arrivo]", eStr(this.selectedPratica.getArrivo()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[dataArrivo]")){
+                rep = text.replace("[arrivo]", eStr(PraticheUtils.getFormattedITDate(this.selectedPratica.getDataArrivo())));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[uscita]")){
+                rep = text.replace("[uscita]", eStr(this.selectedPratica.getUscita()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[dataUscita]")){
+                rep = text.replace("[arrivo]", eStr(PraticheUtils.getFormattedITDate(this.selectedPratica.getDataUscita())));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[numFattura]")){
+                rep = text.replace("[numFattura]", eStr(this.selectedPratica.getNumeroFattura()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[dataFattura]")){
+                rep = text.replace("[dataFattura]", eStr(PraticheUtils.getFormattedITDate(this.selectedPratica.getDataFattura())));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[registroControllo]")){
+                rep = text.replace("[registroControllo]", eStr(this.selectedPratica.getRegistroDiControllo()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("")){
+                
+            }else if( text.contains("")){
+                
+            }else if( text.contains("")){
+                
+            }else if( text.contains("")){
+                
+            }else if( text.contains("")){
+                
+            }else if( text.contains("")){
+                
+            }else if( text.contains("")){
+                
+            }else if( text.contains("")){
+                
+            }else if( text.contains("")){
+                
+            }
+        }
+    }
+    
 }
