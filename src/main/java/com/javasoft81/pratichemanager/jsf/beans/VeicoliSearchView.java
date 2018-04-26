@@ -21,9 +21,7 @@ import com.javasoft81.pratichemanager.entities.beans.PraticaFacade;
 import com.javasoft81.pratichemanager.entities.beans.VeicoloFacade;
 import com.javasoft81.pratichemanager.jsf.beans.utils.VeicoloNewDialog;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -43,11 +41,8 @@ import javax.ejb.EJBException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
@@ -819,7 +814,7 @@ public class VeicoliSearchView implements Serializable {
 
     }
     
-    private void writeTemplateMarker(XWPFTableCell cell) {
+    private void writeTemplatePraticaMarker(XWPFTableCell cell) {
         String text = cell.getText();
         String rep = null;
         if (text != null) {
@@ -872,7 +867,7 @@ public class VeicoliSearchView implements Serializable {
                 cell.removeParagraph(0);
                 cell.setText(rep);
             }else if( text.contains("[dataArrivo]")){
-                rep = text.replace("[arrivo]", eStr(PraticheUtils.getFormattedITDate(this.selectedPratica.getDataArrivo())));
+                rep = text.replace("[dataArrivo]", eStr(PraticheUtils.getFormattedITDate(this.selectedPratica.getDataArrivo())));
                 cell.removeParagraph(0);
                 cell.setText(rep);
             }else if( text.contains("[uscita]")){
@@ -880,7 +875,7 @@ public class VeicoliSearchView implements Serializable {
                 cell.removeParagraph(0);
                 cell.setText(rep);
             }else if( text.contains("[dataUscita]")){
-                rep = text.replace("[arrivo]", eStr(PraticheUtils.getFormattedITDate(this.selectedPratica.getDataUscita())));
+                rep = text.replace("[dataUscita]", eStr(PraticheUtils.getFormattedITDate(this.selectedPratica.getDataUscita())));
                 cell.removeParagraph(0);
                 cell.setText(rep);
             }else if( text.contains("[numFattura]")){
@@ -892,27 +887,150 @@ public class VeicoliSearchView implements Serializable {
                 cell.removeParagraph(0);
                 cell.setText(rep);
             }else if( text.contains("[registroControllo]")){
-                rep = text.replace("[registroControllo]", eStr(this.selectedPratica.getRegistroDiControllo()));
+                rep = text.replace("[registroControllo]", eStr(PraticheUtils.getFormattedBoolean(this.selectedPratica.getRegistroDiControllo())));
                 cell.removeParagraph(0);
                 cell.setText(rep);
-            }else if( text.contains("")){
-                
-            }else if( text.contains("")){
-                
-            }else if( text.contains("")){
-                
-            }else if( text.contains("")){
-                
-            }else if( text.contains("")){
-                
-            }else if( text.contains("")){
-                
-            }else if( text.contains("")){
-                
-            }else if( text.contains("")){
-                
-            }else if( text.contains("")){
-                
+            }else if( text.contains("[dataRegistroControllo]")){
+                rep = text.replace("[dataRegistroControllo]", eStr(PraticheUtils.getFormattedITDate(this.selectedPratica.getRegistroDiControlloData())));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[revisione]")){
+                rep = text.replace("[revisione]", eStr(PraticheUtils.getFormattedBoolean(this.selectedPratica.getRevisioneMctc())));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[dataRevisione]")){
+                rep = text.replace("[dataRevisione]", eStr(PraticheUtils.getFormattedITDate(this.selectedPratica.getRevisioneMctcData())));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[preventivoLavori")){
+                rep = text.replace("[preventivoLavori]", eStr(PraticheUtils.getFormattedBoolean(this.selectedPratica.getPreventivoLavori())));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[dataPreventivoLavori]")){
+                rep = text.replace("[dataPreventivoLavori]", eStr(PraticheUtils.getFormattedITDate(this.selectedPratica.getPreventivoLavoriData())));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[dife]")){
+                rep = text.replace("[dife]", eStr(PraticheUtils.getFormattedBoolean(this.selectedPratica.getDife())));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[dataIntervento]")){
+                rep = text.replace("[dataIntervento]", eStr(PraticheUtils.getFormattedITDate(this.selectedPratica.getInterventoData())));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[km]")){
+                rep = text.replace("[km]", eStr(this.selectedPratica.getKilometraggio()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[ore]")){
+                rep = text.replace("[ore]", eStr(this.selectedPratica.getOre()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[tempoPartenzaSede]")){
+                rep = text.replace("[tempoPartenzaSede]", eStr(PraticheUtils.getFormattedITDateTime(this.selectedPratica.getTempoPartenzaSede())));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[tempoInizioLavoro]")){
+                rep = text.replace("[tempoInizioLavoro]", eStr(PraticheUtils.getFormattedITDateTime(this.selectedPratica.getTempoInizioLavoro())));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[tempoFineLavoro]")){
+                rep = text.replace("[tempoFineLavoro]", eStr(PraticheUtils.getFormattedITDateTime(this.selectedPratica.getTempoFineLavoro())));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[tempoRientroSede]")){
+                rep = text.replace("[tempoRientroSede]", eStr(PraticheUtils.getFormattedITDateTime(this.selectedPratica.getTempoRientroSede())));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[totKmAndRit]")){
+                rep = text.replace("[totKmAndRit]", eStr(this.selectedPratica.getTotKmAndRit()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[totOreLavoro]")){
+                rep = text.replace("[totOreLavoro]", eStr(this.selectedPratica.getTotOreLavoro()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[totOreViaggio]")){
+                rep = text.replace("[totOreViaggio]", eStr(this.selectedPratica.getTotOreViaggio()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[statoMacchinaArrivo]")){
+                rep = text.replace("[statoMacchinaArrivo]", eStr(this.selectedPratica.getStatoVeicoloArrivo()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[lavoriSegnalati]")){
+                rep = text.replace("[lavoriSegnalati]", eStr(this.selectedPratica.getLavoriSegnalati()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }
+        }
+    }
+    private void writeTemplateMaterialiMarker(XWPFTableCell cell, int i,List<Materialepratica> mp) {
+        String text = cell.getText();
+        String rep = null;
+        boolean nulla=false;
+        if(mp.size()-1>i)
+            nulla=true;
+        if (text != null) {
+            if (text.contains("[CODMAT"+i+"]")) {               
+                rep = text.replace("[CODMAT"+i+"]", eStr(nulla?"":mp.get(i).getArticolo1().getIdArticolo()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[DESC_ARTICOLO"+i+"]")){
+                rep = text.replace("[DESC_ARTICOLO"+i+"]", eStr(nulla?"":mp.get(i).getArticolo1().getDescrizione()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[QUANTITA"+i+"]")){
+                rep = text.replace("[QUANTITA"+i+"]", eStr(nulla?"":mp.get(i).getQuantitaConsumata().setScale(2, BigDecimal.ROUND_UP)));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }
+        }
+    }
+    private void writeTemplateCategoriaMarker(XWPFTableCell cell,int i, List<Categoriatipolavoro> cat){
+        String text = cell.getText();
+        String rep = null;
+        if(text!=null){
+            if(text.contains("[CATEGORIA"+i+"]")){
+                rep = text.replace("[CATEGORIA"+i+"]", eStr(cat.get(i).getNome()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }
+        }
+    }
+    private void writeTemplateLavoriStandardMarker(XWPFTableCell cell, int i, List<Lavoripratichestandard> lps) {
+        String text = cell.getText();
+        String rep = null;
+        boolean nulla=false;
+        if(lps.size()-1>i)
+            nulla=true;
+        if (text != null) {
+            if (text.contains("[CODLAV"+i+"]")) {               
+                rep = text.replace("[CODLAV"+i+"]", eStr(nulla?"":lps.get(i).getTipolavoro().getCodice()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[DESC_LAVORO"+i+"]")){
+                rep = text.replace("[DESC_LAVORO"+i+"]", eStr(nulla?"":lps.get(i).getTipolavoro().getDescrizione()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }
+        }
+    }
+    private void writeTemplateLavoriCustomMarker(XWPFTableCell cell, int i, List<Lavoripratichecustom> lpc) {
+        String text = cell.getText();
+        String rep = null;
+        boolean nulla=false;
+        if(lpc.size()-1>i)
+            nulla=true;
+        if (text != null) {
+            if (text.contains("[CODLAV"+i+"]")) {               
+                rep = text.replace("[CODLAV"+i+"]","PERS.");
+                cell.removeParagraph(0);
+                cell.setText(rep);
+            }else if( text.contains("[DESC_LAVORO"+i+"]")){
+                rep = text.replace("[DESC_LAVORO"+i+"]", eStr(nulla?"":lpc.get(i).getDescrizione()));
+                cell.removeParagraph(0);
+                cell.setText(rep);
             }
         }
     }
