@@ -312,6 +312,7 @@ public class VeicoliSearchView implements Serializable {
             int tempRowInd = indiceGeneraleLavori;
             Lavoripratichestandard lps = null;
             XWPFTable lastTable = null;
+            boolean rowFound = false;
             //Trova le tabelle lavori
             List<XWPFTable> tblLavori = findLavoriTables(doc);
             indiceGeneraleLavori = 1;
@@ -325,6 +326,7 @@ public class VeicoliSearchView implements Serializable {
                                 );
                 for (XWPFTable t : tblLavori) {
                     rowind = 1;
+                    rowFound = false;
                     for (XWPFTableRow r : t.getRows()) {
                         if (!r.getCell(0).getText().startsWith("Cod.")) {
                             lastTable = t;
@@ -332,11 +334,13 @@ public class VeicoliSearchView implements Serializable {
                                 lps = null;
                             } else {
                                 lps = lavoriCat.get(rowind - 1);
-                                this.writeTemplateLavoriStandardMarker(r.getCell(0), tempRowInd, lps);
-                                this.writeTemplateLavoriStandardMarker(r.getCell(1), tempRowInd, lps);
+                                rowFound = this.writeTemplateLavoriStandardMarker(r.getCell(0), tempRowInd, lps);
+                                rowFound = this.writeTemplateLavoriStandardMarker(r.getCell(1), tempRowInd, lps);
                             }
                             tempRowInd++;
-                            rowind++;
+                            if (rowFound) {
+                                rowind++;
+                            }
                         }
                     }
                     indiceGeneraleLavori += 10;
@@ -353,6 +357,7 @@ public class VeicoliSearchView implements Serializable {
             tempRowInd = indiceGeneraleLavori;
             Lavoripratichecustom lpc = null;
             lastTable = null;
+            rowFound = false;
             //Trova le tabelle lavori
             tblLavori = findLavoriTables(doc);
             for (Categoriatipolavoro c : categorie) {
@@ -365,6 +370,7 @@ public class VeicoliSearchView implements Serializable {
                                 );
                 for (XWPFTable t : tblLavori) {
                     rowind = 1;
+                    rowFound = false;
                     for (XWPFTableRow r : t.getRows()) {
                         if (!r.getCell(0).getText().startsWith("Cod.")) {
                             lastTable = t;
@@ -372,11 +378,13 @@ public class VeicoliSearchView implements Serializable {
                                 lpc = null;
                             } else {
                                 lpc = lavoriCat.get(rowind - 1);
-                                this.writeTemplateLavoriCustomMarker(r.getCell(0), tempRowInd, lpc);
-                                this.writeTemplateLavoriCustomMarker(r.getCell(1), tempRowInd, lpc);
+                                rowFound = this.writeTemplateLavoriCustomMarker(r.getCell(0), tempRowInd, lpc);
+                                rowFound = this.writeTemplateLavoriCustomMarker(r.getCell(1), tempRowInd, lpc);
                             }
                             tempRowInd++;
-                            rowind++;
+                            if (rowFound) {
+                                rowind++;
+                            }
                         }
                     }
                     indiceGeneraleLavori += 10;
@@ -395,24 +403,19 @@ public class VeicoliSearchView implements Serializable {
             tblLavori = findLavoriTables(doc);
             for (Categoriatipolavoro c : categorie) {
                 for (XWPFTable t : tblLavori) {
-                    rowind = 1;
                     for (XWPFTableRow r : t.getRows()) {
                         if (!r.getCell(0).getText().startsWith("Cod.")) {
                             lastTable = t;
                             this.writeTemplateDefaultMarker(r.getCell(0), tempRowInd);
                             this.writeTemplateDefaultMarker(r.getCell(1), tempRowInd);
+                            tempRowInd++;
                         }
-                        tempRowInd++;
-                        rowind++;
                     }
+                    indiceGeneraleLavori += 10;
+                    tempRowInd = indiceGeneraleLavori;
                 }
-                indiceGeneraleLavori += 10;
-                tempRowInd = indiceGeneraleLavori;
-                break;
             }
-            if (lastTable != null) {
-                tblLavori.remove(lastTable);
-            }
+           
             //downloading...
             doc.write(
                     new FileOutputStream(
