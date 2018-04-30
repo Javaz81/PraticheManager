@@ -295,8 +295,8 @@ public class VeicoliSearchView implements Serializable {
             }
             //marker per le categorie
             List<Categoriatipolavoro> categorie = this.categoriaService.findAll();
-            int i = 0;
-            for (XWPFParagraph p : doc.getParagraphs()) {               
+            int i = 1;
+            for (XWPFParagraph p : doc.getParagraphs()) {
                 List<XWPFRun> runs = p.getRuns();
                 if (runs != null) {
                     for (XWPFRun r : runs) {
@@ -308,50 +308,47 @@ public class VeicoliSearchView implements Serializable {
             }
             //markers per i lavori standard
             int indiceGeneraleLavori = 1;
-            int indCurrLav = 0;            
+            int tempRowInd = indiceGeneraleLavori;
+            Lavoripratichestandard lps = null;
+            boolean rowFound = false;
+            List<XWPFTable> tblLavori = findLavoriTables(doc);
+            XWPFTable lastTable = null;
+            //Trova le tabelle lavori
+            indiceGeneraleLavori = 1;
             for (Categoriatipolavoro c : categorie) {
                 if (this.selectedPraticaLavoriStandard.get(c).isEmpty()) {
+                    indiceGeneraleLavori += 10;
+                    tempRowInd = indiceGeneraleLavori;
                     continue;
                 }
-                List<Lavoripratichestandard> lavoriCat = this.selectedPraticaLavoriStandard.get(c)
-                        .subList(0, this.selectedPraticaLavoriStandard
-                                .get(c).size() > MAX_ITEMS_TEMPLATE ? MAX_ITEMS_TEMPLATE : this.selectedPraticaLavoriStandard.get(c).size());
-                boolean tableCatFound = false;
-                for (XWPFTable t : doc.getTables()) {
-                    int tempRowInd=1;
-                    for(XWPFTableRow row : t.getRows()){
-                        for(XWPFTableCell cell : row.getTableCells()){
-                            tableCatFound=this.writeTemplateLavoriStandardMarker(cell, tempRowInd , lavoriCat.get(indCurrLav));
-                            if(!tableCatFound)
-                                break; // non è una tabella di lavori quindi esci...
-                            
-                        }
-                        if(!tableCatFound)
-                            break;//non è una tabella di lavori quindi esci e prova la prox tabella...
-                        else{
-                            indCurrLav++;                            
-                        }
+                List<Lavoripratichestandard> lavoriCat
+                        = this.selectedPraticaLavoriStandard.get(c)
+                                .subList(0,
+                                        this.selectedPraticaLavoriStandard.get(c).size() > MAX_ITEMS_TEMPLATE
+                                        ? MAX_ITEMS_TEMPLATE
+                                        : this.selectedPraticaLavoriStandard.get(c).size()
+                                );
+                for (XWPFTable t : tblLavori) {
+                    for (XWPFTableRow r : t.getRows()) {
+                        if (!r.getCell(0).getText().startsWith("Cod.")) {
+                            lastTable = t;
+                            if(tempRowInd-1>= lavoriCat.size())
+                                lps=null;
+                            else
+                                lps = lavoriCat.get(tempRowInd-1);
+                            this.writeTemplateLavoriStandardMarker(r.getCell(0), tempRowInd, lps);
+                            this.writeTemplateLavoriStandardMarker(r.getCell(1), tempRowInd, lps);
+                            tempRowInd++;                            
+                        }                        
                     }
+                    indiceGeneraleLavori += 10;
+                    tempRowInd = indiceGeneraleLavori;
+                    break;
                 }
-                indiceGeneraleLavori += 10;
+                if(lastTable!=null)
+                    tblLavori.remove(lastTable);
             }
-            /**
-             * i=0; int indiceGeneraleLavori = 0; boolean incIGL = false; for
-             * (Categoriatipolavoro c : this.categoriaService.findAll()) { if
-             * (this.selectedPraticaLavoriStandard.get(c).isEmpty()) { continue;
-             * } int lavind = 0; int size =
-             * this.selectedPraticaLavoriStandard.get(c).size();
-             * List<Lavoripratichestandard>
-             * lavori=this.selectedPraticaLavoriStandard.get(c).subList(0,
-             * size>MAX_ITEMS_TEMPLATE?MAX_ITEMS_TEMPLATE:size); int sizeLav =
-             * lavori.size(); i=10*indiceGeneraleLavori; for (XWPFTable t :
-             * doc.getTables()) { boolean find = false; for (XWPFTableRow row :
-             * t.getRows()) { for (XWPFTableCell cell : row.getTableCells()) {
-             * find = this.writeTemplateLavoriStandardMarker(cell, i,
-             * lavori.get(lavind)); if (!find) { break; } } if (find) { i = i +
-             * 1; lavind++; } else { break; } } indiceGeneraleLavori=+1; } }
-             *
-             */
+            //downloading...
             doc.write(
                     new FileOutputStream(
                             eStr(System.getProperty("user.home").concat(System.getProperty("file.separator")).concat("TEMPLATES").concat(System.getProperty("file.separator")).concat(eStr(this.selectedPratica.getIdPratica())).concat("_").concat("_pratica.docx")
@@ -1053,10 +1050,9 @@ public class VeicoliSearchView implements Serializable {
     private boolean writeTemplateMaterialiMarker(XWPFTableCell cell, int i, List<Materialepratica> mp) {
         String text = cell.getText();
         String rep = null;
-        boolean nulla = false;
-        boolean findsome = false;
-        if (mp.size() - 1 > i) {
-            nulla = true;
+        boolean nulla = true;
+        if (mp.size() >= i) {
+            nulla = false;
         }
         if (text != null) {
             if (text.contains("[CODMAT" + i + "]")) {
@@ -1094,6 +1090,7 @@ public class VeicoliSearchView implements Serializable {
 
     private boolean writeTemplateLavoriStandardMarker(XWPFTableCell cell, int i, Lavoripratichestandard l) {
         String text = cell.getText();
+        System.out.println(text);
         String rep = null;
         boolean nulla = false;
         if (l == null) {
@@ -1136,6 +1133,26 @@ public class VeicoliSearchView implements Serializable {
             }
         }
         return false;
+    }
+
+    private List<XWPFTable> findLavoriTables(XWPFDocument doc) {
+        boolean tblFound = false;
+        List<XWPFTable> tblLavori = new ArrayList();
+        for (XWPFTable t : doc.getTables()) {
+            for (XWPFTableRow row : t.getRows()) {
+                for (XWPFTableCell cell : row.getTableCells()) {
+                    if (cell.getText().contains("Cod.")) {
+                        tblLavori.add(t);
+                        tblFound = true;
+                        break;
+                    }
+                }
+                if (tblFound) {
+                    break;
+                }
+            }
+        }
+        return tblLavori;
     }
 
 }
