@@ -306,21 +306,16 @@ public class VeicoliSearchView implements Serializable {
                     }
                 }
             }
-            //markers per i lavori standard
+            // ********************markers per i lavori standard ********************************
+            int rowind;
             int indiceGeneraleLavori = 1;
             int tempRowInd = indiceGeneraleLavori;
             Lavoripratichestandard lps = null;
-            boolean rowFound = false;
-            List<XWPFTable> tblLavori = findLavoriTables(doc);
             XWPFTable lastTable = null;
             //Trova le tabelle lavori
+            List<XWPFTable> tblLavori = findLavoriTables(doc);
             indiceGeneraleLavori = 1;
             for (Categoriatipolavoro c : categorie) {
-                if (this.selectedPraticaLavoriStandard.get(c).isEmpty()) {
-                    indiceGeneraleLavori += 10;
-                    tempRowInd = indiceGeneraleLavori;
-                    continue;
-                }
                 List<Lavoripratichestandard> lavoriCat
                         = this.selectedPraticaLavoriStandard.get(c)
                                 .subList(0,
@@ -329,24 +324,94 @@ public class VeicoliSearchView implements Serializable {
                                         : this.selectedPraticaLavoriStandard.get(c).size()
                                 );
                 for (XWPFTable t : tblLavori) {
+                    rowind = 1;
                     for (XWPFTableRow r : t.getRows()) {
                         if (!r.getCell(0).getText().startsWith("Cod.")) {
                             lastTable = t;
-                            if(tempRowInd-1>= lavoriCat.size())
-                                lps=null;
-                            else
-                                lps = lavoriCat.get(tempRowInd-1);
-                            this.writeTemplateLavoriStandardMarker(r.getCell(0), tempRowInd, lps);
-                            this.writeTemplateLavoriStandardMarker(r.getCell(1), tempRowInd, lps);
-                            tempRowInd++;                            
-                        }                        
+                            if (rowind - 1 >= lavoriCat.size()) {
+                                lps = null;
+                            } else {
+                                lps = lavoriCat.get(rowind - 1);
+                                this.writeTemplateLavoriStandardMarker(r.getCell(0), tempRowInd, lps);
+                                this.writeTemplateLavoriStandardMarker(r.getCell(1), tempRowInd, lps);
+                            }
+                            tempRowInd++;
+                            rowind++;
+                        }
                     }
                     indiceGeneraleLavori += 10;
                     tempRowInd = indiceGeneraleLavori;
                     break;
                 }
-                if(lastTable!=null)
+                if (lastTable != null) {
                     tblLavori.remove(lastTable);
+                }
+            }
+
+            // ********************markers per i lavori custom ********************************
+            indiceGeneraleLavori = 1;
+            tempRowInd = indiceGeneraleLavori;
+            Lavoripratichecustom lpc = null;
+            lastTable = null;
+            //Trova le tabelle lavori
+            tblLavori = findLavoriTables(doc);
+            for (Categoriatipolavoro c : categorie) {
+                List<Lavoripratichecustom> lavoriCat
+                        = this.selectedPraticaLavoriCustom.get(c)
+                                .subList(0,
+                                        this.selectedPraticaLavoriCustom.get(c).size() > MAX_ITEMS_TEMPLATE
+                                        ? MAX_ITEMS_TEMPLATE
+                                        : this.selectedPraticaLavoriCustom.get(c).size()
+                                );
+                for (XWPFTable t : tblLavori) {
+                    rowind = 1;
+                    for (XWPFTableRow r : t.getRows()) {
+                        if (!r.getCell(0).getText().startsWith("Cod.")) {
+                            lastTable = t;
+                            if (rowind - 1 >= lavoriCat.size()) {
+                                lpc = null;
+                            } else {
+                                lpc = lavoriCat.get(rowind - 1);
+                                this.writeTemplateLavoriCustomMarker(r.getCell(0), tempRowInd, lpc);
+                                this.writeTemplateLavoriCustomMarker(r.getCell(1), tempRowInd, lpc);
+                            }
+                            tempRowInd++;
+                            rowind++;
+                        }
+                    }
+                    indiceGeneraleLavori += 10;
+                    tempRowInd = indiceGeneraleLavori;
+                    break;
+                }
+                if (lastTable != null) {
+                    tblLavori.remove(lastTable);
+                }
+            }
+            // ********************** marker di default rimasti da ripulire *****************************
+            indiceGeneraleLavori = 1;
+            tempRowInd = indiceGeneraleLavori;
+            lastTable = null;
+            //Trova le tabelle lavori
+            tblLavori = findLavoriTables(doc);
+            for (Categoriatipolavoro c : categorie) {
+                for (XWPFTable t : tblLavori) {
+                    rowind = 1;
+                    for (XWPFTableRow r : t.getRows()) {
+                        if (!r.getCell(0).getText().startsWith("Cod.")) {
+                            lastTable = t;
+                            this.writeTemplateDefaultMarker(r.getCell(0), tempRowInd);
+                            this.writeTemplateDefaultMarker(r.getCell(1), tempRowInd);
+                        }
+                        tempRowInd++;
+                        rowind++;
+                    }
+                }
+                indiceGeneraleLavori += 10;
+                tempRowInd = indiceGeneraleLavori;
+                break;
+            }
+            if (lastTable != null) {
+                tblLavori.remove(lastTable);
             }
             //downloading...
             doc.write(
@@ -360,6 +425,7 @@ public class VeicoliSearchView implements Serializable {
         } catch (Exception ex) {
             Logger.getLogger(VeicoliSearchView.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         return null;
     }
 
@@ -1090,7 +1156,7 @@ public class VeicoliSearchView implements Serializable {
 
     private boolean writeTemplateLavoriStandardMarker(XWPFTableCell cell, int i, Lavoripratichestandard l) {
         String text = cell.getText();
-        System.out.println(text);
+        System.out.println(text + " e i=" + i);
         String rep = null;
         boolean nulla = false;
         if (l == null) {
@@ -1099,36 +1165,54 @@ public class VeicoliSearchView implements Serializable {
         if (text != null) {
             if (text.contains("[CODLAV" + i + "]")) {
                 rep = text.replace("[CODLAV" + i + "]", eStr(nulla ? "" : l.getTipolavoro().getCodice()));
-                cell.removeParagraph(0);
-                cell.setText(rep);
+                XWPFRun run = cell.getParagraphs().get(0).getRuns().get(0);
+                run.setText(rep, 0);
                 return true;
             } else if (text.contains("[DESC_LAVORO" + i + "]")) {
                 rep = text.replace("[DESC_LAVORO" + i + "]", eStr(nulla ? "" : l.getTipolavoro().getDescrizione()));
-                cell.removeParagraph(0);
-                cell.setText(rep);
+                XWPFRun run = cell.getParagraphs().get(0).getRuns().get(0);
+                run.setText(rep, 0);
                 return true;
             }
         }
         return false;
     }
 
-    private boolean writeTemplateLavoriCustomMarker(XWPFTableCell cell, int i, List<Lavoripratichecustom> lpc) {
+    private boolean writeTemplateLavoriCustomMarker(XWPFTableCell cell, int i, Lavoripratichecustom l) {
         String text = cell.getText();
         String rep = null;
         boolean nulla = false;
-        if (lpc.size() - 1 > i) {
+        if (l == null) {
             nulla = true;
         }
         if (text != null) {
             if (text.contains("[CODLAV" + i + "]")) {
                 rep = text.replace("[CODLAV" + i + "]", "PERS.");
-                cell.removeParagraph(0);
-                cell.setText(rep);
+                XWPFRun run = cell.getParagraphs().get(0).getRuns().get(0);
+                run.setText(rep, 0);
                 return true;
             } else if (text.contains("[DESC_LAVORO" + i + "]")) {
-                rep = text.replace("[DESC_LAVORO" + i + "]", eStr(nulla ? "" : lpc.get(i - 1).getDescrizione()));
-                cell.removeParagraph(0);
-                cell.setText(rep);
+                rep = text.replace("[DESC_LAVORO" + i + "]", eStr(nulla ? "" : l.getDescrizione()));
+                XWPFRun run = cell.getParagraphs().get(0).getRuns().get(0);
+                run.setText(rep, 0);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean writeTemplateDefaultMarker(XWPFTableCell cell, int i) {
+        String text = cell.getText();
+        String rep = null;
+        boolean nulla = false;
+        if (text != null) {
+            if (text.contains("[CODLAV" + i + "]")) {
+                XWPFRun run = cell.getParagraphs().get(0).getRuns().get(0);
+                run.setText(" ", 0);
+                return true;
+            } else if (text.contains("[DESC_LAVORO" + i + "]")) {
+                XWPFRun run = cell.getParagraphs().get(0).getRuns().get(0);
+                run.setText(" ", 0);
                 return true;
             }
         }
