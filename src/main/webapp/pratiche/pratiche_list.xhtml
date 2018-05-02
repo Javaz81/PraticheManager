@@ -5,13 +5,16 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <p:panelGrid layout="grid" columns="1" rendered="#{veicoliSearchView.selectedCar.idVeicolo == 1}"
+                 style="text-align: center !important; margin: 3em; font-weight: bold; font-size: 1.3em;">
+        <p:outputLabel value="PRATICHE TEMPORANEE"/>
+    </p:panelGrid>
     <p:panelGrid layout="grid" columns="1" rendered="#{veicoliSearchView.pratiche.size()==0}"
                  style="text-align: center !important; margin: 2em; font-weight: bold; font-size: 1.3em;">
         <p:outputLabel >
             Nessuna pratica presente  
         </p:outputLabel>
-    </p:panelGrid>
-
+    </p:panelGrid>    
     <p:outputPanel rendered="#{not empty veicoliSearchView.selectedCar}" >
         <p:panelGrid columns="3" layout="tabular">
             <p:panelGrid id="general_grid_veicolo">       
@@ -20,7 +23,7 @@
                         <p:column colspan="4">
                             <h:form>                                   
                                 Dati Piattaforma/auto-articolato
-                                <p:commandButton id="buttonVeicolo" icon="fa fa-edit" actionListener="#{veicoliSearchView.editDatiVeicolo}">
+                                <p:commandButton rendered="#{veicoliSearchView.selectedCar.idVeicolo != 1}" id="buttonVeicolo" icon="fa fa-edit" actionListener="#{veicoliSearchView.editDatiVeicolo}">
                                     <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onEditVeicolo}" update="general_grid_veicolo :growl"/>
                                 </p:commandButton>
                                 <p:tooltip id="toolTip" for="buttonVeicolo" position="top" 
@@ -194,6 +197,12 @@
                 <p:commandButton value="Stampa" title="Stampa pratica" ajax="false">
                     <p:fileDownload value="#{veicoliSearchView.printedPratica}"/>
                 </p:commandButton>
+                <p:commandButton value="Riassegna a nuova Piattaforma/auto-articolato" title="Riassegna a nuovo" action="#{veicoliSearchView.newPraticaAssign}" 
+                                 icon="ui-icon-document" rendered="#{veicoliSearchView.selectedCar.idVeicolo == 1}"
+                                 update="tabview_pratiche :growl :general_grid_cliente :general_grid_dati_temp"/>
+                <p:commandButton value="Riassegna a Piattaforma/auto-articolato Esistente" title="Riassegna a esistente" action="#{veicoliSearchView.newPraticaAssign}" 
+                                 icon="ui-icon-document"  rendered="#{veicoliSearchView.selectedCar.idVeicolo == 1}"
+                                 update="tabview_pratiche :growl :general_grid_cliente :general_grid_dati_temp"/>
             </f:facet>
             <f:facet name="right">
                 <p:commandButton rendered="#{not empty veicoliSearchView.selectedPratica}" value="Cancella"  title="Cancella Pratica" 
