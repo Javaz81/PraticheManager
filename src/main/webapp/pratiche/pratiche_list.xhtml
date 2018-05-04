@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
     <p:panelGrid layout="grid" columns="1" rendered="#{veicoliSearchView.selectedCar.idVeicolo == 1}"
                  style="text-align: center !important; margin: 3em; font-weight: bold; font-size: 1.3em;">
         <p:outputLabel value="PRATICHE TEMPORANEE"/>
@@ -97,7 +97,7 @@
                                 <p:commandButton id="changeClienteBtn" icon="fa fa-fw fa-refresh" type="button" />
                                 <p:tooltip id="toolTip2" for="changeClienteBtn" position="top" value="Cambia cliente assegnato a questa pratica/piattaforma"/>
                                 <p:overlayPanel id="changeClientePanel" for="changeClienteBtn" hideEffect="fade" dynamic="true" style="width:700px" dismissable="true" >
-                                    
+
                                     <p:dataTable var="cliente" value="#{veicoliSearchView.clienti}" filteredValue="#{veicoliSearchView.filteredListChangingCliente}"  rows="5" paginator="true">
                                         <p:column headerText="Nome Rag. Sociale" filterBy="#{cliente.nome}" filterMatchMode="contains" >
                                             <h:outputText value="#{cliente.nome}" />
@@ -114,12 +114,12 @@
                                         <p:column headerText="Tel. / Cellulare"  filterBy="#{cliente.cellulare}" filterMatchMode="contains" >
                                             <h:outputText value="#{cliente.cellulare}" />
                                         </p:column>
-                                        
+
                                         <p:column headerText="Seleziona">
                                             <p:commandButton icon="fa fa-fw fa-search" actionListener="#{veicoliSearchView.changeCliente(cliente)}" ajax="false"  update="general_grid_cliente :growl"/>
                                         </p:column>
                                     </p:dataTable>
-                                
+
                                 </p:overlayPanel>
                             </h:form>
                         </p:column>
@@ -136,7 +136,7 @@
                         COGNOME
                     </p:column>
                     <p:column colspan="1">
-                         #{empty veicoliSearchView.selectedPratica ? veicoliSearchView.selectedCar.cliente.cognome :veicoliSearchView.selectedPratica.clienteidCliente.cognome}
+                        #{empty veicoliSearchView.selectedPratica ? veicoliSearchView.selectedCar.cliente.cognome :veicoliSearchView.selectedPratica.clienteidCliente.cognome}
                     </p:column>
                 </p:row>
                 <p:row>
@@ -198,11 +198,14 @@
                     <p:fileDownload value="#{veicoliSearchView.printedPratica}"/>
                 </p:commandButton>
                 <p:commandButton value="Riassegna a nuova Piattaforma/auto-articolato" title="Riassegna a nuovo" action="#{veicoliSearchView.newPraticaAssign}" 
-                                 icon="ui-icon-document" rendered="#{veicoliSearchView.selectedCar.idVeicolo == 1}"
-                                 update="tabview_pratiche :growl :general_grid_cliente :general_grid_dati_temp"/>
-                <p:commandButton value="Riassegna a Piattaforma/auto-articolato Esistente" title="Riassegna a esistente" action="#{veicoliSearchView.newPraticaAssign}" 
+                                 icon="ui-icon-document" rendered="#{veicoliSearchView.selectedCar.idVeicolo == 1}">
+                    <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onVeicoloCreated}"  update="tabview_pratiche :growl :general_grid_veicolo :general_grid_cliente :general_grid_dati_temp"/>
+                </p:commandButton>
+                <p:commandButton value="Riassegna a Piattaforma/auto-articolato Esistente" title="Riassegna a esistente" action="#{veicoliSearchView.newPraticaReassign}" 
                                  icon="ui-icon-document"  rendered="#{veicoliSearchView.selectedCar.idVeicolo == 1}"
-                                 update="tabview_pratiche :growl :general_grid_cliente :general_grid_dati_temp"/>
+                                 >
+                    <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onPraticaReassign}"  update="tabview_pratiche :growl :general_grid_veicolo :general_grid_cliente :general_grid_dati_temp"/>
+                </p:commandButton>
             </f:facet>
             <f:facet name="right">
                 <p:commandButton rendered="#{not empty veicoliSearchView.selectedPratica}" value="Cancella"  title="Cancella Pratica" 

@@ -112,7 +112,8 @@ public class VeicoliSearchView implements Serializable {
 
     private List<Veicolo> filteredVeicoli;
 
-    private StreamedContent printedPratica;
+    private boolean reassigned, newAssigned;
+
     private final int MAX_ITEMS_TEMPLATE = 10;
 
     /**
@@ -415,7 +416,7 @@ public class VeicoliSearchView implements Serializable {
                     tempRowInd = indiceGeneraleLavori;
                 }
             }
-           
+
             //downloading...
             doc.write(
                     new FileOutputStream(
@@ -584,6 +585,11 @@ public class VeicoliSearchView implements Serializable {
         RequestContext.getCurrentInstance().openDialog("gestione_veicolo/menuNewVeicolo", options, null);
     }
 
+    public void newPraticaAssign(){
+        this.newAssigned = true;
+        this.createVeicolo();
+    }
+    
     public void onVeicoloCreated(SelectEvent event) {
         HashMap<String, Object> response = (HashMap<String, Object>) event.getObject();
         Veicolo v = (Veicolo) response.get(VeicoloNewDialog.ResponseParameter.VEICOLO.toString());
@@ -620,15 +626,46 @@ public class VeicoliSearchView implements Serializable {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERRORE", "La piattaforma/autorarticolato presenta parametri errati, riprovare prego!");
             FacesContext.getCurrentInstance().addMessage(null, message);
             return;
-        }
+        }       
         this.selectedCar = v;
-        this.selectedPratica = null;
-        this.newPratica();
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "SUCCESSO", "Veicolo creato e aggiornato");
+        if(newAssigned){
+            this.selectedPratica.setVeicolo(v);
+            this.selectedPratica.setClienteidCliente(c);
+            
+            this.praticheService.edit(selectedPratica);
+            
+            if (this.pratiche != null) {
+                this.pratiche.clear();
+            }
+            this.pratiche = this.praticheService.findPraticaByVeicolo(selectedCar, PraticheUtils.MAX_PRATICHE_ESTRAIBILI);
+            this.selectedMaterialePratica = new ArrayList<>();
+             this.selectedPraticaLavoriCustom = new HashMap<>();
+            this.selectedPraticaLavoriStandard = new HashMap<>();
+            for (Categoriatipolavoro cat : this.lavoriManagerBean.getCategorie()) {
+                this.selectedPraticaLavoriCustom.put(cat, new ArrayList());
+                this.selectedPraticaLavoriStandard.put(cat, new ArrayList<>());
+            }
+            this.selectedPratica = this.pratiche.get(0);
+            this.activeIndexTab = 0;
+            newAssigned=false;
+        }else{
+            this.selectedPratica = null;
+            this.newPratica();
+        }
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "SUCCESSO", newAssigned?"Pratica temporanea assegnata alla nuova piattaforma/autorarticolato":" Piattaforma/autorarticolato creato e aggiornato");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public void chooseVeicoli() {
+        Map<String, Object> options = new HashMap<>();
+        options.put("resizable", false);
+        options.put("draggable", true);
+        options.put("modal", true);
+        options.put("contentWidth", 800);
+        RequestContext.getCurrentInstance().openDialog("searchVeicoli", options, null);
+    }    
+
+    public void newPraticaReassign() {
         Map<String, Object> options = new HashMap<>();
         options.put("resizable", false);
         options.put("draggable", true);
@@ -894,6 +931,16 @@ public class VeicoliSearchView implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
+    public void onPraticaReassign(SelectEvent event) {
+        Veicolo car = (Veicolo) event.getObject();
+        this.pratiche = this.praticheService.findPraticaByVeicolo(selectedCar, PraticheUtils.MAX_PRATICHE_ESTRAIBILI);
+        this.selectedPratica.setVeicolo(car);
+        this.selectedPratica.setClienteidCliente(this.pratiche.isEmpty() ? car.getCliente() : this.pratiche.get(0).getClienteidCliente());
+        this.praticheService.edit(selectedPratica);
+        this.onVeicoliChosen(event);
+        reassigned = true;
+    }
+
     public void onVeicoliChosen(SelectEvent event) {
         Veicolo car = (Veicolo) event.getObject();
         this.selectedCar = car;
@@ -925,8 +972,9 @@ public class VeicoliSearchView implements Serializable {
             }
             this.selectedMaterialePratica = this.materialiManagerBean.getMaterialePratica(selectedPratica);
         }
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Autoarticolato selezionato", "Id:" + car.getMarca());
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, reassigned ? "Autarticolato Riassegnato con successo." : "Autoarticolato selezionato", "Id:" + car.getMarca());
         FacesContext.getCurrentInstance().addMessage(null, message);
+        reassigned = false;
     }
 
     public void setSelectedCar(Veicolo selectedCar) {
