@@ -56,7 +56,8 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
 /**
- *  QUESTO E' IL MAIN BEAN...
+ * QUESTO E' IL MAIN BEAN...
+ *
  * @author andrea
  */
 public class VeicoliSearchView implements Serializable {
@@ -261,7 +262,7 @@ public class VeicoliSearchView implements Serializable {
             return ("");
         }
     }
-   
+
     public StreamedContent getPrintedPratica() {
         try {
             //ripulisci tutti i file piu vecchi di 2 giorni nella cartella predefinita di stampa
@@ -501,6 +502,14 @@ public class VeicoliSearchView implements Serializable {
         } else {
             this.selectedPratica.setClienteidCliente(cliente);
             this.praticheService.edit(selectedPratica);
+            if (!this.selectedCar.getIdVeicolo().equals(1)) //Se il veicolo è diverso da NN 
+            {
+                //Se il cliente del veicolo è NN allora assegna questo cliente.
+                if(this.selectedCar.getCliente().getIdCliente().equals(1)){
+                    this.selectedCar.setCliente(cliente);
+                    this.veicoliService.edit(selectedCar);
+                }
+            }
             messaggio = "Cliente della Pratica cambiato";
         }
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, messaggio, "Creazione avvenuta");
@@ -585,11 +594,11 @@ public class VeicoliSearchView implements Serializable {
         RequestContext.getCurrentInstance().openDialog("gestione_veicolo/menuNewVeicolo", options, null);
     }
 
-    public void newPraticaAssign(){
+    public void newPraticaAssign() {
         this.newAssigned = true;
         this.createVeicolo();
     }
-    
+
     public void onVeicoloCreated(SelectEvent event) {
         HashMap<String, Object> response = (HashMap<String, Object>) event.getObject();
         Veicolo v = (Veicolo) response.get(VeicoloNewDialog.ResponseParameter.VEICOLO.toString());
@@ -626,20 +635,20 @@ public class VeicoliSearchView implements Serializable {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERRORE", "La piattaforma/autorarticolato presenta parametri errati, riprovare prego!");
             FacesContext.getCurrentInstance().addMessage(null, message);
             return;
-        }       
+        }
         this.selectedCar = v;
-        if(newAssigned){
+        if (newAssigned) {
             this.selectedPratica.setVeicolo(v);
             this.selectedPratica.setClienteidCliente(c);
-            
+
             this.praticheService.edit(selectedPratica);
-            
+
             if (this.pratiche != null) {
                 this.pratiche.clear();
             }
             this.pratiche = this.praticheService.findPraticaByVeicolo(selectedCar, PraticheUtils.MAX_PRATICHE_ESTRAIBILI);
             this.selectedMaterialePratica = new ArrayList<>();
-             this.selectedPraticaLavoriCustom = new HashMap<>();
+            this.selectedPraticaLavoriCustom = new HashMap<>();
             this.selectedPraticaLavoriStandard = new HashMap<>();
             for (Categoriatipolavoro cat : this.lavoriManagerBean.getCategorie()) {
                 this.selectedPraticaLavoriCustom.put(cat, new ArrayList());
@@ -647,12 +656,12 @@ public class VeicoliSearchView implements Serializable {
             }
             this.selectedPratica = this.pratiche.get(0);
             this.activeIndexTab = 0;
-            newAssigned=false;
-        }else{
+            newAssigned = false;
+        } else {
             this.selectedPratica = null;
             this.newPratica();
         }
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "SUCCESSO", newAssigned?"Pratica temporanea assegnata alla nuova piattaforma/autorarticolato":" Piattaforma/autorarticolato creato e aggiornato");
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "SUCCESSO", newAssigned ? "Pratica temporanea assegnata alla nuova piattaforma/autorarticolato" : " Piattaforma/autorarticolato creato e aggiornato");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
@@ -663,7 +672,7 @@ public class VeicoliSearchView implements Serializable {
         options.put("modal", true);
         options.put("contentWidth", 800);
         RequestContext.getCurrentInstance().openDialog("searchVeicoli", options, null);
-    }    
+    }
 
     public void newPraticaReassign() {
         Map<String, Object> options = new HashMap<>();
@@ -940,27 +949,29 @@ public class VeicoliSearchView implements Serializable {
         this.onVeicoliChosen(event);
         reassigned = true;
     }
-    public void createNewCliente(){
+
+    public void createNewCliente() {
         Map<String, Object> options = new HashMap<>();
         options.put("resizable", false);
         options.put("draggable", true);
         options.put("modal", true);
         options.put("contentWidth", 900);
-        options.put("contentHeight",300);
+        options.put("contentHeight", 300);
         RequestContext.getCurrentInstance().openDialog("gestione_veicolo/menuCreateCliente", options, null);
     }
-     public void onCreateNewCliente(SelectEvent event){
+
+    public void onCreateNewCliente(SelectEvent event) {
         Cliente cliente = (Cliente) event.getObject();
-        if(this.clienteService.findClienteByNome(cliente)==null){
+        if (this.clienteService.findClienteByNome(cliente) == null) {
             this.clienteService.create(cliente);
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cliente creato con successo","Nome/Rag.Sociale: ".concat(cliente.getNome()));
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cliente creato con successo", "Nome/Rag.Sociale: ".concat(cliente.getNome()));
             FacesContext.getCurrentInstance().addMessage(null, message);
-        }else{
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cliente già esistente!","Nome/Rag.Sociale: ".concat(cliente.getNome()));
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cliente già esistente!", "Nome/Rag.Sociale: ".concat(cliente.getNome()));
             FacesContext.getCurrentInstance().addMessage(null, message);
         }
     }
-    
+
     public void onVeicoliChosen(SelectEvent event) {
         Veicolo car = (Veicolo) event.getObject();
         this.selectedCar = car;
