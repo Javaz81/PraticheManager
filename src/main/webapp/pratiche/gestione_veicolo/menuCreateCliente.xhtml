@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"          
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <style type="text/css">
+            .ui-widget, .ui-widget .ui-widget {
+                font-size: 83%;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:commandButton 
+                style=" margin-bottom: 1em; margin-right:1em" value="CREA NUOVO CLIENTE" 
+                actionListener="#{clienteNewDialog.saveAndExitDialog}" update="msgNome"
+                />
+            <p:commandButton id="checkClienteBtn" icon="fa fa-fw fa-refresh"
+                             type="button" value="VERIFICA ESISTENZA CLIENTE" />
+            <p:overlayPanel id="checkClientePanel" for="checkClienteBtn" hideEffect="fade" dynamic="true" style="width:700px" dismissable="true" >
+
+                <p:dataTable var="cliente" value="#{veicoliSearchView.clienti}" filteredValue="#{veicoliSearchView.filteredListChangingCliente}"  rows="5" paginator="true">
+                    <p:column headerText="Nome Rag. Sociale" filterBy="#{cliente.nome}" filterMatchMode="contains" >
+                        <h:outputText value="#{cliente.nome}" />
+                    </p:column>
+
+                    <p:column headerText="Cognome"  filterBy="#{cliente.cognome}" filterMatchMode="contains" >
+                        <h:outputText value="#{cliente.cognome}" />
+                    </p:column>
+
+                    <p:column headerText="Localita / Indirizzo"  filterBy="#{cliente.localita}" filterMatchMode="contains" >
+                        <h:outputText value="#{cliente.localita}" />
+                    </p:column>
+
+                    <p:column headerText="Tel. / Cellulare"  filterBy="#{cliente.cellulare}" filterMatchMode="contains" >
+                        <h:outputText value="#{cliente.cellulare}" />
+                    </p:column>
+                </p:dataTable>
+
+            </p:overlayPanel>
+            <p:panelGrid>
+                 <p:row>
+                    <p:column colspan="1"  style="font-weight: bold;">
+                        MESSAGGI:
+                    </p:column>
+                    <p:column colspan="1">                            
+                        <p:message for="nomeRag" id="msgNome"/>
+                    </p:column>                    
+                </p:row>
+                <p:row>
+                    <p:column colspan="1"  style="font-weight: bold;">
+                        NOME/RAGIONE SOCIALE
+                    </p:column>
+                    <p:column colspan="1">                            
+                        <p:inputText id="nomeRag" value="#{clienteNewDialog.cliente.nome}" size="50" required="true" requiredMessage="Deve essere presente un nome o una ragione sociale">
+                            <p:ajax update="msgNome" event="keyup" />                            
+                        </p:inputText>
+                    </p:column>                    
+                </p:row>
+                <p:row>
+                    <p:column colspan="1"  style="font-weight: bold;">
+                        COGNOME
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText value="#{clienteNewDialog.cliente.cognome}" size="50" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="1"  style="font-weight: bold;">
+                        INDIRIZZO/LOCALITA'
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText value="#{clienteNewDialog.cliente.localita}" size="50" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="1"  style="font-weight: bold;">
+                        RIFERIMENTO/TEL/CELLULARE
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText value="#{clienteNewDialog.cliente.cellulare}" size="50" />
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+        </h:form>        
+    </h:body>
+</html>

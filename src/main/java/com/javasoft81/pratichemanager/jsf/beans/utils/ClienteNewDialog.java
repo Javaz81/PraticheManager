@@ -14,29 +14,25 @@ import org.primefaces.context.RequestContext;
 
 /**
  *
- * @author Andrea Iavazzo
+ * @author andrea
  */
-public class ClienteEditDialog implements Serializable {
-
+public class ClienteNewDialog implements Serializable{
+   
     private Cliente cliente;
-
+  
     private VeicoliSearchView v;
-
+    
     /**
-     * Creates a new instance of ClienteEditDialog
+     * Creates a new instance of ClienteNewDialog
      */
-    public ClienteEditDialog() {
+    public ClienteNewDialog() {
     }
-
+    
     @PostConstruct
-    public void init() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        v = context.getApplication().evaluateExpressionGet(context, "#{veicoliSearchView}", VeicoliSearchView.class);
-        if (v.getSelectedPratica() != null) {
-            cliente = v.getSelectedPratica().getClienteidCliente();
-        } else {
-            cliente = v.getSelectedCar().getCliente();
-        }
+    public void init(){
+        FacesContext context = FacesContext.getCurrentInstance();        
+        v = context.getApplication().evaluateExpressionGet(context, "#{veicoliSearchView}", VeicoliSearchView.class);       
+        cliente = new Cliente();
     }
 
     public Cliente getCliente() {
@@ -47,7 +43,8 @@ public class ClienteEditDialog implements Serializable {
         this.cliente = cliente;
     }
 
-    public void endEditDialog() {
-        RequestContext.getCurrentInstance().closeDialog(cliente);
+    public void saveAndExitDialog(){
+        RequestContext.getCurrentInstance().closeDialog(this.cliente);
     }
+    
 }

@@ -12,7 +12,9 @@ function searchVeicoli(){
 function createVeicolo(){
     $('.createVeicolo').click();
 }
-
+function createNewCliente(){
+    $('.createNewCliente').click();
+}
 function addLavoriStandard(sclss){
     $(sclss).click();
 }

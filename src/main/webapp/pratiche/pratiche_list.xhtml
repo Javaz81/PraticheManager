@@ -9,11 +9,9 @@
                  style="text-align: center !important; margin: 3em; font-weight: bold; font-size: 1.3em;">
         <p:outputLabel value="PRATICHE TEMPORANEE"/>
     </p:panelGrid>
-    <p:panelGrid layout="grid" columns="1" rendered="#{veicoliSearchView.pratiche.size()==0}"
+    <p:panelGrid id="noPraticheMsg" layout="grid" columns="1" rendered="#{empty veicoliSearchView.selectedPratica}"
                  style="text-align: center !important; margin: 2em; font-weight: bold; font-size: 1.3em;">
-        <p:outputLabel >
-            Nessuna pratica presente  
-        </p:outputLabel>
+        <p:outputLabel value="Nessuna pratica presente "/>
     </p:panelGrid>    
     <p:outputPanel rendered="#{not empty veicoliSearchView.selectedCar}" >
         <p:panelGrid columns="3" layout="tabular">
@@ -89,12 +87,11 @@
                         <p:column colspan="4">
                             <h:form>
                                 Cliente del veicolo al momento della pratica
-                                <p:commandButton id="buttonCliente" icon="fa fa-edit" actionListener="#{veicoliSearchView.editDatiCliente}" >
+                                <p:commandButton id="buttonCliente" icon="fa fa-edit" actionListener="#{veicoliSearchView.editDatiCliente}" disabled="#{veicoliSearchView.selectedCar.cliente.idCliente eq 1}" >
                                     <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onEditCliente}" update="general_grid_cliente :growl" />
                                 </p:commandButton>
-                                <p:tooltip id="toolTip" for="buttonCliente" position="top" 
-                                           value="Modifica dati del cliente" />
-                                <p:commandButton id="changeClienteBtn" icon="fa fa-fw fa-refresh" type="button" />
+                                <p:tooltip id="toolTip" for="buttonCliente" position="top" value="Modifica dati del cliente" />
+                                <p:commandButton id="changeClienteBtn" icon="fa fa-fw fa-refresh" type="button" disabled="#{veicoliSearchView.selectedCar.idVeicolo eq 1}" />
                                 <p:tooltip id="toolTip2" for="changeClienteBtn" position="top" value="Cambia cliente assegnato a questa pratica/piattaforma"/>
                                 <p:overlayPanel id="changeClientePanel" for="changeClienteBtn" hideEffect="fade" dynamic="true" style="width:700px" dismissable="true" >
 
@@ -189,27 +186,27 @@
         </p:panelGrid>
     </p:outputPanel>
     <h:form>
-        <p:toolbar rendered="#{not empty veicoliSearchView.selectedCar}" id="tb_#{item.idPratica}">
+        <p:toolbar rendered="#{not empty veicoliSearchView.selectedCar}" id="tb_pratiche">
             <f:facet name="left">
-                <p:commandButton value="Nuova" title="Nuova Pratica" action="#{veicoliSearchView.newPratica}" 
+                <p:commandButton value="Nuova" title="Nuova Pratica" action="#{veicoliSearchView.newPratica}" ajax="false"
                                  icon="ui-icon-document"
-                                 update="tabview_pratiche :growl :general_grid_cliente :general_grid_dati_temp"/>
-                <p:commandButton value="Stampa" title="Stampa pratica" ajax="false">
+                                 update="tb_pratiche :pratiche_panel tabview_pratiche :growl :general_grid_cliente :general_grid_dati_temp"/>
+                <p:commandButton value="Stampa" title="Stampa pratica" ajax="false" disabled="#{empty veicoliSearchView.selectedPratica}">
                     <p:fileDownload value="#{veicoliSearchView.printedPratica}"/>
                 </p:commandButton>
-                <p:commandButton value="Riassegna a nuova Piattaforma/auto-articolato" title="Riassegna a nuovo" action="#{veicoliSearchView.newPraticaAssign}" 
-                                 icon="ui-icon-document" rendered="#{veicoliSearchView.selectedCar.idVeicolo == 1}">
-                    <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onVeicoloCreated}"  update="tabview_pratiche :growl :general_grid_veicolo :general_grid_cliente :general_grid_dati_temp"/>
+                <p:commandButton value="Riassegna a nuova Piattaforma/auto-articolato" title="Riassegna a nuovo" action="#{veicoliSearchView.newPraticaAssign}"
+                                 icon="ui-icon-document" rendered="#{veicoliSearchView.selectedCar.idVeicolo == 1}" disabled="#{empty veicoliSearchView.selectedPratica}">
+                    <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onVeicoloCreated}"  update="tb_pratiche :pratiche_panel tabview_pratiche :growl :general_grid_veicolo :general_grid_cliente :general_grid_dati_temp"/>
                 </p:commandButton>
                 <p:commandButton value="Riassegna a Piattaforma/auto-articolato Esistente" title="Riassegna a esistente" action="#{veicoliSearchView.newPraticaReassign}" 
-                                 icon="ui-icon-document"  rendered="#{veicoliSearchView.selectedCar.idVeicolo == 1}"
+                                 icon="ui-icon-document"  rendered="#{veicoliSearchView.selectedCar.idVeicolo == 1}" disabled="#{empty veicoliSearchView.selectedPratica}"
                                  >
-                    <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onPraticaReassign}"  update="tabview_pratiche :growl :general_grid_veicolo :general_grid_cliente :general_grid_dati_temp"/>
+                    <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onPraticaReassign}"  update=":pratiche_panel tabview_pratiche :growl :general_grid_veicolo :general_grid_cliente :general_grid_dati_temp"/>
                 </p:commandButton>
             </f:facet>
             <f:facet name="right">
-                <p:commandButton rendered="#{not empty veicoliSearchView.selectedPratica}" value="Cancella"  title="Cancella Pratica" 
-                                 action="#{veicoliSearchView.deletePratica}" icon="ui-icon-trash" update="tabview_pratiche :growl :general_grid_cliente :general_grid_dati_temp">
+                <p:commandButton rendered="#{not empty veicoliSearchView.selectedPratica}" value="Cancella"  title="Cancella Pratica"
+                                 action="#{veicoliSearchView.deletePratica}" icon="ui-icon-trash" update="tb_pratiche :pratiche_panel tabview_pratiche :growl :general_grid_cliente :general_grid_dati_temp">
                     <p:confirm header="Conferma" message="Vuoi cancellare questa pratica?" icon="ui-icon-alert" />
                 </p:commandButton>
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">

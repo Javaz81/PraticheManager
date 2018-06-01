@@ -26,7 +26,8 @@ public class PraticheUtils implements Serializable {
     
     public static final String[] TIPI_VEICOLO = new String[]{
         "PLE", "PV", "AUTOGRU", "CARICATORE", "SCARRABILE", "COMPATTATORE",
-        "CARICATORE FISSO", "CARICATORE SCARRABILE", "RIMORCHIO"
+        "CARICATORE FISSO", "CARICATORE SCARRABILE", "RIMORCHIO", "RAGNO",
+        "SEMOVENTE"
     };
 
     public static String getFormattedITDate(Date d) {

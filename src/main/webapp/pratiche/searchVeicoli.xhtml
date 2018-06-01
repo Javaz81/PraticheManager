@@ -32,6 +32,10 @@ and open the template in the editor.
                 <p:column headerText="Modello" filterBy="#{veicolo.modello}" filterMatchMode="contains" >
                     <h:outputText value="#{veicolo.modello}" />
                 </p:column>
+                
+                <p:column headerText="Targa" filterBy="#{veicolo.targa}" filterMatchMode="contains" >
+                    <h:outputText value="#{veicolo.targa}" />
+                </p:column>
 
                 <p:column headerText="Num. Fabbrica / Matricola" filterBy="#{veicolo.matricola}" filterMatchMode="contains">
                     <h:outputText value="#{veicolo.matricola}" />

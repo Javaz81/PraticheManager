@@ -347,7 +347,10 @@ public class VeicoloNewDialog implements Serializable {
                     }
 
                     if (edit) {
-                        response.put(ResponseParameter.CLIENTE_MODIFICATO.toString(), cliente);
+                        if(cliente.getIdCliente()==null)
+                            response.put(ResponseParameter.CLIENTE_NUOVO.toString(), cliente);
+                        else
+                            response.put(ResponseParameter.CLIENTE_MODIFICATO.toString(), cliente);
                     } else {
                         response.put(ResponseParameter.CLIENTE_ASSEGNATO.toString(), cliente);
                     }

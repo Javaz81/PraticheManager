@@ -56,7 +56,7 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
 /**
- *
+ *  QUESTO E' IL MAIN BEAN...
  * @author andrea
  */
 public class VeicoliSearchView implements Serializable {
@@ -261,7 +261,7 @@ public class VeicoliSearchView implements Serializable {
             return ("");
         }
     }
-
+   
     public StreamedContent getPrintedPratica() {
         try {
             //ripulisci tutti i file piu vecchi di 2 giorni nella cartella predefinita di stampa
@@ -933,14 +933,34 @@ public class VeicoliSearchView implements Serializable {
 
     public void onPraticaReassign(SelectEvent event) {
         Veicolo car = (Veicolo) event.getObject();
-        this.pratiche = this.praticheService.findPraticaByVeicolo(selectedCar, PraticheUtils.MAX_PRATICHE_ESTRAIBILI);
+        this.pratiche = this.praticheService.findPraticaByVeicolo(car, PraticheUtils.MAX_PRATICHE_ESTRAIBILI);
         this.selectedPratica.setVeicolo(car);
         this.selectedPratica.setClienteidCliente(this.pratiche.isEmpty() ? car.getCliente() : this.pratiche.get(0).getClienteidCliente());
         this.praticheService.edit(selectedPratica);
         this.onVeicoliChosen(event);
         reassigned = true;
     }
-
+    public void createNewCliente(){
+        Map<String, Object> options = new HashMap<>();
+        options.put("resizable", false);
+        options.put("draggable", true);
+        options.put("modal", true);
+        options.put("contentWidth", 900);
+        options.put("contentHeight",300);
+        RequestContext.getCurrentInstance().openDialog("gestione_veicolo/menuCreateCliente", options, null);
+    }
+     public void onCreateNewCliente(SelectEvent event){
+        Cliente cliente = (Cliente) event.getObject();
+        if(this.clienteService.findClienteByNome(cliente)==null){
+            this.clienteService.create(cliente);
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cliente creato con successo","Nome/Rag.Sociale: ".concat(cliente.getNome()));
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }else{
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cliente già esistente!","Nome/Rag.Sociale: ".concat(cliente.getNome()));
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+    }
+    
     public void onVeicoliChosen(SelectEvent event) {
         Veicolo car = (Veicolo) event.getObject();
         this.selectedCar = car;

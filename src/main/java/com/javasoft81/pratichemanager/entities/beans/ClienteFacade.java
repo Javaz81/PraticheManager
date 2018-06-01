@@ -6,6 +6,7 @@
 package com.javasoft81.pratichemanager.entities.beans;
 
 import com.javasoft81.pratichemanager.entities.Cliente;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -35,6 +36,16 @@ public class ClienteFacade extends AbstractFacade<Cliente> {
                 .setParameter("cognome", c.getCognome())
                 .setParameter("localita", c.getLocalita())
                 .setParameter("cellulare",c.getCellulare()).getResultList().get(0);
+    }
+    public Cliente findClienteByNome(Cliente c) {
+        List<Cliente> cliente = this.getEntityManager()
+                .createNamedQuery("Cliente.findByNome")
+                .setParameter("nome", c.getNome())
+                .getResultList();
+        if(cliente.isEmpty())
+            return null;
+        else
+            return cliente.get(0);
     }
     
 }

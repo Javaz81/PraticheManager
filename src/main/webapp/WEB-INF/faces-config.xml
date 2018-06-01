@@ -9,7 +9,7 @@
     </action-listener>
     <navigation-handler>
         org.primefaces.application.DialogNavigationHandler
-    </navigation-handler>
+    </navigation-handler>    
     <view-handler>
         org.primefaces.application.DialogViewHandler
     </view-handler>    
@@ -18,7 +18,7 @@
             <var>bundle</var>
         </resource-bundle>
     </application>
-    <managed-bean>
+    <managed-bean>        
         <description>Used to validate search form in main search panel</description>
         <managed-bean-name>searchValidationView</managed-bean-name>
         <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.SearchValidationView</managed-bean-class>
@@ -117,6 +117,12 @@ a tutta l'applicazione.</description>
         <description>Bean per la gestione dati temporanei della pratica.</description>
         <managed-bean-name>temporaneiEditDialog</managed-bean-name>
         <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.utils.TemporaneiEditDialog</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <description>Bean per la dialog di creazione di un cliente (standalone)</description>
+        <managed-bean-name>clienteNewDialog</managed-bean-name>
+        <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.utils.ClienteNewDialog</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
 </faces-config>

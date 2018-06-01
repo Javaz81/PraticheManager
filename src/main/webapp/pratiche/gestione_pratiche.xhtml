@@ -39,9 +39,10 @@
             <h:form id="mainMenuForm">
                 <p:messages id="messages" showDetail="true" closable="true" autoUpdate="true"/>
                 <p:menubar>
-                    <p:submenu label="Auto-Articolati" icon="ui-icon-home">
+                    <p:submenu label="Auto-Articolati" icon="ui-icon-home" style="width:20em !important">
                         <p:menuitem id="aa_search"  value="Cerca..." icon="ui-icon-search" onclick="searchVeicoli()"/>
-                        <p:menuitem id="aa_manage" value="Registra nuova . . ." icon="ui-icon-plusthick" onclick="createVeicolo()"/>
+                        <p:menuitem id="aa_manage" value="Registra Macchina" icon="ui-icon-plus" onclick="createVeicolo()"/>
+                        <p:menuitem id="aa_manage_cliente" value="Registra Cliente" icon="ui-icon-person" onclick="createNewCliente()"/>
                     </p:submenu>                                       
                     <f:facet name="options">                       
                         <!-- ACTION BUTTONS -->
@@ -60,12 +61,19 @@
                             <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onVeicoloCreated}"                                    
                                     update="growl pratiche_panel"
                                     />                            
-                        </p:commandButton>  
+                        </p:commandButton>
+                        <p:commandButton  id="createNewCliente" style="display: none"
+                                          styleClass="createNewCliente" 
+                                          actionListener="#{veicoliSearchView.createNewCliente}"                                          
+                                          >
+                            <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onCreateNewCliente}" update="growl pratiche_panel"/>
+                        </p:commandButton>
                     </f:facet>
                 </p:menubar>
 
                 <p:tooltip id="t1" for="aa_search" value="Cerca auto e carica/crea le relative pratiche" position="top"/>
                 <p:tooltip id="t2" for="aa_manage" value="Crea un nuovo autoarticolato / piattaforma" position="top"/>
+                <p:tooltip id="t3" for="aa_manage_cliente" value="Crea un nuovo cliente" position="top"/>
             </h:form>
             <p:outputPanel id="pratiche_panel">
                 <ui:include src="/pratiche/pratiche_list.xhtml"/>
