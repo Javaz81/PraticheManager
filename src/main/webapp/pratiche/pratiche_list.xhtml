@@ -20,12 +20,12 @@
                     <p:row>
                         <p:column colspan="4">
                             <h:form>                                   
-                                Dati Piattaforma/auto-articolato
+                                Dati Macchina
                                 <p:commandButton rendered="#{veicoliSearchView.selectedCar.idVeicolo != 1}" id="buttonVeicolo" icon="fa fa-edit" actionListener="#{veicoliSearchView.editDatiVeicolo}">
                                     <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onEditVeicolo}" update="general_grid_veicolo :growl"/>
                                 </p:commandButton>
                                 <p:tooltip id="toolTip" for="buttonVeicolo" position="top" 
-                                           value="Modifica dati della piattaforma/auto-articolato" />
+                                           value="Modifica dati della macchina" />
                             </h:form>
                         </p:column>
                     </p:row>
@@ -86,13 +86,13 @@
                     <p:row>
                         <p:column colspan="4">
                             <h:form>
-                                Cliente del veicolo al momento della pratica
+                                Cliente della macchina relativo a questa pratica
                                 <p:commandButton id="buttonCliente" icon="fa fa-edit" actionListener="#{veicoliSearchView.editDatiCliente}" disabled="#{veicoliSearchView.selectedCar.cliente.idCliente eq 1}" >
                                     <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onEditCliente}" update="general_grid_cliente :growl" />
                                 </p:commandButton>
                                 <p:tooltip id="toolTip" for="buttonCliente" position="top" value="Modifica dati del cliente" />
                                 <p:commandButton id="changeClienteBtn" icon="fa fa-fw fa-refresh" type="button" disabled="#{veicoliSearchView.selectedCar.idVeicolo eq 1}" />
-                                <p:tooltip id="toolTip2" for="changeClienteBtn" position="top" value="Cambia cliente assegnato a questa pratica/piattaforma"/>
+                                <p:tooltip id="toolTip2" for="changeClienteBtn" position="top" value="Cambia cliente assegnato a questa pratica/macchina"/>
                                 <p:overlayPanel id="changeClientePanel" for="changeClienteBtn" hideEffect="fade" dynamic="true" style="width:700px" dismissable="true" >
 
                                     <p:dataTable var="cliente" value="#{veicoliSearchView.clienti}" filteredValue="#{veicoliSearchView.filteredListChangingCliente}"  rows="5" paginator="true">
@@ -176,7 +176,7 @@
                 </p:row>
                 <p:row>
                     <p:column colspan="1"  style="font-weight: bold;">
-                        DATI PIATTAFORMA / AUTOARTICOLATO
+                        DATI MACCHINA
                     </p:column>
                     <p:column colspan="1">
                         #{veicoliSearchView.selectedPratica.veicoloTemporaneo}
@@ -194,11 +194,11 @@
                 <p:commandButton value="Stampa" title="Stampa pratica" ajax="false" disabled="#{empty veicoliSearchView.selectedPratica}">
                     <p:fileDownload value="#{veicoliSearchView.printedPratica}"/>
                 </p:commandButton>
-                <p:commandButton value="Riassegna a nuova Piattaforma/auto-articolato" title="Riassegna a nuovo" action="#{veicoliSearchView.newPraticaAssign}"
+                <p:commandButton value="Riassegna a nuova Macchina" title="Riassegna a nuova" action="#{veicoliSearchView.newPraticaAssign}"
                                  icon="ui-icon-document" rendered="#{veicoliSearchView.selectedCar.idVeicolo == 1}" disabled="#{empty veicoliSearchView.selectedPratica}">
                     <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onVeicoloCreated}"  update="tb_pratiche :pratiche_panel tabview_pratiche :growl :general_grid_veicolo :general_grid_cliente :general_grid_dati_temp"/>
                 </p:commandButton>
-                <p:commandButton value="Riassegna a Piattaforma/auto-articolato Esistente" title="Riassegna a esistente" action="#{veicoliSearchView.newPraticaReassign}" 
+                <p:commandButton value="Riassegna a Macchina Esistente" title="Riassegna a esistente" action="#{veicoliSearchView.newPraticaReassign}" 
                                  icon="ui-icon-document"  rendered="#{veicoliSearchView.selectedCar.idVeicolo == 1}" disabled="#{empty veicoliSearchView.selectedPratica}"
                                  >
                     <p:ajax event="dialogReturn" listener="#{veicoliSearchView.onPraticaReassign}"  update=":pratiche_panel tabview_pratiche :growl :general_grid_veicolo :general_grid_cliente :general_grid_dati_temp"/>

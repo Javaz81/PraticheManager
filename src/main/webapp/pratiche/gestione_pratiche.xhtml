@@ -30,8 +30,8 @@
                                        />
                         <p:ajax listener="#{themeSwitcherView.saveTheme}"/>
                     </p:themeSwitcher>
-                    <p> <b>PER INIZIARE:</b> Parti dal menu <i>Auto-articolati -> Cerca...</i> qui sotto nel menu 
-                        per cercare l'auto-articolato e caricare le sue pratiche.</p>
+                    <p> <b>PER INIZIARE:</b> Parti dal menu <i>MENU PRINCIPALE -> Cerca...</i> qui sotto nel menu 
+                        per cercare le macchine desiderate e caricare le sue pratiche.</p>
                 </p:panelGrid>
             </h:form>
         </p:layoutUnit>
@@ -39,7 +39,7 @@
             <h:form id="mainMenuForm">
                 <p:messages id="messages" showDetail="true" closable="true" autoUpdate="true"/>
                 <p:menubar>
-                    <p:submenu label="Auto-Articolati" icon="ui-icon-home" style="width:20em !important">
+                    <p:submenu label="MENU PRINCIPALE" icon="ui-icon-home" style="width:20em !important">
                         <p:menuitem id="aa_search"  value="Cerca..." icon="ui-icon-search" onclick="searchVeicoli()"/>
                         <p:menuitem id="aa_manage" value="Registra Macchina" icon="ui-icon-plus" onclick="createVeicolo()"/>
                         <p:menuitem id="aa_manage_cliente" value="Registra Cliente" icon="ui-icon-person" onclick="createNewCliente()"/>
@@ -72,7 +72,7 @@
                 </p:menubar>
 
                 <p:tooltip id="t1" for="aa_search" value="Cerca auto e carica/crea le relative pratiche" position="top"/>
-                <p:tooltip id="t2" for="aa_manage" value="Crea un nuovo autoarticolato / piattaforma" position="top"/>
+                <p:tooltip id="t2" for="aa_manage" value="Crea una nuova Macchina" position="top"/>
                 <p:tooltip id="t3" for="aa_manage_cliente" value="Crea un nuovo cliente" position="top"/>
             </h:form>
             <p:outputPanel id="pratiche_panel">

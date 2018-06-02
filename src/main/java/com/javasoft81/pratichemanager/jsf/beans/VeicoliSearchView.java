@@ -638,6 +638,7 @@ public class VeicoliSearchView implements Serializable {
         }
         this.selectedCar = v;
         if (newAssigned) {
+            newAssigned = false;
             this.selectedPratica.setVeicolo(v);
             this.selectedPratica.setClienteidCliente(c);
 
@@ -656,7 +657,6 @@ public class VeicoliSearchView implements Serializable {
             }
             this.selectedPratica = this.pratiche.get(0);
             this.activeIndexTab = 0;
-            newAssigned = false;
         } else {
             this.selectedPratica = null;
             this.newPratica();
@@ -946,8 +946,9 @@ public class VeicoliSearchView implements Serializable {
         this.selectedPratica.setVeicolo(car);
         this.selectedPratica.setClienteidCliente(this.pratiche.isEmpty() ? car.getCliente() : this.pratiche.get(0).getClienteidCliente());
         this.praticheService.edit(selectedPratica);
-        this.onVeicoliChosen(event);
         reassigned = true;
+        this.onVeicoliChosen(event);
+
     }
 
     public void createNewCliente() {
