@@ -125,4 +125,12 @@ a tutta l'applicazione.</description>
         <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.utils.ClienteNewDialog</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <description>Cerca le pratiche attive all'interno dell'app.
+ Una pratica è Attiva se e solo se sono presenti numero di uscita e data di uscita 
+contemporaneamente.</description>
+        <managed-bean-name>searchPraticheAttive</managed-bean-name>
+        <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.utils.SearchPraticheAttive</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
 </faces-config>

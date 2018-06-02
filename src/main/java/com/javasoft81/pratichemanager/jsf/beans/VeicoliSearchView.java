@@ -492,7 +492,9 @@ public class VeicoliSearchView implements Serializable {
     public String format_IT_Boolean(Boolean b) {
         return PraticheUtils.getFormattedBoolean(b);
     }
-
+    public List<Pratica> getPraticheAttive(){
+        return this.praticheService.findPraticheAttive();
+    }
     public void changeCliente(Cliente cliente) {
         String messaggio;
         if (this.selectedPratica == null) {
@@ -593,12 +595,55 @@ public class VeicoliSearchView implements Serializable {
         options.put("contentWidth", 900);
         RequestContext.getCurrentInstance().openDialog("gestione_veicolo/menuNewVeicolo", options, null);
     }
-
+    public void searchPraticheAttive(){
+        Map<String, Object> options = new HashMap<>();
+        options.put("resizable", false);
+        options.put("draggable", true);
+        options.put("modal", true);
+        options.put("contentWidth", 800);
+        RequestContext.getCurrentInstance().openDialog("searchPraticheAttive", options, null);
+    }
     public void newPraticaAssign() {
         this.newAssigned = true;
         this.createVeicolo();
     }
 
+    public void onPraticaAttivaSelected(SelectEvent event){
+        Pratica pratica = (Pratica) event.getObject();
+        this.selectedCar = pratica.getVeicolo();
+        this.pratiche = this.praticheService.findPraticaByVeicolo(selectedCar, PraticheUtils.MAX_PRATICHE_ESTRAIBILI);
+        this.selectedPratica = pratica;
+        if (this.selectedPraticaLavoriStandard == null) {
+            this.selectedPraticaLavoriStandard = new HashMap<>();
+        } else {
+            this.selectedPraticaLavoriStandard.clear();
+        }
+        if (this.selectedPraticaLavoriCustom == null) {
+            this.selectedPraticaLavoriCustom = new HashMap<>();
+        } else {
+            this.selectedPraticaLavoriCustom.clear();
+        }
+        if (this.selectedMaterialePratica == null) {
+            this.selectedMaterialePratica = new ArrayList<>();
+        } else {
+            this.selectedMaterialePratica.clear();
+        }
+        /**
+         * ***************** MANCA DI REINIZIALIZZARE ANCHE IL MATERIALE
+         * ASSOCIATO ***************
+         */
+        if (!this.pratiche.isEmpty()) {
+            for (Categoriatipolavoro cat : this.lavoriManagerBean.getCategorie()) {
+                this.selectedPraticaLavoriStandard.put(cat, this.lavoriManagerBean.getLavoriStandardByCategoria(cat, selectedPratica));
+                this.selectedPraticaLavoriCustom.put(cat, this.lavoriManagerBean.getLavoriCustomByCategoria(cat, selectedPratica));
+            }
+            this.selectedMaterialePratica = this.materialiManagerBean.getMaterialePratica(selectedPratica);
+        }
+        this.activeIndexTab=this.pratiche.indexOf(pratica);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Pratica Selezionata","Pratica:".concat(pratica.getIdPratica().toString()));
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+    
     public void onVeicoloCreated(SelectEvent event) {
         HashMap<String, Object> response = (HashMap<String, Object>) event.getObject();
         Veicolo v = (Veicolo) response.get(VeicoloNewDialog.ResponseParameter.VEICOLO.toString());

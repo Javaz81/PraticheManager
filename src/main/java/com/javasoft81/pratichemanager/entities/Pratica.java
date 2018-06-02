@@ -66,7 +66,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Pratica.findByTempoRientroSede", query = "SELECT p FROM Pratica p WHERE p.tempoRientroSede = :tempoRientroSede")
     , @NamedQuery(name = "Pratica.findByTotKmAndRit", query = "SELECT p FROM Pratica p WHERE p.totKmAndRit = :totKmAndRit")
     , @NamedQuery(name = "Pratica.findByTotOreLavoro", query = "SELECT p FROM Pratica p WHERE p.totOreLavoro = :totOreLavoro")
-    , @NamedQuery(name = "Pratica.findByTotOreViaggio", query = "SELECT p FROM Pratica p WHERE p.totOreViaggio = :totOreViaggio")})
+    , @NamedQuery(name = "Pratica.findByTotOreViaggio", query = "SELECT p FROM Pratica p WHERE p.totOreViaggio = :totOreViaggio")
+    , @NamedQuery(name = "Pratica.findPraticheAttive", query = "SELECT p FROM Pratica p WHERE (p.uscita IS NOT NULL OR p.dataUscita IS NOT NULL)")})
 public class Pratica implements Serializable {
 
     private static final long serialVersionUID = 1L;

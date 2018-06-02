@@ -63,4 +63,8 @@ public class PraticaFacade extends AbstractFacade<Pratica> {
                 .setParameter("veicolo", currentCar)
                 .getSingleResult();
     }
+    
+    public List<Pratica> findPraticheAttive(){
+        return this.em.createNamedQuery("Pratica.findPraticheAttive").getResultList();
+    }    
 }

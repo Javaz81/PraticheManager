@@ -15,6 +15,10 @@ function createVeicolo(){
 function createNewCliente(){
     $('.createNewCliente').click();
 }
+
+function searchPraticheAttive() {
+    $('.searchPraticheAttive').click();
+}
 function addLavoriStandard(sclss){
     $(sclss).click();
 }
