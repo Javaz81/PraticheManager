@@ -3,16 +3,16 @@
               xmlns="http://xmlns.jcp.org/xml/ns/javaee"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
-<application>
-    <action-listener>
-        org.primefaces.application.DialogActionListener
-    </action-listener>
-    <navigation-handler>
-        org.primefaces.application.DialogNavigationHandler
-    </navigation-handler>    
-    <view-handler>
-        org.primefaces.application.DialogViewHandler
-    </view-handler>    
+    <application>
+        <action-listener>
+            org.primefaces.application.DialogActionListener
+        </action-listener>
+        <navigation-handler>
+            org.primefaces.application.DialogNavigationHandler
+        </navigation-handler>    
+        <view-handler>
+            org.primefaces.application.DialogViewHandler
+        </view-handler>    
         <resource-bundle>
             <base-name>/Bundle</base-name>
             <var>bundle</var>
@@ -42,7 +42,7 @@
     </managed-bean>
     <managed-bean>
         <description>E' il bean che si occupa di preparare e far utilizzare all'applicazione l'anagrafica di tutti i lavori 
-( sia standard e custom) per categoria associata.</description>
+            ( sia standard e custom) per categoria associata.</description>
         <managed-bean-name>lavoriManagerBean</managed-bean-name>
         <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.LavoriManagerBean</managed-bean-class>
         <managed-bean-scope>application</managed-bean-scope>
@@ -81,7 +81,8 @@
         <description>E' la dialog per la ricerca dei veicoli</description>
         <managed-bean-name>searchVeicoliDialog</managed-bean-name>
         <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.utils.SearchVeicoliDialog</managed-bean-class>    
-        <managed-bean-scope>view</managed-bean-scope></managed-bean>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
     <managed-bean>
         <description>Bean per l'editing dei valori del veicolo</description>
         <managed-bean-name>veicoloEditDialog</managed-bean-name>
@@ -108,7 +109,7 @@
     </managed-bean>
     <managed-bean>
         <description>Bean con ambito application che racchiude alcune proprietà e metodi trasversali 
-a tutta l'applicazione.</description>
+            a tutta l'applicazione.</description>
         <managed-bean-name>appContextBean</managed-bean-name>
         <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.AppContextBean</managed-bean-class>
         <managed-bean-scope>application</managed-bean-scope>
@@ -127,8 +128,8 @@ a tutta l'applicazione.</description>
     </managed-bean>
     <managed-bean>
         <description>Cerca le pratiche attive all'interno dell'app.
- Una pratica è Attiva se e solo se sono presenti numero di uscita e data di uscita 
-contemporaneamente.</description>
+            Una pratica è Attiva se e solo se sono presenti numero di uscita e data di uscita 
+            contemporaneamente.</description>
         <managed-bean-name>searchPraticheAttive</managed-bean-name>
         <managed-bean-class>com.javasoft81.pratichemanager.jsf.beans.utils.SearchPraticheAttive</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
